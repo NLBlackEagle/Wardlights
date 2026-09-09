@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Read(//c/Users/Vincent-PC/.gradle/caches/**)",
+      "Bash(./gradlew build *)"
+    ]
+  }
+}

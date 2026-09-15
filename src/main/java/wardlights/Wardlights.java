@@ -7,10 +7,11 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import software.bernie.geckolib3.GeckoLib;
 import wardlights.handlers.ModRegistry;
 import wardlights.proxy.CommonProxy;
 
-@Mod(modid = Wardlights.MODID, version = Wardlights.VERSION, name = Wardlights.NAME, dependencies = "required-after:fermiumbooter")
+@Mod(modid = Wardlights.MODID, version = Wardlights.VERSION, name = Wardlights.NAME, dependencies = "required-after:fermiumbooter;required-after:geckolib3")
 public class Wardlights {
     public static final String MODID = "wardlights";
     public static final String VERSION = "1.0.0";
@@ -25,6 +26,7 @@ public class Wardlights {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        GeckoLib.initialize();
         ModRegistry.init();
         Wardlights.PROXY.preInit();
     }
@@ -38,19 +40,19 @@ public class Wardlights {
 todo: all the below stuff!
 
 - Lanterns Main Concept: bauble, right-hand and toolbelt equipable: Pale Lantern = keeps darkness entities at bay
-  (cancels targeting)
+  (cancels targeting) and make it a belt-equippable too - max 1 lantern active. (make each lantern have its own white and blacklist potion effects)
 - Lantern types:
-  Lantern 1; Regular Lantern - Creates a light source preventing darkness mobs using you as a excuse to materialize!
-  Lantern 2; Pixie Infused - Creates an even bigger light source around the player and increases the player's mining speed
-  Lantern 3; Vapula Infused - Tricks Vapula & Geonach into not spawning when knocking their house down
-  Lantern 4; Pale Infused - Regular darkness entities fear you now instead!
-  Lantern 5; Parasite Infused - prevents COTH & FEAR
+  Lantern 1; Regular Lantern - Creates a light source preventing darkness mobs using you as a excuse to materialize! (only underground & darkness)
+  Lantern 2; Pixie Infused - add effects such as luck, & adds 5% chance below y25 for a mimic to spawn. (only underground & darkness)
+  Lantern 3; Vapula Infused - Increase mining speed make vapula and geoachs mined into your ally temporary & increase their spawns (only underground & darkness)
+  Lantern 4; Pale Infused - Have a entity list that will cancel their targeting if conditions met & make a whitelist of entities which will get pale bloom effect when they are nearby
+  Lantern 5; Parasite Infused - make SRP targeting ignore you <config.perc.times>
 - Lantern Looks:
-  Lantern 1; Cast iron lantern on a chain, player holds it through the chain, perhaps it could do little swinging animations?
-  Lantern 2; as above with a pink-ish glow and/or little particles
-  Lantern 3; as above with a blu-ish particle added
-  Lantern 4; as above but with white particles added in a larger radius around the player
-  Lantern 5; as above but with red particles added
+  Lantern 1; (Default) simple cast iron lantern with a candle burning.
+  Lantern 2; Lavender like glow and little fire-fly pink/purple/white like particles floating about
+  Lantern 3; Crystal floating in the center emitting blue-white light
+  Lantern 4; Overgrown lantern, pale leaves, white light and white particles floating about.
+  Lantern 5; Tendrils poking out making a twitching animation with red light emitted from within. SRP overgrowth
 - Crafting:
   Lantern 1; 4x iron ingot 4x framed glass pane 1x glowing powder (Or 10 gold coins at the blacksmith)
   Lantern 2; 1x lantern + 4x pixie dust + 4x silver

@@ -1,2 +1,8 @@
 # Wardlights language keys
 # Item, tooltip and config keys are added here as content is implemented.
+
+item.lantern_regular.name=Regular Lantern
+item.lantern_pixie.name=Pixie Lantern
+item.lantern_pale.name=Pale Lantern
+item.lantern_srp.name=Parasite Lantern
+item.lantern_vapula.name=Vapula Lantern

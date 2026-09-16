@@ -1,8 +1,10 @@
 # Wardlights language keys
 # Item, tooltip and config keys are added here as content is implemented.
 
-item.lantern_regular.name=Regular Lantern
-item.lantern_pixie.name=Pixie Lantern
-item.lantern_pale.name=Pale Lantern
-item.lantern_srp.name=Parasite Lantern
-item.lantern_vapula.name=Vapula Lantern
+# Lanterns are now Block+ItemBlock pairs (placeable) — ItemBlock#getTranslationKey()
+# delegates to the wrapped Block's own key ("tile.<name>"), not "item.<name>".
+tile.lantern_regular.name=Regular Lantern
+tile.lantern_pixie.name=Pixie Lantern
+tile.lantern_pale.name=Pale Lantern
+tile.lantern_srp.name=Parasite Lantern
+tile.lantern_vapula.name=Vapula Lantern

@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "wardlights:lantern_srp" },
+    "facing=south": { "model": "wardlights:lantern_srp", "y": 180 },
+    "facing=west": { "model": "wardlights:lantern_srp", "y": 270 },
+    "facing=east": { "model": "wardlights:lantern_srp", "y": 90 }
+  }
+}

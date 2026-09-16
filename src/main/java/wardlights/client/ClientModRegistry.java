@@ -9,6 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import wardlights.Wardlights;
 import wardlights.client.render.LanternPaleRenderer;
 import wardlights.client.render.LanternPixieRenderer;
+import wardlights.client.render.LanternRegularRenderer;
 import wardlights.client.render.LanternSrpRenderer;
 import wardlights.client.render.LanternVapulaRenderer;
 import wardlights.handlers.ModRegistry;
@@ -18,6 +19,7 @@ public class ClientModRegistry {
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
+        ModRegistry.LANTERN_REGULAR.setTileEntityItemStackRenderer(LanternRegularRenderer.INSTANCE);
         ModRegistry.LANTERN_PIXIE.setTileEntityItemStackRenderer(LanternPixieRenderer.INSTANCE);
         ModRegistry.LANTERN_PALE.setTileEntityItemStackRenderer(LanternPaleRenderer.INSTANCE);
         ModRegistry.LANTERN_SRP.setTileEntityItemStackRenderer(LanternSrpRenderer.INSTANCE);

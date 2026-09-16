@@ -2,6 +2,9 @@ package wardlights.animation;
 
 import java.util.Random;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.Animation;
@@ -9,6 +12,7 @@ import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
+import wardlights.handlers.ForgeConfigHandler;
 
 /**
  * Shared GeckoLib controller-registration logic for the 5 lanterns, used by
@@ -20,7 +24,30 @@ public final class LanternAnimations {
     private LanternAnimations() {
     }
 
+    // Only placed blocks (tile entities) are gated — a held item is always
+    // right next to the player, so a distance cutoff wouldn't do anything
+    // useful there and would just be extra work every tick.
+    private static boolean isTooFarToAnimate(IAnimatable animatable) {
+        if (!(animatable instanceof TileEntity)) {
+            return false;
+        }
+        int cutoff = ForgeConfigHandler.client.lanternAnimationDistance;
+        if (cutoff <= 0) {
+            return false;
+        }
+        TileEntity tile = (TileEntity) animatable;
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        if (tile.getWorld() == null || player == null) {
+            return false;
+        }
+        double cutoffSq = (double) cutoff * cutoff;
+        return player.getDistanceSq(tile.getPos()) > cutoffSq;
+    }
+
     private static <T extends IAnimatable> PlayState loop(AnimationEvent<T> event, String clipName) {
+        if (isTooFarToAnimate(event.getAnimatable())) {
+            return PlayState.STOP;
+        }
         event.getController().setAnimation(new AnimationBuilder().loop(clipName));
         return PlayState.CONTINUE;
     }
@@ -84,6 +111,10 @@ public final class LanternAnimations {
     }
 
     private static <T extends IAnimatable> PlayState srpPredicate(AnimationEvent<T> event, SrpLoopState state) {
+        if (isTooFarToAnimate(event.getAnimatable())) {
+            return PlayState.STOP;
+        }
+
         AnimationController<T> controller = event.getController();
         double now = event.getAnimationTick();
         Animation current = controller.getCurrentAnimation();

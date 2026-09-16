@@ -30,7 +30,10 @@ public class ForgeConfigHandler {
 
 	public static class ClientConfig {
 
-		// Client-side options go here.
+		@Config.Comment("Distance (in blocks) from the player beyond which placed lanterns stop animating, to save performance. 0 disables the cutoff (always animate).")
+		@Config.Name("Lantern Animation Distance")
+		@Config.RangeInt(min = 0, max = 128)
+		public int lanternAnimationDistance = 16;
 	}
 
 	/**

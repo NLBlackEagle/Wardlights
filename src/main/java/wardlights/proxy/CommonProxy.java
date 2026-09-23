@@ -14,4 +14,8 @@ public class CommonProxy {
      */
     public void renderAegisOfSacrificeBauble(EntityPlayer player, float partialTicks) {
     }
+
+    /** No-op on the server/common side — see {@link #renderAegisOfSacrificeBauble}. */
+    public void renderBulwarkOfValorBauble(EntityPlayer player, float partialTicks) {
+    }
 }

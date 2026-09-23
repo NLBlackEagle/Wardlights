@@ -50,28 +50,35 @@ public class ForgeConfigHandler {
 				+ "config GUI (or by editing this file + F3+T) without rebuilding the mod. Translation is in "
 				+ "blocks, rotation in degrees.")
 		@Config.Name("Aegis of Sacrifice Placement")
-		public AegisPlacementConfig aegisPlacement = new AegisPlacementConfig();
+		public BaublePlacementConfig aegisPlacement = new BaublePlacementConfig();
 
-		public static class AegisPlacementConfig {
+		@Config.Comment("Live-tunable offsets for the Bulwark of Valor bauble parts, applied on top of the "
+				+ "base hand-anchored transform, so position/rotation/scale can be dialed in from the in-game "
+				+ "config GUI (or by editing this file + F3+T) without rebuilding the mod. Translation is in "
+				+ "blocks, rotation in degrees.")
+		@Config.Name("Bulwark of Valor Placement")
+		public BaublePlacementConfig bulwarkPlacement = new BaublePlacementConfig();
+
+		public static class BaublePlacementConfig {
 
 			@Config.Name("Badge Offset X")
 			@Config.RangeDouble(min = -5, max = 5)
 			public double badgeOffsetX = 0;
 			@Config.Name("Badge Offset Y")
 			@Config.RangeDouble(min = -5, max = 5)
-			public double badgeOffsetY = 0;
+			public double badgeOffsetY = 5;
 			@Config.Name("Badge Offset Z")
 			@Config.RangeDouble(min = -5, max = 5)
 			public double badgeOffsetZ = 0;
 			@Config.Name("Badge Rotation X")
 			@Config.RangeDouble(min = -180, max = 180)
-			public double badgeRotationX = 0;
+			public double badgeRotationX = -90;
 			@Config.Name("Badge Rotation Y")
 			@Config.RangeDouble(min = -180, max = 180)
-			public double badgeRotationY = 0;
+			public double badgeRotationY = -90;
 			@Config.Name("Badge Rotation Z")
 			@Config.RangeDouble(min = -180, max = 180)
-			public double badgeRotationZ = 0;
+			public double badgeRotationZ = -180;
 			@Config.Name("Badge Scale Multiplier")
 			@Config.RangeDouble(min = 0.1, max = 5)
 			public double badgeScale = 1;

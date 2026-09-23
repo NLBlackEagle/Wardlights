@@ -25,7 +25,17 @@ public class ForgeConfigHandler {
 
 	public static class ServerConfig {
 
-		// Server-side gameplay options go here.
+		@Config.Comment("Item registry names (e.g. \"minecraft:iron_ingot\") for the 9 Aegis of Sacrifice crafting "
+				+ "grid slots, read left-to-right then top-to-bottom (1=top-left, 9=bottom-right). Leave a slot "
+				+ "blank for an empty grid cell. Unknown/unresolvable item ids are treated as blank (see log). "
+				+ "Defaults below are placeholders only — replace with real ingredients.")
+		@Config.Name("Aegis of Sacrifice Recipe")
+		@Config.RequiresMcRestart
+		public String[] aegisOfSacrificeRecipe = {
+				"minecraft:iron_ingot", "minecraft:gold_ingot", "minecraft:iron_ingot",
+				"minecraft:gold_ingot", "minecraft:diamond", "minecraft:gold_ingot",
+				"minecraft:iron_ingot", "minecraft:gold_ingot", "minecraft:iron_ingot"
+		};
 	}
 
 	public static class ClientConfig {
@@ -34,6 +44,60 @@ public class ForgeConfigHandler {
 		@Config.Name("Lantern Animation Distance")
 		@Config.RangeInt(min = 0, max = 128)
 		public int lanternAnimationDistance = 16;
+
+		@Config.Comment("Live-tunable offsets for the Aegis of Sacrifice bauble parts, applied on top of the "
+				+ "base hand-anchored transform, so position/rotation/scale can be dialed in from the in-game "
+				+ "config GUI (or by editing this file + F3+T) without rebuilding the mod. Translation is in "
+				+ "blocks, rotation in degrees.")
+		@Config.Name("Aegis of Sacrifice Placement")
+		public AegisPlacementConfig aegisPlacement = new AegisPlacementConfig();
+
+		public static class AegisPlacementConfig {
+
+			@Config.Name("Badge Offset X")
+			@Config.RangeDouble(min = -5, max = 5)
+			public double badgeOffsetX = 0;
+			@Config.Name("Badge Offset Y")
+			@Config.RangeDouble(min = -5, max = 5)
+			public double badgeOffsetY = 0;
+			@Config.Name("Badge Offset Z")
+			@Config.RangeDouble(min = -5, max = 5)
+			public double badgeOffsetZ = 0;
+			@Config.Name("Badge Rotation X")
+			@Config.RangeDouble(min = -180, max = 180)
+			public double badgeRotationX = 0;
+			@Config.Name("Badge Rotation Y")
+			@Config.RangeDouble(min = -180, max = 180)
+			public double badgeRotationY = 0;
+			@Config.Name("Badge Rotation Z")
+			@Config.RangeDouble(min = -180, max = 180)
+			public double badgeRotationZ = 0;
+			@Config.Name("Badge Scale Multiplier")
+			@Config.RangeDouble(min = 0.1, max = 5)
+			public double badgeScale = 1;
+
+			@Config.Name("Shoulder Offset X")
+			@Config.RangeDouble(min = -5, max = 5)
+			public double shoulderOffsetX = -0.05;
+			@Config.Name("Shoulder Offset Y")
+			@Config.RangeDouble(min = -5, max = 5)
+			public double shoulderOffsetY = -0.09;
+			@Config.Name("Shoulder Offset Z")
+			@Config.RangeDouble(min = -5, max = 5)
+			public double shoulderOffsetZ = 0;
+			@Config.Name("Shoulder Rotation X")
+			@Config.RangeDouble(min = -180, max = 180)
+			public double shoulderRotationX = -90;
+			@Config.Name("Shoulder Rotation Y")
+			@Config.RangeDouble(min = -180, max = 180)
+			public double shoulderRotationY = -90;
+			@Config.Name("Shoulder Rotation Z")
+			@Config.RangeDouble(min = -180, max = 180)
+			public double shoulderRotationZ = -180;
+			@Config.Name("Shoulder Scale Multiplier")
+			@Config.RangeDouble(min = 0.1, max = 5)
+			public double shoulderScale = 1;
+		}
 	}
 
 	/**

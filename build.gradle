@@ -60,6 +60,7 @@ dependencies {
 
     implementation fg.deobf("curse.maven:fermiumbooter-${fermiumbooter_version}")
     implementation fg.deobf("curse.maven:geckolib-${geckolib_version}")
+    implementation fg.deobf("curse.maven:baubles-${baubles_version}")
 
     compileOnly fg.deobf("curse.maven:lycanitesmobs-${lycanitesmobs_version}")
     compileOnly fg.deobf("curse.maven:palebloom-${palebloom_version}")

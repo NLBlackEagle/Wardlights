@@ -11,7 +11,7 @@ import software.bernie.geckolib3.GeckoLib;
 import wardlights.handlers.ModRegistry;
 import wardlights.proxy.CommonProxy;
 
-@Mod(modid = Wardlights.MODID, version = Wardlights.VERSION, name = Wardlights.NAME, dependencies = "required-after:fermiumbooter;required-after:geckolib3")
+@Mod(modid = Wardlights.MODID, version = Wardlights.VERSION, name = Wardlights.NAME, dependencies = "required-after:fermiumbooter;required-after:geckolib3;required-after:baubles")
 public class Wardlights {
     public static final String MODID = "wardlights";
     public static final String VERSION = "1.0.0";
@@ -41,12 +41,14 @@ todo: all the below stuff!
 
 - Lanterns Main Concept: bauble, right-hand and toolbelt equipable: Pale Lantern = keeps darkness entities at bay
   (cancels targeting) and make it a belt-equippable too - max 1 lantern active. (make each lantern have its own white and blacklist potion effects)
+  only activates in darkness and/or underground (below y64), otherwise does not work. And add a effect called WardLight so people know
+  when it is active.
 - Lantern types:
   Lantern 1; Regular Lantern - Creates a light source preventing darkness mobs using you as a excuse to materialize! (only underground & darkness)
-  Lantern 2; Pixie Infused - add effects such as luck, & adds 5% chance below y25 for a mimic to spawn. (only underground & darkness)
+  Lantern 2; Pixie Infused - (prevents pixie stealing, even during light) add effects such as luck, & adds 5% chance below y25 for a mimic to spawn. (only underground & darkness)
   Lantern 3; Vapula Infused - Increase mining speed make vapula and geoachs mined into your ally temporary & increase their spawns (only underground & darkness)
   Lantern 4; Pale Infused - Have a entity list that will cancel their targeting if conditions met & make a whitelist of entities which will get pale bloom effect when they are nearby
-  Lantern 5; Parasite Infused - make SRP targeting ignore you <config.perc.times>
+  Lantern 5; Parasite Infused - make SRP targeting ignore you (also during light) <config.perc.times>
 - Lantern Looks:
   Lantern 1; (Default) simple cast iron lantern with a candle burning.
   Lantern 2; Lavender like glow and little fire-fly pink/purple/white like particles floating about

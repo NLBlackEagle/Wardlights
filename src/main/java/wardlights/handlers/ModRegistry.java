@@ -13,6 +13,8 @@ import wardlights.blocks.BlockLanternPixie;
 import wardlights.blocks.BlockLanternRegular;
 import wardlights.blocks.BlockLanternSrp;
 import wardlights.blocks.BlockLanternVapula;
+import wardlights.items.ItemAegisOfSacrifice;
+import wardlights.items.ItemBulwarkOfValor;
 import wardlights.items.ItemLantern;
 import wardlights.items.ItemLanternPale;
 import wardlights.items.ItemLanternPixie;
@@ -32,6 +34,8 @@ public class ModRegistry {
     public static Item LANTERN_PALE;
     public static Item LANTERN_SRP;
     public static Item LANTERN_VAPULA;
+    public static Item BULWARK_OF_VALOR;
+    public static Item AEGIS_OF_SACRIFICE;
 
     public static Block LANTERN_REGULAR_BLOCK;
     public static Block LANTERN_PIXIE_BLOCK;
@@ -71,7 +75,10 @@ public class ModRegistry {
         LANTERN_PALE = new ItemLanternPale((BlockLanternPale) LANTERN_PALE_BLOCK, "lantern_pale");
         LANTERN_SRP = new ItemLanternSrp((BlockLanternSrp) LANTERN_SRP_BLOCK, "lantern_srp");
         LANTERN_VAPULA = new ItemLanternVapula((BlockLanternVapula) LANTERN_VAPULA_BLOCK, "lantern_vapula");
+        BULWARK_OF_VALOR = new ItemBulwarkOfValor("bulwark_of_valor");
+        AEGIS_OF_SACRIFICE = new ItemAegisOfSacrifice("aegis_of_sacrifice");
 
-        event.getRegistry().registerAll(LANTERN_REGULAR, LANTERN_PIXIE, LANTERN_PALE, LANTERN_SRP, LANTERN_VAPULA);
+        event.getRegistry().registerAll(LANTERN_REGULAR, LANTERN_PIXIE, LANTERN_PALE, LANTERN_SRP, LANTERN_VAPULA,
+                BULWARK_OF_VALOR, AEGIS_OF_SACRIFICE);
     }
 }

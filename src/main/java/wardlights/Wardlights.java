@@ -62,4 +62,8 @@ todo: all the below stuff!
   Lantern 4; 1x lantern + 4x weird root + 4x amber valve
   Lantern 5; 1x lantern + 4x essential segment + 4x quench
 
+Fix these things:
+- make badges always render over armor.
+- shift aegis of sacrifice to the heart position.
+
  */

@@ -42,11 +42,20 @@ public final class AegisOfSacrificeBaubleRenderer {
     private static final float[] SHOULDER_TRANSLATION = { 0.75f, -2f, 6.25f };
     private static final float[] SHOULDER_SCALE = { 0.4f, 0.4f, 0.4f };
 
+    private static final BaublePlacement BADGE_PLACEMENT = new BaublePlacement(
+            "Aegis of Sacrifice Badge Placement",
+            () -> ForgeConfigHandler.client.aegisBadgePlacement,
+            () -> ForgeConfigHandler.client.aegisBadgeArmorPlacement);
+    private static final BaublePlacement SHOULDER_PLACEMENT = new BaublePlacement(
+            "Aegis of Sacrifice Shoulder Placement",
+            () -> ForgeConfigHandler.client.aegisShoulderPlacement,
+            () -> ForgeConfigHandler.client.aegisShoulderArmorPlacement);
+
     public static void render(EntityPlayer player, float partialTicks) {
         BaubleRenderHelper.renderBadge(BADGE_MODEL, BADGE_RENDERER, AegisBadgePart.INSTANCE, player, partialTicks,
-                BADGE_ROTATION, BADGE_TRANSLATION, BADGE_SCALE, ForgeConfigHandler.client.aegisPlacement);
+                BADGE_ROTATION, BADGE_TRANSLATION, BADGE_SCALE, BADGE_PLACEMENT);
         BaubleRenderHelper.renderShoulder(SHOULDER_MODEL, SHOULDER_RENDERER, AegisShoulderPart.INSTANCE, player,
                 partialTicks, SHOULDER_ROTATION, SHOULDER_TRANSLATION, SHOULDER_SCALE,
-                ForgeConfigHandler.client.aegisPlacement);
+                SHOULDER_PLACEMENT);
     }
 }

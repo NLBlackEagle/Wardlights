@@ -5,7 +5,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 /**
- * The badge half of the Bulwark of Valor bauble. Like {@link AegisBadgePart},
+ * The Bulwark of Valor bauble's badge model. Like {@link AegisBadgePart},
  * it has no idle animation, so no controllers are registered.
  */
 public final class BulwarkBadgePart implements IAnimatable {

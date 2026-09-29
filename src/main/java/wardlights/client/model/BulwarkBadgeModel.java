@@ -19,8 +19,8 @@ public class BulwarkBadgeModel extends AnimatedGeoModel<BulwarkBadgePart> {
 
     @Override
     public ResourceLocation getAnimationFileLocation(BulwarkBadgePart animatable) {
-        // Same trick as AegisBadgeModel: no badge animation file exists and no
-        // clip is ever queued, so point at the shoulder's real file.
-        return new ResourceLocation(Wardlights.MODID, "animations/item/bulwark_of_valor_shoulder.animation.json");
+        // GeckoLib requires an animation file even though the badge never
+        // plays a clip, so this one is intentionally empty.
+        return new ResourceLocation(Wardlights.MODID, "animations/item/bulwark_of_valor_badge.animation.json");
     }
 }

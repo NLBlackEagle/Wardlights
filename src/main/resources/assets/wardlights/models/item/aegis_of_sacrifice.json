@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "wardlights:items/aegis_of_sacrifice_badge"
+    "layer0": "wardlights:items/aegis_of_sacrifice"
   }
 }

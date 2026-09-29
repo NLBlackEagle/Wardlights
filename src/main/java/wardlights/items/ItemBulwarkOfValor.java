@@ -11,8 +11,8 @@ import net.minecraft.item.ItemStack;
 import wardlights.Wardlights;
 
 /**
- * Worn in the Baubles BODY slot, it renders both the badge (chest) and
- * shoulder (idle-animated) GeckoLib parts on the wearer at once. See
+ * Worn in the Baubles BODY slot, it renders the GeckoLib chest badge on the
+ * wearer. See
  * {@link wardlights.client.render.BulwarkOfValorBaubleRenderer} for the actual
  * draw calls, reached through {@link Wardlights#PROXY} so this (common) class
  * never references client-only rendering classes directly.

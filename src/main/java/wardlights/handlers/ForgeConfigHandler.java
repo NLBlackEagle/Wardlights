@@ -45,66 +45,48 @@ public class ForgeConfigHandler {
 		@Config.RangeInt(min = 0, max = 128)
 		public int lanternAnimationDistance = 16;
 
-		@Config.Comment("Live-tunable offsets for the Aegis of Sacrifice bauble parts, applied on top of the "
-				+ "base hand-anchored transform, so position/rotation/scale can be dialed in from the in-game "
-				+ "config GUI (or by editing this file + F3+T) without rebuilding the mod. Translation is in "
-				+ "blocks, rotation in degrees.")
-		@Config.Name("Aegis of Sacrifice Placement")
-		public BaublePlacementConfig aegisPlacement = new BaublePlacementConfig();
+		@Config.Comment("Item registry names (e.g. \"minecraft:diamond_chestplate\") of chest armor that hides the "
+				+ "Aegis of Sacrifice shoulder model while worn, for armor too bulky for it to fit over. * is a "
+				+ "wildcard (e.g. \"iceandfire:armor_*_chestplate\"). The chest badge still renders.")
+		@Config.Name("Armor Hiding Bauble Shoulders")
+		public String[] shoulderHidingArmor = {};
 
-		@Config.Comment("Live-tunable offsets for the Bulwark of Valor bauble parts, applied on top of the "
-				+ "base hand-anchored transform, so position/rotation/scale can be dialed in from the in-game "
-				+ "config GUI (or by editing this file + F3+T) without rebuilding the mod. Translation is in "
-				+ "blocks, rotation in degrees.")
-		@Config.Name("Bulwark of Valor Placement")
-		public BaublePlacementConfig bulwarkPlacement = new BaublePlacementConfig();
+		@Config.Comment("Aegis of Sacrifice chest badge placement, applied on top of the base hand-anchored "
+				+ "transform: {offsetX, offsetY, offsetZ, rotationX, rotationY, rotationZ, scale}. Offsets are in "
+				+ "blocks, rotations in degrees, scale is a multiplier. Live-tunable from the in-game config GUI "
+				+ "(or by editing this file + F3+T).")
+		@Config.Name("Aegis of Sacrifice Badge Placement")
+		public String aegisBadgePlacement = "{0, 3, -0.1, -90, -90, -180, 1}";
 
-		public static class BaublePlacementConfig {
+		@Config.Comment("Aegis of Sacrifice shoulder placement, same format as the badge placement.")
+		@Config.Name("Aegis of Sacrifice Shoulder Placement")
+		public String aegisShoulderPlacement = "{-0.05, -0.12, 0, -90, -90, -180, 1}";
 
-			@Config.Name("Badge Offset X")
-			@Config.RangeDouble(min = -5, max = 5)
-			public double badgeOffsetX = 0;
-			@Config.Name("Badge Offset Y")
-			@Config.RangeDouble(min = -5, max = 5)
-			public double badgeOffsetY = 5;
-			@Config.Name("Badge Offset Z")
-			@Config.RangeDouble(min = -5, max = 5)
-			public double badgeOffsetZ = 0;
-			@Config.Name("Badge Rotation X")
-			@Config.RangeDouble(min = -180, max = 180)
-			public double badgeRotationX = -90;
-			@Config.Name("Badge Rotation Y")
-			@Config.RangeDouble(min = -180, max = 180)
-			public double badgeRotationY = -90;
-			@Config.Name("Badge Rotation Z")
-			@Config.RangeDouble(min = -180, max = 180)
-			public double badgeRotationZ = -180;
-			@Config.Name("Badge Scale Multiplier")
-			@Config.RangeDouble(min = 0.1, max = 5)
-			public double badgeScale = 1;
+		@Config.Comment(ARMOR_PLACEMENT_COMMENT)
+		@Config.Name("Aegis of Sacrifice Badge Armor Placement")
+		public String[] aegisBadgeArmorPlacement = { "{default, 0, 0, -0.35, 1}" };
 
-			@Config.Name("Shoulder Offset X")
-			@Config.RangeDouble(min = -5, max = 5)
-			public double shoulderOffsetX = -0.05;
-			@Config.Name("Shoulder Offset Y")
-			@Config.RangeDouble(min = -5, max = 5)
-			public double shoulderOffsetY = -0.09;
-			@Config.Name("Shoulder Offset Z")
-			@Config.RangeDouble(min = -5, max = 5)
-			public double shoulderOffsetZ = 0;
-			@Config.Name("Shoulder Rotation X")
-			@Config.RangeDouble(min = -180, max = 180)
-			public double shoulderRotationX = -90;
-			@Config.Name("Shoulder Rotation Y")
-			@Config.RangeDouble(min = -180, max = 180)
-			public double shoulderRotationY = -90;
-			@Config.Name("Shoulder Rotation Z")
-			@Config.RangeDouble(min = -180, max = 180)
-			public double shoulderRotationZ = -180;
-			@Config.Name("Shoulder Scale Multiplier")
-			@Config.RangeDouble(min = 0.1, max = 5)
-			public double shoulderScale = 1;
-		}
+		@Config.Comment(ARMOR_PLACEMENT_COMMENT)
+		@Config.Name("Aegis of Sacrifice Shoulder Armor Placement")
+		public String[] aegisShoulderArmorPlacement = { "{default, 0, -0.1, 0, 1.15}" };
+
+		@Config.Comment("Bulwark of Valor chest badge placement, applied on top of the base hand-anchored "
+				+ "transform: {offsetX, offsetY, offsetZ, rotationX, rotationY, rotationZ, scale}. Offsets are in "
+				+ "blocks, rotations in degrees, scale is a multiplier. Live-tunable from the in-game config GUI "
+				+ "(or by editing this file + F3+T).")
+		@Config.Name("Bulwark of Valor Badge Placement")
+		public String bulwarkBadgePlacement = "{0, 3, -0.1, -90, -90, -180, 1}";
+
+		@Config.Comment(ARMOR_PLACEMENT_COMMENT)
+		@Config.Name("Bulwark of Valor Badge Armor Placement")
+		public String[] bulwarkBadgeArmorPlacement = { "{default, 0, 0, -0.2, 1}" };
+
+		private static final String ARMOR_PLACEMENT_COMMENT = "Extra adjustment while chest armor is worn, so the "
+				+ "part sits on the armor instead of inside it, one entry per line: {type, offsetX, offsetY, "
+				+ "offsetZ, scale}. Offsets add to the placement above, scale multiplies it. type is either "
+				+ "\"default\" (any chest armor not listed) or a chest armor registry id for a custom fit, where * "
+				+ "is a wildcard (e.g. {iceandfire:armor_*_chestplate, 0, 0, -0.4, 1.1}). The first matching "
+				+ "entry wins, so put specific ids above broad wildcards.";
 	}
 
 	/**

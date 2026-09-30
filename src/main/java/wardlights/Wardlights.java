@@ -98,22 +98,22 @@ todo: [SOH 1 & 2]
   Plutonium Alloy (Lithium + Plutonium) (grey-white-ish)
   Plutonium Blood Alloy (Blood Tears + Plutonium Alloy) (make it reddish)
   Badge of Bravery (Sold by brutal merchants for Blood & Blight essence)
-  Blood Essence (dropped by "Blood" entities spawning during bloodmoon)
+  Blood Essence (dropped by "Blood" entities spawning during bloodmoon) (also fix bloodmoon rarity)
   Blight Essence (dropped by "Blight" entities during lycanites events)
 
 
-todo: [Ring of Cleansing (LC) Hits through SRP adaptation and counters fear]
+todo: [Ring of Cleansing (LC) applies immalleable and removes link] (ring slot)
 
-todo: [Locket of Guarding (Teddy Bear + Blood Gem) (Immunity vs Corrosion & Counters Fear)]
+todo: [Charm  of Guarding (Teddy Bear + Blood Gem) (Counters: fear, corrosion and needler)] (necklace slot)
 
-todo: [Viral Ring - Limits viral to max 2]
+todo: [Viral Ring - Limits viral to max 2] (ring slots)
 
-todo: [Sentient Crown - Counters fear and gives adaptation of max 5%
+todo: [Sentient Crown - gives SRP rage effect and adaptation of max 5% (head slot)
 
-todo: [Cyclops Eye - Gives strength 1 and looting 1]
+todo: [Cyclops Eye - Gives strength 1 and looting 1] (same as dragoneye)
 
-todo: [Siren Scale - Swimming Speed 1]
+todo: [Siren Scale - Swimming Speed 1] (universal slot)
 
-todo: [Pendant of Plutonium Warding - Adds a irradiated aura weakening parasites in a radius around the player]
+todo: [Pendant of Plutonium Warding - Adds a irradiated aura weakening parasites in a radius around the player] (necklace slot)
 
  */

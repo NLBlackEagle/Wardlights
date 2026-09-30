@@ -1,5 +1,6 @@
 package wardlights.items;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -7,6 +8,7 @@ import javax.annotation.Nullable;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import baubles.api.render.IRenderBauble;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,6 +23,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import wardlights.compat.EnhancedVisualsCompat;
+import wardlights.compat.FirstAidCompat;
 import wardlights.handlers.ChestBaubleHandler;
 import wardlights.handlers.ForgeConfigHandler;
 import wardlights.handlers.ForgeConfigHandler.ServerConfig.ChestBaubleConfig;
@@ -33,6 +37,8 @@ import wardlights.handlers.ForgeConfigHandler.ServerConfig.ChestBaubleConfig;
  * Resistance stacking live in {@link ChestBaubleHandler}.
  */
 public abstract class ItemChestBauble extends Item implements IBauble, IRenderBauble {
+
+    private static final String TOOLTIP_PREFIX = "tooltip.wardlights.chest_bauble.";
 
     /** Re-applied whenever it lapses, so a short duration keeps removal snappy. */
     private static final int RESISTANCE_DURATION = 200;
@@ -113,35 +119,47 @@ public abstract class ItemChestBauble extends Item implements IBauble, IRenderBa
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
         ChestBaubleConfig config = ForgeConfigHandler.server.chestBaubles;
-        String prefix = "tooltip.wardlights.chest_bauble.";
         if (getResistanceLevel() > 0) {
-            tooltip.add(TextFormatting.BLUE + I18n.format(prefix + "resistance", resistanceName(getResistanceLevel())));
-        }
-        if (config.resistanceStacks) {
-            tooltip.add(TextFormatting.BLUE + I18n.format(prefix + "stacking",
-                    resistanceName(config.maxStackedResistanceLevel)));
-        }
-        if (config.ignoreDamage) {
-            tooltip.add(TextFormatting.BLUE + I18n.format(prefix + "ignore_hit", config.requiredHits + 1,
-                    ChestBaubleHandler.getHitCount(stack), config.requiredHits));
+            tooltip.add(line("resistance", I18n.format(MobEffects.RESISTANCE.getName())));
         }
         if (config.explosionResistance) {
-            tooltip.add(TextFormatting.BLUE + I18n.format(prefix + "explosion",
-                    Math.round(config.explosionDamageMultiplier * 100)));
+            tooltip.add(line("explosion", number(percent(1 - config.explosionDamageMultiplier))));
         }
-        if (config.headshotSave && Loader.isModLoaded("firstaid")) {
-            tooltip.add(TextFormatting.BLUE + I18n.format(prefix + "headshot",
-                    formatPercent(100.0 / config.headshotSaveChance)));
+        if (config.ignoreDamage) {
+            tooltip.add(line("ignore_hit", number(String.valueOf(config.requiredHits))));
+        }
+
+        // Bonuses that only exist alongside another mod, tucked behind Ctrl.
+        List<String> compat = new ArrayList<>();
+        if (config.headshotSave && Loader.isModLoaded(FirstAidCompat.MODID)) {
+            compat.add(line("headshot", number(percent(1.0 / config.headshotSaveChance))));
+        }
+        if (config.disableExplosionBlur && Loader.isModLoaded(EnhancedVisualsCompat.MODID)) {
+            compat.add(TextFormatting.GRAY + I18n.format(TOOLTIP_PREFIX + "explosion_blur"));
+        }
+        if (compat.isEmpty()) {
+            return;
+        }
+        if (GuiScreen.isCtrlKeyDown()) {
+            tooltip.addAll(compat);
+        } else {
+            tooltip.add(TextFormatting.DARK_GRAY + I18n.format(TOOLTIP_PREFIX + "hold_ctrl"));
         }
     }
 
-    /** "Resistance III" — the potion name plus vanilla's roman numeral lang keys. */
+    /** A gold tooltip line; {@code args} are pre-colored with {@link #number}. */
     @SideOnly(Side.CLIENT)
-    private static String resistanceName(int level) {
-        return I18n.format(MobEffects.RESISTANCE.getName()) + " " + I18n.format("enchantment.level." + level);
+    private static String line(String key, Object... args) {
+        return TextFormatting.GOLD + I18n.format(TOOLTIP_PREFIX + key, args);
     }
 
-    private static String formatPercent(double percent) {
-        return percent == Math.floor(percent) ? String.valueOf((long) percent) : String.format("%.2f", percent);
+    /** A highlighted value inside a gold line, switching back to gold after it. */
+    private static String number(String value) {
+        return TextFormatting.DARK_AQUA + value + TextFormatting.GOLD;
+    }
+
+    /** 0.75 -> "75.0%". */
+    private static String percent(double fraction) {
+        return String.format("%.1f%%", fraction * 100);
     }
 }

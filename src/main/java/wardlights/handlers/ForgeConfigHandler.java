@@ -25,17 +25,24 @@ public class ForgeConfigHandler {
 
 	public static class ServerConfig {
 
-		@Config.Comment("Item registry names (e.g. \"minecraft:iron_ingot\") for the 9 Aegis of Sacrifice crafting "
-				+ "grid slots, read left-to-right then top-to-bottom (1=top-left, 9=bottom-right). Leave a slot "
-				+ "blank for an empty grid cell. Unknown/unresolvable item ids are treated as blank (see log). "
-				+ "Defaults below are placeholders only — replace with real ingredients.")
+		@Config.Comment("Bulwark of Valor crafting recipe: {1, 2, 3, 4, 5, 6, 7, 8, 9}, the 9 grid slots read "
+				+ "left-to-right then top-to-bottom (1 = top-left, 9 = bottom-right). Each slot is an item id "
+				+ "(e.g. minecraft:iron_ingot), optionally with metadata (minecraft:wool:14, or minecraft:log:* for any), "
+				+ "or left blank for an empty cell. CraftTweaker-style <modid:item:meta> also works. If any item "
+				+ "doesn't exist (e.g. its mod isn't installed) the recipe is disabled; see the log.")
+		@Config.Name("Bulwark of Valor Recipe")
+		@Config.RequiresMcRestart
+		public String bulwarkOfValorRecipe = "{nuclearcraft:alloy:1, potionfingers:ring:1, nuclearcraft:alloy:1, "
+				+ "mod_lavacow:burntovipositor, xat:damage_shield, srparasites:dispatcher_drop, "
+				+ "nuclearcraft:alloy:1, srparasites:ada_bolster_drop, nuclearcraft:alloy:1}";
+
+		@Config.Comment("Aegis of Sacrifice crafting recipe, same format as the Bulwark of Valor recipe.")
 		@Config.Name("Aegis of Sacrifice Recipe")
 		@Config.RequiresMcRestart
-		public String[] aegisOfSacrificeRecipe = {
-				"minecraft:iron_ingot", "minecraft:gold_ingot", "minecraft:iron_ingot",
-				"minecraft:gold_ingot", "minecraft:diamond", "minecraft:gold_ingot",
-				"minecraft:iron_ingot", "minecraft:gold_ingot", "minecraft:iron_ingot"
-		};
+		public String aegisOfSacrificeRecipe = "{eaglemixins:plutonium_blood_alloy, potionfingers:ring:1, "
+				+ "eaglemixins:plutonium_blood_alloy, eaglemixins:corrupted_fabric, wardlights:bulwark_of_valor, "
+				+ "eaglemixins:corrupted_heart, eaglemixins:plutonium_blood_alloy, variedcommodities:orb:0, "
+				+ "eaglemixins:plutonium_blood_alloy}";
 
 		@Config.Comment("Bonuses granted by the Bulwark of Valor and Aegis of Sacrifice chest baubles. These items only "
 				+ "exist when Trinkets and Baubles is installed.")
@@ -69,10 +76,10 @@ public class ForgeConfigHandler {
 			@Config.Name("Ignore Damage")
 			public boolean ignoreDamage = true;
 
-			@Config.Comment("Hits that must be taken before the next one is ignored (3 = every 4th hit is ignored).")
+			@Config.Comment("Hits that must be taken before the next one is ignored (5 = every 6th hit is ignored).")
 			@Config.Name("Required Hits")
 			@Config.RangeInt(min = 0, max = 100)
-			public int requiredHits = 3;
+			public int requiredHits = 5;
 
 			@Config.Comment("Whether the wearer takes reduced damage from explosions.")
 			@Config.Name("Explosion Resistance")
@@ -91,10 +98,15 @@ public class ForgeConfigHandler {
 			@Config.Name("First Aid Headshot Save")
 			public boolean headshotSave = true;
 
-			@Config.Comment("First Aid only: 1 in how many lethal headshots are ignored (100 = 1% chance).")
+			@Config.Comment("First Aid only: 1 in how many lethal headshots are ignored (10 = 10% chance).")
 			@Config.Name("First Aid Headshot Save Chance")
 			@Config.RangeInt(min = 1, max = 10000)
-			public int headshotSaveChance = 100;
+			public int headshotSaveChance = 10;
+
+			@Config.Comment("Enhanced Visuals only: whether wearing a chest bauble removes the screen blur from nearby "
+					+ "explosions. The explosion's dust and ear ringing still happen.")
+			@Config.Name("Enhanced Visuals Disable Explosion Blur")
+			public boolean disableExplosionBlur = true;
 		}
 	}
 

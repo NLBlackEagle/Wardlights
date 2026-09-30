@@ -67,4 +67,37 @@ todo: all the below stuff!
   Lantern 3; 1x lantern + 4x vapulacrystal/geonach spear + 4x heart dust
   Lantern 4; 1x lantern + 4x weird root + 4x amber valve
   Lantern 5; 1x lantern + 4x essential segment + 4x quench
+
+
+- SOH 1 Recipe:
+    <nuclearcraft:alloy:1>
+    <potionfingers:ring:1>
+    <nuclearcraft:alloy:1>
+    <mod_lavacow:burntovipositor>
+    <xat:damage_shield>
+    <srparasites:dispatcher_drop>
+    <nuclearcraft:alloy:1>
+    <srparasites:ada_bolster_drop>
+    <nuclearcraft:alloy:1>
+
+- SOH 2 Recipe:
+    <eaglemixins:plutonium_blood_alloy>
+    <potionfingers:ring:1>
+    <eaglemixins:plutonium_blood_alloy>
+    <eaglemixins:corrupted_fabric>
+    <wardlights:bulwark_of_valor>
+    <eaglemixins:corrupted_heart>
+    <eaglemixins:plutonium_blood_alloy>
+    <variedcommodities:orb:0>
+    <eaglemixins:plutonium_blood_alloy>
+
+- Make items in Eaglemixins for the SOH baubles:
+  Corrupted Heart (collection of SRP parts) (black)
+  Corrupted Fabric (collection of FUR parts) (black)
+  Plutonium Alloy (Lithium + Plutonium) (grey-white-ish)
+  Plutonium Blood Alloy (Blood Tears + Plutonium Alloy) (make it reddish)
+
+
+
+
  */

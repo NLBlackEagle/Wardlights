@@ -43,7 +43,7 @@ public class Wardlights {
 }
 
 /*
-todo: all the below stuff!
+todo: [Lanterns]
 
 - Lanterns Main Concept: bauble, right-hand and toolbelt equipable: Pale Lantern = keeps darkness entities at bay
   (cancels targeting) and make it a belt-equippable too - max 1 lantern active. (make each lantern have its own white and blacklist potion effects)
@@ -68,12 +68,13 @@ todo: all the below stuff!
   Lantern 4; 1x lantern + 4x weird root + 4x amber valve
   Lantern 5; 1x lantern + 4x essential segment + 4x quench
 
+todo: [SOH 1 & 2]
 
 - SOH 1 Recipe:
     <nuclearcraft:alloy:1>
     <potionfingers:ring:1>
     <nuclearcraft:alloy:1>
-    <mod_lavacow:burntovipositor>
+    <eaglemixins:badge_of_bravery>
     <xat:damage_shield>
     <srparasites:dispatcher_drop>
     <nuclearcraft:alloy:1>
@@ -96,8 +97,21 @@ todo: all the below stuff!
   Corrupted Fabric (collection of FUR parts) (black)
   Plutonium Alloy (Lithium + Plutonium) (grey-white-ish)
   Plutonium Blood Alloy (Blood Tears + Plutonium Alloy) (make it reddish)
+  Badge of Bravery (Sold by brutal merchants for Blood & Blight essence)
+  Blood Essence (dropped by "Blood" entities spawning during bloodmoon)
+  Blight Essence (dropped by "Blight" entities during lycanites events)
 
 
+todo: [Ring of Cleansing (LC) Hits through SRP adaptation and counters fear]
 
+todo: [Necklace of Guarding (Teddy Bear + Blood Gem) (Immunity vs Corrosion & Counters Fear)]
+
+todo: [Viral Ring - Limits viral to max 2]
+
+todo: [Sentient Crown - Counters fear and gives adaptation of max 5%
+
+todo: [Cyclops Eye - Gives strength 1 and looting 1]
+
+todo: [Siren Scale - Swimming Speed 1]
 
  */

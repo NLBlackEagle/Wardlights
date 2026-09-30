@@ -46,10 +46,12 @@ public class ClientModRegistry {
                 new ModelResourceLocation(ModRegistry.LANTERN_SRP.getRegistryName(), "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModRegistry.LANTERN_VAPULA, 0,
                 new ModelResourceLocation(ModRegistry.LANTERN_VAPULA.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(ModRegistry.BULWARK_OF_VALOR, 0,
-                new ModelResourceLocation(ModRegistry.BULWARK_OF_VALOR.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(ModRegistry.AEGIS_OF_SACRIFICE, 0,
-                new ModelResourceLocation(ModRegistry.AEGIS_OF_SACRIFICE.getRegistryName(), "inventory"));
+        if (ModRegistry.hasChestBaubles()) {
+            ModelLoader.setCustomModelResourceLocation(ModRegistry.BULWARK_OF_VALOR, 0,
+                    new ModelResourceLocation(ModRegistry.BULWARK_OF_VALOR.getRegistryName(), "inventory"));
+            ModelLoader.setCustomModelResourceLocation(ModRegistry.AEGIS_OF_SACRIFICE, 0,
+                    new ModelResourceLocation(ModRegistry.AEGIS_OF_SACRIFICE.getRegistryName(), "inventory"));
+        }
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLanternRegular.class, new LanternRegularBlockRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLanternPixie.class, new LanternPixieBlockRenderer());

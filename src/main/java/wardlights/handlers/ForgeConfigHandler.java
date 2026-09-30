@@ -36,6 +36,66 @@ public class ForgeConfigHandler {
 				"minecraft:gold_ingot", "minecraft:diamond", "minecraft:gold_ingot",
 				"minecraft:iron_ingot", "minecraft:gold_ingot", "minecraft:iron_ingot"
 		};
+
+		@Config.Comment("Bonuses granted by the Bulwark of Valor and Aegis of Sacrifice chest baubles. These items only "
+				+ "exist when Trinkets and Baubles is installed.")
+		@Config.Name("Chest Bauble Bonuses")
+		public ChestBaubleConfig chestBaubles = new ChestBaubleConfig();
+
+		public static class ChestBaubleConfig {
+
+			@Config.Comment("Resistance level granted while the Bulwark of Valor is worn (2 = Resistance II). 0 disables it.")
+			@Config.Name("Bulwark of Valor Resistance Level")
+			@Config.RangeInt(min = 0, max = 5)
+			public int bulwarkResistanceLevel = 2;
+
+			@Config.Comment("Resistance level granted while the Aegis of Sacrifice is worn (3 = Resistance III). 0 disables it.")
+			@Config.Name("Aegis of Sacrifice Resistance Level")
+			@Config.RangeInt(min = 0, max = 5)
+			public int aegisResistanceLevel = 3;
+
+			@Config.Comment("Whether Resistance from other sources (potions, Potion Fingers rings, ...) adds its level on "
+					+ "top of the bauble's, e.g. Bulwark of Valor (II) + a Resistance I ring = Resistance III.")
+			@Config.Name("Resistance Stacks")
+			public boolean resistanceStacks = true;
+
+			@Config.Comment("Highest Resistance level that stacking can reach.")
+			@Config.Name("Max Stacked Resistance Level")
+			@Config.RangeInt(min = 1, max = 5)
+			public int maxStackedResistanceLevel = 3;
+
+			@Config.Comment("Whether the wearer fully ignores one hit after taking the required number of hits. Only hits "
+					+ "of at least 1 damage (half a heart) count.")
+			@Config.Name("Ignore Damage")
+			public boolean ignoreDamage = true;
+
+			@Config.Comment("Hits that must be taken before the next one is ignored (3 = every 4th hit is ignored).")
+			@Config.Name("Required Hits")
+			@Config.RangeInt(min = 0, max = 100)
+			public int requiredHits = 3;
+
+			@Config.Comment("Whether the wearer takes reduced damage from explosions.")
+			@Config.Name("Explosion Resistance")
+			public boolean explosionResistance = true;
+
+			@Config.Comment("Multiplier on explosion damage while worn: 1 is full damage, 0.25 is a quarter.")
+			@Config.Name("Explosion Damage Multiplier")
+			@Config.RangeDouble(min = 0, max = 1)
+			public double explosionDamageMultiplier = 0.25;
+
+			@Config.Comment("Whether an ignored hit shows a message above the hotbar and plays a shield-block sound.")
+			@Config.Name("Ignored Hit Feedback")
+			public boolean ignoredHitFeedback = true;
+
+			@Config.Comment("First Aid only: whether a headshot that would kill the wearer has a chance to be ignored.")
+			@Config.Name("First Aid Headshot Save")
+			public boolean headshotSave = true;
+
+			@Config.Comment("First Aid only: 1 in how many lethal headshots are ignored (100 = 1% chance).")
+			@Config.Name("First Aid Headshot Save Chance")
+			@Config.RangeInt(min = 1, max = 10000)
+			public int headshotSaveChance = 100;
+		}
 	}
 
 	public static class ClientConfig {

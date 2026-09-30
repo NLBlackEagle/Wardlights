@@ -11,3 +11,12 @@ tile.lantern_vapula.name=Vapula Lantern
 
 item.bulwark_of_valor.name=Bulwark of Valor
 item.aegis_of_sacrifice.name=Aegis of Sacrifice
+
+# Chest baubles (Bulwark of Valor / Aegis of Sacrifice)
+tooltip.wardlights.chest_bauble.resistance=Grants %s
+tooltip.wardlights.chest_bauble.stacking=Stacks with other Resistance, up to %s
+tooltip.wardlights.chest_bauble.ignore_hit=Every %s hit is ignored (%s/%s)
+tooltip.wardlights.chest_bauble.explosion=Explosions deal %s%% damage
+tooltip.wardlights.chest_bauble.headshot=%s%% chance to survive a lethal headshot
+message.wardlights.chest_bauble.ignored_hit=Your ward holds!
+message.wardlights.chest_bauble.headshot_saved=A fatal blow, turned aside!

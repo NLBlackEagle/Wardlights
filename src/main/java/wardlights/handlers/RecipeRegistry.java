@@ -23,7 +23,9 @@ public class RecipeRegistry {
 
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
-        event.getRegistry().register(buildAegisOfSacrificeRecipe());
+        if (ModRegistry.hasChestBaubles()) {
+            event.getRegistry().register(buildAegisOfSacrificeRecipe());
+        }
     }
 
     private static ShapedRecipes buildAegisOfSacrificeRecipe() {

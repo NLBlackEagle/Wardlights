@@ -65,6 +65,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:lycanitesmobs-${lycanitesmobs_version}")
     compileOnly fg.deobf("curse.maven:palebloom-${palebloom_version}")
     compileOnly fg.deobf("curse.maven:srparasites-${srparasites_version}")
+    compileOnly fg.deobf("curse.maven:firstaid-${firstaid_version}")
 }
 
 mixin {

@@ -1,5 +1,7 @@
 package wardlights;
 
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -8,6 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
+import wardlights.compat.FirstAidCompat;
 import wardlights.handlers.ModRegistry;
 import wardlights.proxy.CommonProxy;
 
@@ -29,6 +32,9 @@ public class Wardlights {
         GeckoLib.initialize();
         ModRegistry.init();
         Wardlights.PROXY.preInit();
+        if (Loader.isModLoaded(FirstAidCompat.MODID)) {
+            MinecraftForge.EVENT_BUS.register(new FirstAidCompat());
+        }
     }
 
     @Mod.EventHandler
@@ -61,9 +67,4 @@ todo: all the below stuff!
   Lantern 3; 1x lantern + 4x vapulacrystal/geonach spear + 4x heart dust
   Lantern 4; 1x lantern + 4x weird root + 4x amber valve
   Lantern 5; 1x lantern + 4x essential segment + 4x quench
-
-Fix these things:
-- make badges always render over armor.
-- shift aegis of sacrifice to the heart position.
-
  */

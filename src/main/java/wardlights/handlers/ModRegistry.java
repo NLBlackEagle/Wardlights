@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -34,6 +35,7 @@ public class ModRegistry {
     public static Item LANTERN_PALE;
     public static Item LANTERN_SRP;
     public static Item LANTERN_VAPULA;
+    /** Only registered when {@link #hasChestBaubles()}; null otherwise. */
     public static Item BULWARK_OF_VALOR;
     public static Item AEGIS_OF_SACRIFICE;
 
@@ -42,6 +44,16 @@ public class ModRegistry {
     public static Block LANTERN_PALE_BLOCK;
     public static Block LANTERN_SRP_BLOCK;
     public static Block LANTERN_VAPULA_BLOCK;
+
+    public static final String TRINKETS_AND_BAUBLES_MODID = "xat";
+
+    /**
+     * The chest baubles are crafted as upgrades of Trinkets and Baubles' Shield
+     * of Honor, so they only exist when that mod is installed.
+     */
+    public static boolean hasChestBaubles() {
+        return Loader.isModLoaded(TRINKETS_AND_BAUBLES_MODID);
+    }
 
     public static void init() {
         GameRegistry.registerTileEntity(TileEntityLanternRegular.class,
@@ -75,10 +87,13 @@ public class ModRegistry {
         LANTERN_PALE = new ItemLanternPale((BlockLanternPale) LANTERN_PALE_BLOCK, "lantern_pale");
         LANTERN_SRP = new ItemLanternSrp((BlockLanternSrp) LANTERN_SRP_BLOCK, "lantern_srp");
         LANTERN_VAPULA = new ItemLanternVapula((BlockLanternVapula) LANTERN_VAPULA_BLOCK, "lantern_vapula");
-        BULWARK_OF_VALOR = new ItemBulwarkOfValor("bulwark_of_valor");
-        AEGIS_OF_SACRIFICE = new ItemAegisOfSacrifice("aegis_of_sacrifice");
 
-        event.getRegistry().registerAll(LANTERN_REGULAR, LANTERN_PIXIE, LANTERN_PALE, LANTERN_SRP, LANTERN_VAPULA,
-                BULWARK_OF_VALOR, AEGIS_OF_SACRIFICE);
+        event.getRegistry().registerAll(LANTERN_REGULAR, LANTERN_PIXIE, LANTERN_PALE, LANTERN_SRP, LANTERN_VAPULA);
+
+        if (hasChestBaubles()) {
+            BULWARK_OF_VALOR = new ItemBulwarkOfValor("bulwark_of_valor");
+            AEGIS_OF_SACRIFICE = new ItemAegisOfSacrifice("aegis_of_sacrifice");
+            event.getRegistry().registerAll(BULWARK_OF_VALOR, AEGIS_OF_SACRIFICE);
+        }
     }
 }

@@ -116,4 +116,6 @@ todo: [Siren Scale - Swimming Speed 1] (universal slot)
 
 todo: [Pendant of Plutonium Warding - Adds a irradiated aura weakening parasites in a radius around the player] (necklace slot)
 
+todo: [Siren Scale - Swimming Speed 1]
+
  */

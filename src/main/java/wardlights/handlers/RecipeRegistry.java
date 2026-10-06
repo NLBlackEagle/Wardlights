@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -32,6 +33,14 @@ public class RecipeRegistry {
                     ForgeConfigHandler.server.bulwarkOfValorRecipe, ModRegistry.BULWARK_OF_VALOR));
             register(event, buildShapedRecipe("aegis_of_sacrifice", "Aegis of Sacrifice",
                     ForgeConfigHandler.server.aegisOfSacrificeRecipe, ModRegistry.AEGIS_OF_SACRIFICE));
+        }
+        if (ForgeConfigHandler.server.dormantBadgeRecipeEnabled && ModRegistry.DORMANT_BADGE != null) {
+            register(event, buildShapedRecipe("dormant_badge", "Dormant Badge",
+                    ForgeConfigHandler.server.dormantBadgeRecipe, ModRegistry.DORMANT_BADGE));
+        }
+        if (ForgeConfigHandler.server.badgeOfBraveryRecipeEnabled) {
+            register(event, buildShapelessRecipe("badge_of_bravery", "Badge of Bravery",
+                    ForgeConfigHandler.server.badgeOfBraveryRecipe, ModRegistry.BADGE_OF_BRAVERY));
         }
     }
 
@@ -64,6 +73,33 @@ public class RecipeRegistry {
         }
 
         ShapedRecipes recipe = new ShapedRecipes(Wardlights.MODID, 3, 3, ingredients, new ItemStack(result));
+        recipe.setRegistryName(Wardlights.MODID, name);
+        return recipe;
+    }
+
+    /**
+     * Like {@link #buildShapedRecipe}, but the ingredients go anywhere in the
+     * grid. Blank entries are ignored rather than read as empty cells.
+     */
+    private static ShapelessRecipes buildShapelessRecipe(String name, String displayName, String config, Item result) {
+        NonNullList<Ingredient> ingredients = NonNullList.create();
+        for (String slot : splitSlots(config)) {
+            Ingredient ingredient = resolveIngredient(slot, displayName);
+            if (ingredient == null) {
+                Wardlights.LOGGER.warn("{} recipe disabled: '{}' could not be resolved", displayName, slot);
+                return null;
+            }
+            if (ingredient != Ingredient.EMPTY) {
+                ingredients.add(ingredient);
+            }
+        }
+        if (ingredients.isEmpty() || ingredients.size() > GRID_SLOTS) {
+            Wardlights.LOGGER.warn("{} recipe disabled: needs 1 to {} ingredients but found {} in '{}'", displayName,
+                    GRID_SLOTS, ingredients.size(), config);
+            return null;
+        }
+
+        ShapelessRecipes recipe = new ShapelessRecipes(Wardlights.MODID, new ItemStack(result), ingredients);
         recipe.setRegistryName(Wardlights.MODID, name);
         return recipe;
     }

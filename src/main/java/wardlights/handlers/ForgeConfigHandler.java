@@ -33,8 +33,8 @@ public class ForgeConfigHandler {
 		@Config.Name("Bulwark of Valor Recipe")
 		@Config.RequiresMcRestart
 		public String bulwarkOfValorRecipe = "{nuclearcraft:alloy:1, potionfingers:ring:1, nuclearcraft:alloy:1, "
-				+ "mod_lavacow:burntovipositor, xat:damage_shield, srparasites:dispatcher_drop, "
-				+ "nuclearcraft:alloy:1, srparasites:ada_bolster_drop, nuclearcraft:alloy:1}";
+				+ "srparasites:ada_bolster_drop, xat:damage_shield, srparasites:dispatcher_drop, "
+				+ "nuclearcraft:alloy:1, wardlights:badge_of_bravery, nuclearcraft:alloy:1}";
 
 		@Config.Comment("Aegis of Sacrifice crafting recipe, same format as the Bulwark of Valor recipe.")
 		@Config.Name("Aegis of Sacrifice Recipe")
@@ -43,6 +43,80 @@ public class ForgeConfigHandler {
 				+ "eaglemixins:plutonium_blood_alloy, eaglemixins:corrupted_fabric, wardlights:bulwark_of_valor, "
 				+ "eaglemixins:corrupted_heart, eaglemixins:plutonium_blood_alloy, variedcommodities:orb:0, "
 				+ "eaglemixins:plutonium_blood_alloy}";
+
+		@Config.Comment("Whether the Dormant Badge can be crafted.")
+		@Config.Name("Dormant Badge Recipe Enabled")
+		@Config.RequiresMcRestart
+		public boolean dormantBadgeRecipeEnabled = true;
+
+		@Config.Comment("Dormant Badge crafting recipe, same format as the Bulwark of Valor recipe.")
+		@Config.Name("Dormant Badge Recipe")
+		@Config.RequiresMcRestart
+		public String dormantBadgeRecipe = "{variedcommodities:ingot_steel, wardlights:blood_essence, "
+				+ "variedcommodities:ingot_steel, iceandfire:silver_ingot, wardlights:tainted_flesh, "
+				+ "iceandfire:silver_ingot, variedcommodities:ingot_steel, wardlights:blight_essence, "
+				+ "variedcommodities:ingot_steel}";
+
+		@Config.Comment("Whether the Badge of Bravery can be crafted. Off by default: the Dormant Badge is meant to be "
+				+ "awakened into it through a villager trade the modpack sets up. Turn this on for packs without one.")
+		@Config.Name("Badge of Bravery Recipe Enabled")
+		@Config.RequiresMcRestart
+		public boolean badgeOfBraveryRecipeEnabled = false;
+
+		@Config.Comment("Badge of Bravery shapeless crafting recipe: {item, item, ...}, 1 to 9 ingredients in any "
+				+ "order, each in the same item id format as the Bulwark of Valor recipe. Repeat an id to require more "
+				+ "of it. Only used when the recipe is enabled above; if any item doesn't exist it is disabled, see the log.")
+		@Config.Name("Badge of Bravery Recipe")
+		@Config.RequiresMcRestart
+		public String badgeOfBraveryRecipe = "{wardlights:dormant_badge, variedcommodities:coin_gold}";
+
+		@Config.Comment("Plutonium Alloy recipe in NuclearCraft's Alloy Furnace. Only used when NuclearCraft is installed.")
+		@Config.Name("Plutonium Alloy (Alloy Furnace)")
+		public AlloyFurnaceRecipeConfig plutoniumAlloy = new AlloyFurnaceRecipeConfig(
+				"ingotLithium, nuclearcraft:plutonium:0");
+
+		@Config.Comment("Plutonium Blood Alloy recipe in NuclearCraft's Alloy Furnace. Only used when NuclearCraft and "
+				+ "ContentTweaker are installed.")
+		@Config.Name("Plutonium Blood Alloy (Alloy Furnace)")
+		public AlloyFurnaceRecipeConfig plutoniumBloodAlloy = new AlloyFurnaceRecipeConfig(
+				"contenttweaker:blood_tear, wardlights:plutonium_alloy");
+
+		public static class AlloyFurnaceRecipeConfig {
+
+			@Config.Comment("Whether this Alloy Furnace recipe is added at all.")
+			@Config.Name("Enabled")
+			@Config.RequiresMcRestart
+			public boolean enabled = true;
+
+			@Config.Comment("The two furnace inputs, comma-separated. Each is an item id (modid:item or "
+					+ "modid:item:meta) or an ore dictionary name without a colon (e.g. ingotLithium). If either "
+					+ "doesn't exist the recipe is skipped; see the log.")
+			@Config.Name("Inputs")
+			@Config.RequiresMcRestart
+			public String inputs;
+
+			@Config.Comment("How many items the recipe produces.")
+			@Config.Name("Output Count")
+			@Config.RangeInt(min = 1, max = 64)
+			@Config.RequiresMcRestart
+			public int outputCount = 1;
+
+			@Config.Comment("Processing time multiplier, like NuclearCraft's own alloys (1.0 = the furnace's base time).")
+			@Config.Name("Time Multiplier")
+			@Config.RangeDouble(min = 0.01, max = 100)
+			@Config.RequiresMcRestart
+			public double timeMultiplier = 1.5;
+
+			@Config.Comment("Power use multiplier, like NuclearCraft's own alloys (1.0 = the furnace's base power).")
+			@Config.Name("Power Multiplier")
+			@Config.RangeDouble(min = 0.01, max = 100)
+			@Config.RequiresMcRestart
+			public double powerMultiplier = 1.5;
+
+			public AlloyFurnaceRecipeConfig(String inputs) {
+				this.inputs = inputs;
+			}
+		}
 
 		@Config.Comment("Bonuses granted by the Bulwark of Valor and Aegis of Sacrifice chest baubles. These items only "
 				+ "exist when Trinkets and Baubles is installed.")
@@ -117,6 +191,21 @@ public class ForgeConfigHandler {
 		@Config.RangeInt(min = 0, max = 128)
 		public int lanternAnimationDistance = 16;
 
+		@Config.Comment("Color of the Badge of Bravery's glint as a hex RRGGBB value (vanilla's purple glint is "
+				+ "8040CC). The glint adds its color onto the item, so this is also its strength: darker grays "
+				+ "make a fainter glint, FFFFFF is the brightest. Needs the \"Glint Color\" mixin toggle.")
+		@Config.Name("Badge of Bravery Glint Color")
+		public String badgeOfBraveryGlintColor = "808080";
+
+		/** {@link #badgeOfBraveryGlintColor} as 0xRRGGBB, falling back to white when it isn't valid hex. */
+		public int getBadgeOfBraveryGlintColor() {
+			try {
+				return Integer.parseInt(badgeOfBraveryGlintColor.trim().replace("#", ""), 16) & 0xFFFFFF;
+			} catch (NumberFormatException e) {
+				return 0xFFFFFF;
+			}
+		}
+
 		@Config.Comment("Item registry names (e.g. \"minecraft:diamond_chestplate\") of chest armor that hides the "
 				+ "Aegis of Sacrifice shoulder model while worn, for armor too bulky for it to fit over. * is a "
 				+ "wildcard (e.g. \"iceandfire:armor_*_chestplate\"). The chest badge still renders.")
@@ -165,8 +254,9 @@ public class ForgeConfigHandler {
 	 * FermiumBooter scans this class (by the {@link MixinConfig} annotation) at coremod load time,
 	 * reads each toggle's value straight out of {@code config/wardlights.cfg}, runs the
 	 * {@link MixinConfig.CompatHandling} mod-presence checks, and only then enqueues the matching
-	 * {@code mixins.wardlights.*.json}. All three integrations here target other mods, so each is
-	 * gated on that mod being installed and applied as a {@code lateMixin} (after mod discovery).
+	 * {@code mixins.wardlights.*.json}. The mod integrations target other mods, so each is gated on
+	 * that mod being installed and applied as a {@code lateMixin} (after mod discovery); patches to
+	 * Minecraft itself are an {@code earlyMixin}.
 	 */
 	@MixinConfig(name = Wardlights.MODID)
 	public static class MixinToggleConfig {
@@ -191,6 +281,13 @@ public class ForgeConfigHandler {
 		@MixinConfig.MixinToggle(lateMixin = "mixins.wardlights.srparasites.json", defaultValue = true)
 		@MixinConfig.CompatHandling(modid = "srparasites", desired = true, warnIngame = false)
 		public boolean srParasitesIntegration = true;
+
+		@Config.Comment("Lets Wardlights items use their own enchantment glint color (e.g. the Badge of Bravery's "
+				+ "white glint) instead of vanilla's purple. Patches Minecraft's item renderer.")
+		@Config.Name("Glint Color")
+		@Config.RequiresMcRestart
+		@MixinConfig.MixinToggle(earlyMixin = "mixins.wardlights.vanilla.json", defaultValue = true)
+		public boolean glintColor = true;
 	}
 
 	@Mod.EventBusSubscriber(modid = Wardlights.MODID)

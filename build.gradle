@@ -67,6 +67,8 @@ dependencies {
     compileOnly fg.deobf("curse.maven:srparasites-${srparasites_version}")
     compileOnly fg.deobf("curse.maven:firstaid-${firstaid_version}")
     compileOnly fg.deobf("curse.maven:enhancedvisuals-${enhancedvisuals_version}")
+    // Local jar in libs/ (flatDir): nuclearcraft-1.12.2-2.19a.jar
+    compileOnly fg.deobf("local:nuclearcraft-1.12.2:2.19a")
 }
 
 mixin {

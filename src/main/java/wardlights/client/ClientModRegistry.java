@@ -1,6 +1,8 @@
 package wardlights.client;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -19,6 +21,7 @@ import wardlights.client.render.LanternSrpRenderer;
 import wardlights.client.render.LanternVapulaBlockRenderer;
 import wardlights.client.render.LanternVapulaRenderer;
 import wardlights.handlers.ModRegistry;
+import wardlights.items.ItemMaterial;
 import wardlights.tileentity.TileEntityLanternPale;
 import wardlights.tileentity.TileEntityLanternPixie;
 import wardlights.tileentity.TileEntityLanternRegular;
@@ -27,6 +30,22 @@ import wardlights.tileentity.TileEntityLanternVapula;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = Wardlights.MODID)
 public class ClientModRegistry {
+
+    /**
+     * Tints materials that reuse a vanilla texture. tintIndex is the model's
+     * layer number (item/generated gives layer0 index 0); -1 (0xFFFFFFFF) is white,
+     * which leaves the texture unchanged.
+     */
+    @SubscribeEvent
+    public static void registerItemColors(ColorHandlerEvent.Item event) {
+        for (Item material : ModRegistry.MATERIALS) {
+            int tint = ((ItemMaterial) material).getTintColor();
+            if (tint != ItemMaterial.NO_TINT) {
+                event.getItemColors().registerItemColorHandler(
+                        (stack, tintIndex) -> tintIndex == 0 ? tint : -1, material);
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
@@ -46,6 +65,10 @@ public class ClientModRegistry {
                 new ModelResourceLocation(ModRegistry.LANTERN_SRP.getRegistryName(), "inventory"));
         ModelLoader.setCustomModelResourceLocation(ModRegistry.LANTERN_VAPULA, 0,
                 new ModelResourceLocation(ModRegistry.LANTERN_VAPULA.getRegistryName(), "inventory"));
+        for (Item material : ModRegistry.MATERIALS) {
+            ModelLoader.setCustomModelResourceLocation(material, 0,
+                    new ModelResourceLocation(material.getRegistryName(), "inventory"));
+        }
         if (ModRegistry.hasChestBaubles()) {
             ModelLoader.setCustomModelResourceLocation(ModRegistry.BULWARK_OF_VALOR, 0,
                     new ModelResourceLocation(ModRegistry.BULWARK_OF_VALOR.getRegistryName(), "inventory"));

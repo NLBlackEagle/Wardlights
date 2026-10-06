@@ -12,6 +12,21 @@ tile.lantern_vapula.name=Vapula Lantern
 item.bulwark_of_valor.name=Bulwark of Valor
 item.aegis_of_sacrifice.name=Aegis of Sacrifice
 
+# SOH crafting ingredients
+item.plutonium_alloy.name=Plutonium Alloy
+item.plutonium_blood_alloy.name=Plutonium Blood Alloy
+item.corrupted_heart.name=Corrupted Heart
+item.corrupted_fabric.name=Corrupted Fabric
+item.blood_essence.name=Blood Essence
+tooltip.wardlights.blood_essence=Dropped by Waking Bloods during the Waking Bloodmoon
+item.blight_essence.name=Blight Essence
+tooltip.wardlights.blight_essence=Dropped by Waking Blights during the Waking Blight
+item.tainted_flesh.name=Tainted Flesh
+tooltip.wardlights.tainted_flesh=Dropped rarely by weakened overworld parasites in their native habitats.
+item.dormant_badge.name=Dormant Badge
+item.badge_of_bravery.name=Badge of Bravery
+tooltip.wardlights.badge_of_bravery=Traded by Brutal Merchants for a Dormant Badge and Ancient Coins
+
 # Chest baubles (Bulwark of Valor / Aegis of Sacrifice)
 tooltip.wardlights.chest_bauble.resistance=Grants %s while equipped
 tooltip.wardlights.chest_bauble.explosion=%s Explosion damage resistance

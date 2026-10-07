@@ -197,10 +197,22 @@ public class ForgeConfigHandler {
 		@Config.Name("Badge of Bravery Glint Color")
 		public String badgeOfBraveryGlintColor = "808080";
 
-		/** {@link #badgeOfBraveryGlintColor} as 0xRRGGBB, falling back to white when it isn't valid hex. */
+		@Config.Comment("Color of the Blood Essence's glint, same format as the Badge of Bravery glint color.")
+		@Config.Name("Blood Essence Glint Color")
+		public String bloodEssenceGlintColor = "800000";
+
 		public int getBadgeOfBraveryGlintColor() {
+			return parseHexColor(badgeOfBraveryGlintColor);
+		}
+
+		public int getBloodEssenceGlintColor() {
+			return parseHexColor(bloodEssenceGlintColor);
+		}
+
+		/** A hex RRGGBB string (optional #) as 0xRRGGBB, falling back to white when it isn't valid hex. */
+		private static int parseHexColor(String hex) {
 			try {
-				return Integer.parseInt(badgeOfBraveryGlintColor.trim().replace("#", ""), 16) & 0xFFFFFF;
+				return Integer.parseInt(hex.trim().replace("#", ""), 16) & 0xFFFFFF;
 			} catch (NumberFormatException e) {
 				return 0xFFFFFF;
 			}
@@ -282,8 +294,8 @@ public class ForgeConfigHandler {
 		@MixinConfig.CompatHandling(modid = "srparasites", desired = true, warnIngame = false)
 		public boolean srParasitesIntegration = true;
 
-		@Config.Comment("Lets Wardlights items use their own enchantment glint color (e.g. the Badge of Bravery's "
-				+ "white glint) instead of vanilla's purple. Patches Minecraft's item renderer.")
+		@Config.Comment("Lets Wardlights items use their own enchantment glint color (the Badge of Bravery's white and "
+				+ "the Blood Essence's red glint) instead of vanilla's purple. Patches Minecraft's item renderer.")
 		@Config.Name("Glint Color")
 		@Config.RequiresMcRestart
 		@MixinConfig.MixinToggle(earlyMixin = "mixins.wardlights.vanilla.json", defaultValue = true)

@@ -77,52 +77,36 @@ todo: [Lanterns]
   Lantern 4; 1x lantern + 4x weird root + 4x amber valve
   Lantern 5; 1x lantern + 4x essential segment + 4x quench
 
-todo: [SOH 1 & 2]
-
-- SOH 1 Recipe:
-    <nuclearcraft:alloy:1>
-    <potionfingers:ring:1>
-    <nuclearcraft:alloy:1>
-    <eaglemixins:badge_of_bravery>
-    <xat:damage_shield>
-    <srparasites:dispatcher_drop>
-    <nuclearcraft:alloy:1>
-    <srparasites:ada_bolster_drop>
-    <nuclearcraft:alloy:1>
-
-- SOH 2 Recipe:
-    <eaglemixins:plutonium_blood_alloy>
-    <potionfingers:ring:1>
-    <eaglemixins:plutonium_blood_alloy>
-    <eaglemixins:corrupted_fabric>
-    <wardlights:bulwark_of_valor>
-    <eaglemixins:corrupted_heart>
-    <eaglemixins:plutonium_blood_alloy>
-    <variedcommodities:orb:0>
-    <eaglemixins:plutonium_blood_alloy>
+- Next steps:
+  1. Foundation: LanternType enum (Regular, Pixie, Vapula, Pale, Parasite), lanterns become a real bauble (IBauble),
+     LanternUtil also checks the Baubles slots, not just the hands. Everything below depends on this.
+  2. Effects per lantern (see Lantern types above). Regular's spawn blocking already works, but only for vanilla mobs
+     and for every lantern alike.
+  3. Recipes: need the exact item ids for pixie dust, silver, vapula crystal / geonach spear, heart dust, weird root,
+     amber valve, essential segment, quench, framed glass pane and glowing powder.
+  4. Fill in the empty Lycanites / Pale Bloom / SRParasites mixin stubs, and check the game starts with those mods.
 
 
-Color stuff:
+done: [SOH 1 & 2 + ingredients] (all recipes live in the config, see ForgeConfigHandler)
 
-- Blood: red mist around a bright core.
-- Blight: yellow-green haze with drifting spore pixels.claude
+- SOH 1 = Bulwark of Valor, SOH 2 = Aegis of Sacrifice (Trinkets and Baubles' Shield of Honor upgrades)
+- Ingredients, each registered only when its source mods are loaded, with a "where it comes from" tooltip:
+  Plutonium Alloy, Plutonium Blood Alloy (NuclearCraft Alloy Furnace), Corrupted Heart, Corrupted Fabric,
+  Blood / Blight Essence, Tainted Flesh (dropped via EagleMixins' parasite replacement drop)
+- todo: Blight Essence green glint (like Blood Essence's red one, same strength, e.g. 008000), once its texture is final
+- Badge of Bravery chain:
+  steel, blood essence, steel / silver, tainted flesh, silver / steel, blight essence, steel -> Dormant Badge
+  Dormant Badge + Ancient Coins -> Badge of Bravery (Brutal Merchant trade in DregoraRL; fallback recipe in config)
 
-- SOH ingredient items (in Wardlights, each registers only when its source mods are loaded, SOH recipes
-  switch eaglemixins: -> wardlights:; items without a recipe get a "where it comes from" tooltip):
-  Plutonium Alloy (grey-white-ish) [nuclearcraft]: NC Alloy Furnace, ingotLithium + <nuclearcraft:plutonium:0> (Pu-238),
-    via NCRecipes.alloy_furnace.addRecipe(in1, in2, out, time, power), configurable, no crafting table recipe
-  Plutonium Blood Alloy (reddish) [nuclearcraft + contenttweaker]: <contenttweaker:blood_tear> + Plutonium Alloy
-  Corrupted Heart (black) [srparasites]:
-    <srparasites:assimilated_flesh>  <srparasites:ada_manducater_drop> <srparasites:assimilated_flesh>
-    <srparasites:ada_longarms_drop>  <srparasites:lurecomponent2>      <srparasites:lurecomponent6>
-    <srparasites:assimilated_flesh>  <srparasites:beckon_drop>         <srparasites:assimilated_flesh>
-  Corrupted Fabric (black) [mod_lavacow]:
-    <mod_lavacow:foul_bristle>    <mod_lavacow:banshee_vocal_cord> <mod_lavacow:foul_bristle>
-    <mod_lavacow:burntovipositor> <mod_lavacow:curseweave_cloth>   <mod_lavacow:foul_hide>
-    <mod_lavacow:foul_bristle>    <mod_lavacow:acidicheart>        <mod_lavacow:foul_bristle>
-  Blood Essence [bloodmoon]: dropped by Blooded mobs (tooltip)
-  Blight Essence [lycanitesmobs]: dropped by Blighted mobs (tooltip)
-  Badge of Bravery: essence recipe, toggle, disabled by default (sold by Brutal Merchant via another mod, tooltip)
+
+later: [Waking Night] (separate mod, kept here for reference)
+
+- Owns the night events, the Waking Bloods / Blights, their essence drops + XP bonus, and Waking Nightmare.
+  Connects to Wardlights only through item / block ids in its config (e.g. lanterns as sleep protection).
+- Essences may move from Wardlights to Waking Night (then the Dormant Badge recipe default uses wakingnight: ids).
+- Looks:
+  Blood: red mist around a bright core.
+  Blight: yellow-green haze with drifting spore pixels.
 
 - Blooded / Blighted mobs (existing mobs, no new entities):
   whitelisted mob spawning during a bloodmoon / lycanites event -> chance roll -> marked (capability, saved, synced)
@@ -130,6 +114,7 @@ Color stuff:
   configurable potion list, applied on marking
   2-6 random blobs picked from ~10 animated GeckoLib blob models, placed on the hitbox via a saved seed
   per-mob offset/scale overrides in the whitelist; drops essence (min/max/chance config)
+  much more XP than normal (LivingExperienceDropEvent, configurable multiplier / flat bonus)
 
 - Waking Nightmare (additive on top of the normal Bloodmoon / Lycanites schedules, which stay untouched):
   per-player capability counts sleeps without protection (checked on PlayerWakeUpEvent, only when the night was skipped)
@@ -161,32 +146,15 @@ Color stuff:
     mod_lavacow:dreamcatcher equipped in a Baubles slot (it's an IBauble)
   Waking Nightmare is a potion effect (levels I-III) so it shows in the HUD
 
-- Build order: registration framework + crafted items & shapeless recipes -> essences, drop config, tooltips
-  -> Badge of Bravery -> Blooded/Blighted marking, potions, name prefix -> blob rendering
-  -> lanterns phase -> Waking Nightmare
 
+todo: [Baubles] (after the lanterns, need models)
 
-todo: make new items:
-- Tainted Flesh
-- Blight Part
-- BLood Part
-- Dormant Badge
-
-
-todo: [Ring of Cleansing (LC) applies immalleable and removes link] (ring slot)
-
-todo: [Charm  of Guarding (Teddy Bear + Blood Gem) (Counters: fear, corrosion and needler)] (necklace slot)
-
-todo: [Viral Ring - Limits viral to max 2] (ring slots)
-
-todo: [Sentient Crown - gives SRP rage effect and adaptation of max 5% (head slot)
-
-todo: [Cyclops Eye - Gives strength 1 and looting 1] (same as dragoneye)
-
-todo: [Siren Scale - Swimming Speed 1] (universal slot)
-
-todo: [Pendant of Plutonium Warding - Adds a irradiated aura weakening parasites in a radius around the player] (necklace slot)
-
-todo: [Siren Scale - Swimming Speed 1]
+- Ring of Cleansing (LC): applies immalleable and removes link (ring slot)
+- Charm of Guarding (Teddy Bear + Blood Gem): counters fear, corrosion and needler (necklace slot)
+- Viral Ring: limits viral to max 2 (ring slot)
+- Sentient Crown: gives SRP rage effect and adaptation of max 5% (head slot)
+- Cyclops Eye: gives strength 1 and looting 1, same as the dragon eye
+- Siren Scale: Swimming Speed 1 (universal slot)
+- Pendant of Plutonium Warding: an irradiated aura weakening parasites in a radius around the player (necklace slot)
 
  */

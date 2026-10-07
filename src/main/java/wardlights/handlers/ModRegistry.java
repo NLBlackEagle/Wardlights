@@ -165,6 +165,9 @@ public class ModRegistry {
         CORRUPTED_HEART = registerMaterial(event.getRegistry(), "corrupted_heart", SRPARASITES_MODID);
         CORRUPTED_FABRIC = registerMaterial(event.getRegistry(), "corrupted_fabric", FISH_UNDEAD_RISING_MODID);
         BLOOD_ESSENCE = registerMaterial(event.getRegistry(), "blood_essence", BLOODMOON_MODID);
+        if (BLOOD_ESSENCE != null) {
+            ((ItemMaterial) BLOOD_ESSENCE).setGlintColor(ForgeConfigHandler.client::getBloodEssenceGlintColor);
+        }
         BLIGHT_ESSENCE = registerMaterial(event.getRegistry(), "blight_essence", LYCANITESMOBS_MODID);
         TAINTED_FLESH = registerMaterial(event.getRegistry(), "tainted_flesh", SRPARASITES_MODID);
         DORMANT_BADGE = registerMaterial(event.getRegistry(), "dormant_badge", BLOODMOON_MODID, LYCANITESMOBS_MODID,

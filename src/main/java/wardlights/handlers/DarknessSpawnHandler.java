@@ -14,15 +14,14 @@ import wardlights.util.LanternUtil;
  * Cancels natural spawns of vanilla hostiles ("darkness entities" for now —
  * content-mod mobs like Lycanites' Darkness-type spawns come later, likely
  * via their own mixin since they don't all route through this event) within
- * range of a lantern-holding player. Independent of the lanterns' visual
+ * range of a player whose lantern is active (worn or held, and the
+ * darkness / underground condition holds, see {@link LanternUtil}). Independent of the lanterns' visual
  * glow (OptiFine's dynamic_lights.properties, assets/wardlights/optifine/)
  * — this is the real, server-authoritative mechanic; the glow is just
  * visual flavor and only shows for players with OptiFine installed.
  */
 @Mod.EventBusSubscriber(modid = Wardlights.MODID)
 public class DarknessSpawnHandler {
-
-    private static final double SUPPRESSION_RADIUS = 24.0;
 
     @SubscribeEvent
     public static void onCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
@@ -31,10 +30,11 @@ public class DarknessSpawnHandler {
         }
 
         World world = event.getWorld();
-        double radiusSq = SUPPRESSION_RADIUS * SUPPRESSION_RADIUS;
+        double radius = ForgeConfigHandler.server.lanterns.spawnSuppressionRadius;
+        double radiusSq = radius * radius;
 
         for (EntityPlayer player : world.playerEntities) {
-            if (!LanternUtil.isHoldingLantern(player)) {
+            if (!LanternUtil.isWardActive(player)) {
                 continue;
             }
 

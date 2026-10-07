@@ -77,6 +77,8 @@ todo: [Lanterns]
   Lantern 4; 1x lantern + 4x weird root + 4x amber valve
   Lantern 5; 1x lantern + 4x essential segment + 4x quench
 
+- Make the lantern baubles reforgeable! (give them a bauble quality!)
+
 - Next steps:
   1. Foundation: LanternType enum (Regular, Pixie, Vapula, Pale, Parasite), lanterns become a real bauble (IBauble),
      LanternUtil also checks the Baubles slots, not just the hands. Everything below depends on this.

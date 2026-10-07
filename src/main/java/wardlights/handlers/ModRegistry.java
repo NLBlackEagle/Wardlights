@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -26,6 +27,7 @@ import wardlights.items.ItemLanternPixie;
 import wardlights.items.ItemLanternSrp;
 import wardlights.items.ItemLanternVapula;
 import wardlights.items.ItemMaterial;
+import wardlights.potion.PotionWardLight;
 import wardlights.tileentity.TileEntityLanternPale;
 import wardlights.tileentity.TileEntityLanternPixie;
 import wardlights.tileentity.TileEntityLanternRegular;
@@ -34,6 +36,9 @@ import wardlights.tileentity.TileEntityLanternVapula;
 
 @Mod.EventBusSubscriber(modid = Wardlights.MODID)
 public class ModRegistry {
+
+    /** Shown while a lantern is working. */
+    public static Potion WARDLIGHT;
 
     public static Item LANTERN_REGULAR;
     public static Item LANTERN_PIXIE;
@@ -129,6 +134,12 @@ public class ModRegistry {
                 new ResourceLocation(Wardlights.MODID, "lantern_srp"));
         GameRegistry.registerTileEntity(TileEntityLanternVapula.class,
                 new ResourceLocation(Wardlights.MODID, "lantern_vapula"));
+    }
+
+    @SubscribeEvent
+    public static void registerPotions(RegistryEvent.Register<Potion> event) {
+        WARDLIGHT = new PotionWardLight();
+        event.getRegistry().register(WARDLIGHT);
     }
 
     @SubscribeEvent

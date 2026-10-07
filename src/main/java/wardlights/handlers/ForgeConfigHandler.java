@@ -39,10 +39,60 @@ public class ForgeConfigHandler {
 		@Config.Comment("Aegis of Sacrifice crafting recipe, same format as the Bulwark of Valor recipe.")
 		@Config.Name("Aegis of Sacrifice Recipe")
 		@Config.RequiresMcRestart
-		public String aegisOfSacrificeRecipe = "{eaglemixins:plutonium_blood_alloy, potionfingers:ring:1, "
-				+ "eaglemixins:plutonium_blood_alloy, eaglemixins:corrupted_fabric, wardlights:bulwark_of_valor, "
-				+ "eaglemixins:corrupted_heart, eaglemixins:plutonium_blood_alloy, variedcommodities:orb:0, "
-				+ "eaglemixins:plutonium_blood_alloy}";
+		public String aegisOfSacrificeRecipe = "{wardlights:plutonium_blood_alloy, potionfingers:ring:1, "
+				+ "wardlights:plutonium_blood_alloy, wardlights:corrupted_fabric, wardlights:bulwark_of_valor, "
+				+ "wardlights:corrupted_heart, wardlights:plutonium_blood_alloy, variedcommodities:orb:0, "
+				+ "wardlights:plutonium_blood_alloy}";
+
+		@Config.Comment("Corrupted Heart crafting recipe, same format as the Bulwark of Valor recipe.")
+		@Config.Name("Corrupted Heart Recipe")
+		@Config.RequiresMcRestart
+		public String corruptedHeartRecipe = "{srparasites:assimilated_flesh, srparasites:ada_manducater_drop, "
+				+ "srparasites:assimilated_flesh, srparasites:ada_longarms_drop, srparasites:lurecomponent2, "
+				+ "srparasites:lurecomponent6, srparasites:assimilated_flesh, srparasites:beckon_drop, "
+				+ "srparasites:assimilated_flesh}";
+
+		@Config.Comment("Corrupted Fabric crafting recipe, same format as the Bulwark of Valor recipe.")
+		@Config.Name("Corrupted Fabric Recipe")
+		@Config.RequiresMcRestart
+		public String corruptedFabricRecipe = "{mod_lavacow:foul_bristle, mod_lavacow:banshee_vocal_cord, "
+				+ "mod_lavacow:foul_bristle, mod_lavacow:burntovipositor, mod_lavacow:curseweave_cloth, "
+				+ "mod_lavacow:foul_hide, mod_lavacow:foul_bristle, mod_lavacow:acidicheart, mod_lavacow:foul_bristle}";
+
+		@Config.Comment("Lantern crafting recipe, same format as the Bulwark of Valor recipe.")
+		@Config.Name("Lantern Recipe")
+		@Config.RequiresMcRestart
+		public String lanternRegularRecipe = "{minecraft:iron_ingot, rustic:iron_lattice, minecraft:iron_ingot, "
+				+ "rustic:iron_lattice, minecraft:torch, rustic:iron_lattice, minecraft:iron_ingot, "
+				+ "rustic:iron_lattice, minecraft:iron_ingot}";
+
+		@Config.Comment("Pixie Lantern crafting recipe, same format as the Bulwark of Valor recipe.")
+		@Config.Name("Pixie Lantern Recipe")
+		@Config.RequiresMcRestart
+		public String lanternPixieRecipe = "{familiarfauna:pixie_dust, iceandfire:pixie_dust, familiarfauna:pixie_dust, "
+				+ "iceandfire:pixie_dust, wardlights:lantern_regular, iceandfire:pixie_dust, familiarfauna:pixie_dust, "
+				+ "iceandfire:pixie_dust, familiarfauna:pixie_dust}";
+
+		@Config.Comment("Vapula Lantern crafting recipe, same format as the Bulwark of Valor recipe.")
+		@Config.Name("Vapula Lantern Recipe")
+		@Config.RequiresMcRestart
+		public String lanternVapulaRecipe = "{biomesoplenty:gem:5, minecraft:dye:4, biomesoplenty:gem:3, "
+				+ "iceandfire:amethyst_gem, wardlights:lantern_regular, minecraft:emerald, biomesoplenty:gem:2, "
+				+ "minecraft:diamond, biomesoplenty:gem:4}";
+
+		@Config.Comment("Pale Lantern crafting recipe, same format as the Bulwark of Valor recipe.")
+		@Config.Name("Pale Lantern Recipe")
+		@Config.RequiresMcRestart
+		public String lanternPaleRecipe = "{palebloom:resin_clump, palebloom:amber_valve, palebloom:resin_clump, "
+				+ "palebloom:live_root, wardlights:lantern_regular, palebloom:live_root, palebloom:resin_clump, "
+				+ "palebloom:sucker_root_nodule, palebloom:resin_clump}";
+
+		@Config.Comment("Parasite Lantern crafting recipe, same format as the Bulwark of Valor recipe.")
+		@Config.Name("Parasite Lantern Recipe")
+		@Config.RequiresMcRestart
+		public String lanternSrpRecipe = "{srparasites:itemthrow, eaglemixins:tainted_tear, srparasites:itemthrow, "
+				+ "wardlights:tainted_flesh, wardlights:lantern_regular, wardlights:tainted_flesh, "
+				+ "srparasites:itemthrow, wardlights:corrupted_heart, srparasites:itemthrow}";
 
 		@Config.Comment("Whether the Dormant Badge can be crafted.")
 		@Config.Name("Dormant Badge Recipe Enabled")
@@ -116,6 +166,43 @@ public class ForgeConfigHandler {
 			public AlloyFurnaceRecipeConfig(String inputs) {
 				this.inputs = inputs;
 			}
+		}
+
+		@Config.Comment("When and how the lanterns work.")
+		@Config.Name("Lanterns")
+		public LanternConfig lanterns = new LanternConfig();
+
+		public static class LanternConfig {
+
+			public enum ActivationCondition { DARKNESS, UNDERGROUND, EITHER, BOTH, ALWAYS }
+
+			@Config.Comment("Which Baubles slot the lanterns go in: AMULET, RING, BELT, TRINKET (any slot), HEAD, BODY or "
+					+ "CHARM. Keep it the same on the server and every client, or Baubles may refuse the item.")
+			@Config.Name("Bauble Slot")
+			@Config.RequiresMcRestart
+			public String baubleSlot = "BELT";
+
+			@Config.Comment("When a lantern works: DARKNESS (light level at the player at or below \"Darkness Light "
+					+ "Level\"), UNDERGROUND (below \"Underground Y Level\"), EITHER, BOTH or ALWAYS.")
+			@Config.Name("Activation Condition")
+			public ActivationCondition activationCondition = ActivationCondition.EITHER;
+
+			@Config.Comment("Highest light level that still counts as darkness. Uses the same light value as vanilla's "
+					+ "hostile mob spawning (block light and sky light, adjusted for the time of day); 7 matches the "
+					+ "level hostile mobs spawn at.")
+			@Config.Name("Darkness Light Level")
+			@Config.RangeInt(min = 0, max = 15)
+			public int darknessLightLevel = 7;
+
+			@Config.Comment("The player counts as underground below this Y level.")
+			@Config.Name("Underground Y Level")
+			@Config.RangeInt(min = 0, max = 255)
+			public int undergroundYLevel = 64;
+
+			@Config.Comment("Radius in blocks around a player with a working lantern in which hostile mobs can't spawn.")
+			@Config.Name("Spawn Suppression Radius")
+			@Config.RangeDouble(min = 0, max = 128)
+			public double spawnSuppressionRadius = 24.0;
 		}
 
 		@Config.Comment("Bonuses granted by the Bulwark of Valor and Aegis of Sacrifice chest baubles. These items only "

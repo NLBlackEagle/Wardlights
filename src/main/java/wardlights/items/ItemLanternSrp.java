@@ -1,11 +1,9 @@
 package wardlights.items;
 
-import net.minecraft.item.ItemBlock;
-import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 import wardlights.animation.LanternAnimations;
 import wardlights.blocks.BlockLanternSrp;
+import wardlights.lantern.LanternType;
 
 /**
  * Animated variant of the lantern (Lantern 5 / Parasite Infused) — renders
@@ -18,23 +16,14 @@ import wardlights.blocks.BlockLanternSrp;
  * (also used by the placed-block tile entity). Also placeable as a block
  * (BlockLanternSrp) via the inherited ItemBlock#onItemUse.
  */
-public class ItemLanternSrp extends ItemBlock implements IAnimatable {
-
-    private final AnimationFactory factory = new AnimationFactory(this);
+public class ItemLanternSrp extends ItemLanternBase {
 
     public ItemLanternSrp(BlockLanternSrp block, String registryName) {
-        super(block);
-        setRegistryName(registryName);
-        setMaxStackSize(1);
+        super(block, registryName, LanternType.PARASITE);
     }
 
     @Override
     public void registerControllers(AnimationData data) {
         LanternAnimations.registerSrpControllers(this, data);
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }

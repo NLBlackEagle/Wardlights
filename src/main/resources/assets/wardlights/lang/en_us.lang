@@ -12,6 +12,8 @@ tile.lantern_vapula.name=Vapula Lantern
 item.bulwark_of_valor.name=Bulwark of Valor
 item.aegis_of_sacrifice.name=Aegis of Sacrifice
 
+effect.wardlights.wardlight=WardLight
+
 # SOH crafting ingredients
 item.plutonium_alloy.name=Plutonium Alloy
 item.plutonium_blood_alloy.name=Plutonium Blood Alloy

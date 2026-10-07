@@ -34,6 +34,26 @@ public class RecipeRegistry {
             register(event, buildShapedRecipe("aegis_of_sacrifice", "Aegis of Sacrifice",
                     ForgeConfigHandler.server.aegisOfSacrificeRecipe, ModRegistry.AEGIS_OF_SACRIFICE));
         }
+        ForgeConfigHandler.ServerConfig config = ForgeConfigHandler.server;
+        if (ModRegistry.CORRUPTED_HEART != null) {
+            register(event, buildShapedRecipe("corrupted_heart", "Corrupted Heart", config.corruptedHeartRecipe,
+                    ModRegistry.CORRUPTED_HEART));
+        }
+        if (ModRegistry.CORRUPTED_FABRIC != null) {
+            register(event, buildShapedRecipe("corrupted_fabric", "Corrupted Fabric", config.corruptedFabricRecipe,
+                    ModRegistry.CORRUPTED_FABRIC));
+        }
+        register(event, buildShapedRecipe("lantern_regular", "Lantern", config.lanternRegularRecipe,
+                ModRegistry.LANTERN_REGULAR));
+        register(event, buildShapedRecipe("lantern_pixie", "Pixie Lantern", config.lanternPixieRecipe,
+                ModRegistry.LANTERN_PIXIE));
+        register(event, buildShapedRecipe("lantern_vapula", "Vapula Lantern", config.lanternVapulaRecipe,
+                ModRegistry.LANTERN_VAPULA));
+        register(event, buildShapedRecipe("lantern_pale", "Pale Lantern", config.lanternPaleRecipe,
+                ModRegistry.LANTERN_PALE));
+        register(event, buildShapedRecipe("lantern_srp", "Parasite Lantern", config.lanternSrpRecipe,
+                ModRegistry.LANTERN_SRP));
+
         if (ForgeConfigHandler.server.dormantBadgeRecipeEnabled && ModRegistry.DORMANT_BADGE != null) {
             register(event, buildShapedRecipe("dormant_badge", "Dormant Badge",
                     ForgeConfigHandler.server.dormantBadgeRecipe, ModRegistry.DORMANT_BADGE));

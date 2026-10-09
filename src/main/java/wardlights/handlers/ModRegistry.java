@@ -180,6 +180,9 @@ public class ModRegistry {
             ((ItemMaterial) BLOOD_ESSENCE).setGlintColor(ForgeConfigHandler.client::getBloodEssenceGlintColor);
         }
         BLIGHT_ESSENCE = registerMaterial(event.getRegistry(), "blight_essence", LYCANITESMOBS_MODID);
+        if (BLIGHT_ESSENCE != null) {
+            ((ItemMaterial) BLIGHT_ESSENCE).setGlintColor(ForgeConfigHandler.client::getBlightEssenceGlintColor);
+        }
         TAINTED_FLESH = registerMaterial(event.getRegistry(), "tainted_flesh", SRPARASITES_MODID);
         DORMANT_BADGE = registerMaterial(event.getRegistry(), "dormant_badge", BLOODMOON_MODID, LYCANITESMOBS_MODID,
                 SRPARASITES_MODID);

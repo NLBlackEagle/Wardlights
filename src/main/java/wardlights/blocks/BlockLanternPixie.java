@@ -25,7 +25,7 @@ public class BlockLanternPixie extends BlockHorizontal implements ITileEntityPro
         setTranslationKey(registryName);
         setCreativeTab(CreativeTabs.MISC);
         setHardness(0.5F);
-        setLightLevel(1.0F);
+        setLightLevel(10F / 15F);
         setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 

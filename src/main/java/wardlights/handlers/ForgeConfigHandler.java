@@ -288,12 +288,20 @@ public class ForgeConfigHandler {
 		@Config.Name("Blood Essence Glint Color")
 		public String bloodEssenceGlintColor = "800000";
 
+		@Config.Comment("Color of the Blight Essence's glint, same format as the Badge of Bravery glint color.")
+		@Config.Name("Blight Essence Glint Color")
+		public String blightEssenceGlintColor = "008000";
+
 		public int getBadgeOfBraveryGlintColor() {
 			return parseHexColor(badgeOfBraveryGlintColor);
 		}
 
 		public int getBloodEssenceGlintColor() {
 			return parseHexColor(bloodEssenceGlintColor);
+		}
+
+		public int getBlightEssenceGlintColor() {
+			return parseHexColor(blightEssenceGlintColor);
 		}
 
 		/** A hex RRGGBB string (optional #) as 0xRRGGBB, falling back to white when it isn't valid hex. */
@@ -381,8 +389,15 @@ public class ForgeConfigHandler {
 		@MixinConfig.CompatHandling(modid = "srparasites", desired = true, warnIngame = false)
 		public boolean srParasitesIntegration = true;
 
+		@Config.Comment("Makes lanterns carried on gigaherz's Tool Belt hang straight down from the hip instead of using their tilted in-hand pose.")
+		@Config.Name("Tool Belt Hanging Lanterns")
+		@Config.RequiresMcRestart
+		@MixinConfig.MixinToggle(lateMixin = "mixins.wardlights.toolbelt.json", defaultValue = true)
+		@MixinConfig.CompatHandling(modid = "toolbelt", desired = true, warnIngame = false)
+		public boolean toolBeltHangingLanterns = true;
+
 		@Config.Comment("Lets Wardlights items use their own enchantment glint color (the Badge of Bravery's white and "
-				+ "the Blood Essence's red glint) instead of vanilla's purple. Patches Minecraft's item renderer.")
+				+ "the Blood Essence's red and the Blight Essence's green glint) instead of vanilla's purple. Patches Minecraft's item renderer.")
 		@Config.Name("Glint Color")
 		@Config.RequiresMcRestart
 		@MixinConfig.MixinToggle(earlyMixin = "mixins.wardlights.vanilla.json", defaultValue = true)

@@ -30,17 +30,35 @@ public class PotionWardLight extends Potion {
         setBeneficial();
     }
 
+    /**
+     * Vanilla says "no icon" for any potion without a spot on its own sheet,
+     * and some effect lists then skip the icon entirely instead of asking us
+     * to draw it. Saying yes keeps ours showing there too.
+     */
+    @Override
+    public boolean hasStatusIcon() {
+        return true;
+    }
+
+    /*
+     * These are the older (deprecated) signatures on purpose: Forge's newer
+     * ones just call these by default, but some mods' effect lists still call
+     * the old ones directly. Overriding these covers both.
+     */
+
     /** Inventory screen: vanilla puts the icon 6 right and 7 down from the panel's corner. */
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderInventoryEffect(PotionEffect effect, Gui gui, int x, int y, float z) {
+    @SuppressWarnings("deprecation")
+    public void renderInventoryEffect(int x, int y, PotionEffect effect, Minecraft mc) {
         drawIcon(x + 6, y + 7, 1.0F);
     }
 
     /** Top-right HUD: vanilla puts the icon 3 in from the frame's corner. */
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderHUDEffect(PotionEffect effect, Gui gui, int x, int y, float z, float alpha) {
+    @SuppressWarnings("deprecation")
+    public void renderHUDEffect(int x, int y, PotionEffect effect, Minecraft mc, float alpha) {
         drawIcon(x + 3, y + 3, alpha);
     }
 

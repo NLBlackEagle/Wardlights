@@ -10,7 +10,8 @@ import wardlights.util.LanternUtil;
 
 /**
  * Keeps the WardLight effect in sync with {@link LanternUtil#isWardActive}:
- * added while the player's lantern works, removed as soon as it stops.
+ * a short, normal effect that keeps getting topped up while the player's
+ * lantern works, and is removed as soon as it stops.
  */
 @Mod.EventBusSubscriber(modid = Wardlights.MODID)
 public class WardLightHandler {
@@ -18,14 +19,14 @@ public class WardLightHandler {
     /** Checked twice a second, which is plenty for a status icon. */
     private static final int CHECK_INTERVAL = 10;
 
-    /**
-     * Vanilla shows "**:**" instead of a countdown for this exact duration,
-     * since it's what beacons and the like use for "until it stops".
-     */
-    private static final int ENDLESS = 32767;
+    /** 15 seconds per top-up. */
+    private static final int DURATION = 300;
 
-    /** Topped back up well before it could run out. */
-    private static final int REFRESH_BELOW = 200;
+    /**
+     * Vanilla makes the HUD icon blink once an effect has 200 ticks or less
+     * left, so it's topped up just before it gets there.
+     */
+    private static final int REFRESH_BELOW = 220;
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -37,8 +38,13 @@ public class WardLightHandler {
 
         PotionEffect current = player.getActivePotionEffect(ModRegistry.WARDLIGHT);
         if (LanternUtil.isWardActive(player)) {
+            if (current != null && (current.getDuration() > DURATION || current.getIsAmbient())) {
+                // Left over from the old endless ambient version; combining can't shorten it, so start over.
+                player.removePotionEffect(ModRegistry.WARDLIGHT);
+                current = null;
+            }
             if (current == null || current.getDuration() < REFRESH_BELOW) {
-                player.addPotionEffect(new PotionEffect(ModRegistry.WARDLIGHT, ENDLESS, 0, true, false));
+                player.addPotionEffect(new PotionEffect(ModRegistry.WARDLIGHT, DURATION, 0));
             }
         } else if (current != null) {
             player.removePotionEffect(ModRegistry.WARDLIGHT);

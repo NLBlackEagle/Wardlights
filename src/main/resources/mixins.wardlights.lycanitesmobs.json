@@ -6,7 +6,9 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "LycanitesMobsMixin"
+    "LycanitesPlayerSpawnConditionMixin",
+    "LycanitesMiningSpawnChanceMixin",
+    "LycanitesMiningAllyMixin"
   ],
   "injectors": {
     "defaultRequire": 1,

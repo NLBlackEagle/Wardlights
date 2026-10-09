@@ -194,15 +194,129 @@ public class ForgeConfigHandler {
 			@Config.RangeInt(min = 0, max = 15)
 			public int darknessLightLevel = 7;
 
-			@Config.Comment("The player counts as underground below this Y level.")
+			@Config.Comment("The player counts as underground below this Y level, as long as they're also out of the "
+					+ "sky's reach (see \"Underground Max Sky Light\").")
 			@Config.Name("Underground Y Level")
 			@Config.RangeInt(min = 0, max = 255)
 			public int undergroundYLevel = 64;
 
-			@Config.Comment("Radius in blocks around a player with a working lantern in which hostile mobs can't spawn.")
-			@Config.Name("Spawn Suppression Radius")
-			@Config.RangeDouble(min = 0, max = 128)
-			public double spawnSuppressionRadius = 24.0;
+			@Config.Comment("Highest sky light at the player that still counts as underground, so the bottom of a big "
+					+ "open hole or ravine doesn't. Sky light is 15 under open sky and drops by 1 per block away from an "
+					+ "opening; it doesn't change with the time of day. 15 ignores the sky entirely (only the Y level counts).")
+			@Config.Name("Underground Max Sky Light")
+			@Config.RangeInt(min = 0, max = 15)
+			public int undergroundMaxSkyLight = 7;
+
+			@Config.Comment("Light level of every lantern, placed and carried (OptiFine dynamic lights, applied on the next "
+					+ "resource reload). Light drops by one per block, so a level 8 light reaches 7 blocks straight out. "
+					+ "Keep it the same on the server and every client so the lighting matches.")
+			@Config.Name("Lantern Light Level")
+			@Config.RangeInt(min = 1, max = 15)
+			public int lanternLightLevel = 8;
+
+			@Config.Comment("How far the lanterns' effects reach, counted the same way light spreads: an effect works "
+					+ "wherever a light of this level would still be 1 or more. Set it equal to \"Lantern Light Level\" and "
+					+ "the effects cover exactly the lantern's lit area, its dimmest edge included. Used for blocking "
+					+ "hostile spawns around a player carrying a working lantern and around a working placed lantern, and "
+					+ "for the players a placed lantern gives its effects to.")
+			@Config.Name("Lantern Radius")
+			@Config.RangeInt(min = 1, max = 32)
+			public int lanternRadius = 8;
+
+			@Config.Comment("Pixie Lantern: chance that an unlooted chest its carrier opens or breaks at or below \"Pixie Lantern "
+					+ "Mimic Max Y\" is an Artifacts mimic. Rolled before, and on top of, Artifacts' own unlooted chest "
+					+ "mimic chance, in Artifacts' unlooted chest mimic dimensions. 0 disables it.")
+			@Config.Name("Pixie Lantern Mimic Chance")
+			@Config.RangeDouble(min = 0, max = 1)
+			public double pixieMimicChance = 0.05;
+
+			@Config.Comment("The Pixie Lantern's extra mimic chance only applies to chests at or below this Y level.")
+			@Config.Name("Pixie Lantern Mimic Max Y")
+			@Config.RangeInt(min = 0, max = 256)
+			public int pixieMimicMaxY = 25;
+
+			@Config.Comment("Parasite Lantern: chance that a parasite (any SRParasites mob) ignores its carrier, or a player "
+					+ "within the \"Lantern Radius\" of a placed one, day and night. Each parasite rolls for each such player "
+					+ "and rolls again every \"Parasite Lantern Re-roll Seconds\", so it notices them sooner or later. Once "
+					+ "a parasite has noticed a player, or that player has hit it, it stays aware of them. 0 disables it.")
+			@Config.Name("Parasite Lantern Ignore Chance")
+			@Config.RangeDouble(min = 0, max = 1)
+			public double parasiteIgnoreChance = 0.75;
+
+			@Config.Comment("How often a parasite rolls the Parasite Lantern's ignore chance again for each player. With a "
+					+ "75% chance and 30 seconds, a parasite takes about one and a half minutes on average to notice them.")
+			@Config.Name("Parasite Lantern Re-roll Seconds")
+			@Config.RangeInt(min = 1, max = 3600)
+			public int parasiteRerollSeconds = 30;
+
+			@Config.Comment("Vapula Lantern: chance that mining a gem ore (one that drops an item: diamond, emerald, lapis, "
+					+ "redstone...) triggers Lycanites' gem spawner (Vapula) while the ward is active. Replaces the spawner's own "
+					+ "chance (Lycanites' default 5%) when higher.")
+			@Config.Name("Vapula Lantern Gem Spawn Chance")
+			@Config.RangeDouble(min = 0, max = 1)
+			public double vapulaGemSpawnChance = 0.15;
+
+			@Config.Comment("Vapula Lantern: same for ores that drop themselves (iron, gold...) and coal, which trigger "
+					+ "Lycanites' ore spawner (Geonach).")
+			@Config.Name("Vapula Lantern Ore Spawn Chance")
+			@Config.RangeDouble(min = 0, max = 1)
+			public double vapulaOreSpawnChance = 0.15;
+
+			@Config.Comment("Vapula Lantern: mobs spawned by mining while the ward is active become the miner's temporary "
+					+ "allies (Lycanites minions) for this long, then vanish. They drop nothing and give no XP, and their "
+					+ "owner can't hurt them while carrying the Vapula Lantern.")
+			@Config.Name("Vapula Lantern Ally Seconds")
+			@Config.RangeInt(min = 1, max = 3600)
+			public int vapulaAllySeconds = 120;
+
+			@Config.Comment("Vapula Lantern: mining speed multiplier while the ward is active (1.2 = 20% faster, the same "
+					+ "as Haste I). 1 disables it. Keep it the same on the server and every client: the client works out "
+					+ "when a block breaks and the server checks it.")
+			@Config.Name("Vapula Lantern Mining Speed")
+			@Config.RangeDouble(min = 1, max = 10)
+			public double vapulaMiningSpeed = 1.2;
+
+			@Config.Comment("Vapula Lantern: Fortune levels added to the carrier's mining while the ward is active, on top of "
+					+ "their tool's own Fortune (1 = one level more, so a plain pickaxe mines like Fortune I). Not with Silk "
+					+ "Touch. 0 disables it.")
+			@Config.Name("Vapula Lantern Fortune Bonus")
+			@Config.RangeInt(min = 0, max = 5)
+			public int vapulaFortuneBonus = 1;
+
+			@Config.Comment("Pale Lantern: mobs (entity ids) that ignore a player while a Pale Lantern's ward is active for "
+					+ "them (carried, or a working one placed nearby). One that's hit by that player fights back, and stays "
+					+ "aware of them from then on.")
+			@Config.Name("Pale Lantern Ignored Entities")
+			public String[] paleIgnoredEntities = {"palebloom:creaking", "palebloom:pale_creeper", "palebloom:reaping_willow"};
+
+			@Config.Comment("Pale Lantern: chance that a hostile mob coming within the \"Lantern Radius\" of a working placed "
+					+ "Pale Lantern catches Pale Lung (Dynamic Trees Pale Bloom). Rolled once each time it comes in, not "
+					+ "while it stays. 0 disables it.")
+			@Config.Name("Pale Lantern Pale Lung Chance (Placed)")
+			@Config.RangeDouble(min = 0, max = 1)
+			public double paleLungPlacedChance = 0.05;
+
+			@Config.Comment("Pale Lantern: chance that a hostile mob hitting the carrier catches Pale Lung, while the ward is "
+					+ "active. 0 disables it.")
+			@Config.Name("Pale Lantern Pale Lung Chance (Hit By)")
+			@Config.RangeDouble(min = 0, max = 1)
+			public double paleLungHitByChance = 0.05;
+
+			@Config.Comment("Pale Lantern: chance that a hostile mob the carrier hits catches Pale Lung, while the ward is "
+					+ "active. 0 disables it.")
+			@Config.Name("Pale Lantern Pale Lung Chance (Hitting)")
+			@Config.RangeDouble(min = 0, max = 1)
+			public double paleLungHittingChance = 0.05;
+
+			@Config.Comment("Pale Lantern: how long the Pale Lung it gives lasts.")
+			@Config.Name("Pale Lantern Pale Lung Seconds")
+			@Config.RangeInt(min = 1, max = 600)
+			public int paleLungSeconds = 10;
+
+			@Config.Comment("Pale Lantern: the level of Pale Lung it gives (1 = Pale Lung I).")
+			@Config.Name("Pale Lantern Pale Lung Level")
+			@Config.RangeInt(min = 1, max = 10)
+			public int paleLungLevel = 1;
 		}
 
 		@Config.Comment("Bonuses granted by the Bulwark of Valor and Aegis of Sacrifice chest baubles. These items only "
@@ -368,19 +482,20 @@ public class ForgeConfigHandler {
 	@MixinConfig(name = Wardlights.MODID)
 	public static class MixinToggleConfig {
 
-		@Config.Comment("Enable Wardlights to integrate LycanitesMobs allowing for the Lycan Lantern to be crafted.")
+		@Config.Comment("Enable Wardlights to integrate LycanitesMobs allowing for the Vapula Lantern to be crafted, and letting "
+				+ "the Regular Lantern's light hold off Lycanites' darkness spawner (Grue, Darkling, Shade).")
 		@Config.Name("Lycanites Mobs Integration")
 		@Config.RequiresMcRestart
 		@MixinConfig.MixinToggle(lateMixin = "mixins.wardlights.lycanitesmobs.json", defaultValue = true)
 		@MixinConfig.CompatHandling(modid = "lycanitesmobs", desired = true)
 		public boolean lycanitesMobsIntegration = true;
 
-		@Config.Comment("Enable Wardlights to integrate Pale Bloom allowing for the Pale Lantern to be crafted.")
-		@Config.Name("Pale Bloom Integration")
+		@Config.Comment("Enable Wardlights to integrate Ice and Fire, stopping pixies from stealing from a player carrying a Pixie Lantern.")
+		@Config.Name("Ice and Fire Integration")
 		@Config.RequiresMcRestart
-		@MixinConfig.MixinToggle(lateMixin = "mixins.wardlights.palebloom.json", defaultValue = true)
-		@MixinConfig.CompatHandling(modid = "palebloom", desired = true)
-		public boolean paleBloomIntegration = true;
+		@MixinConfig.MixinToggle(lateMixin = "mixins.wardlights.iceandfire.json", defaultValue = true)
+		@MixinConfig.CompatHandling(modid = "iceandfire", desired = true, warnIngame = false)
+		public boolean iceAndFireIntegration = true;
 
 		@Config.Comment("Enable Wardlights to integrate Scape and Run: Parasites allowing for the Parasitic Lantern to be crafted.")
 		@Config.Name("Scape and Run Parasites Integration")
@@ -402,6 +517,14 @@ public class ForgeConfigHandler {
 		@Config.RequiresMcRestart
 		@MixinConfig.MixinToggle(earlyMixin = "mixins.wardlights.vanilla.json", defaultValue = true)
 		public boolean glintColor = true;
+
+		@Config.Comment("Lets the Pale Lantern's ignored mobs skip its carrier when they look for a target, instead of "
+				+ "picking them and dropping them again (which makes pale mobs play their sounds over and over). Patches "
+				+ "Minecraft's nearest-target AI.")
+		@Config.Name("Lantern Target Search")
+		@Config.RequiresMcRestart
+		@MixinConfig.MixinToggle(earlyMixin = "mixins.wardlights.targeting.json", defaultValue = true)
+		public boolean lanternTargetSearch = true;
 	}
 
 	@Mod.EventBusSubscriber(modid = Wardlights.MODID)

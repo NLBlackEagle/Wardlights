@@ -1,5 +1,13 @@
 # Wardlights language keys
 # Item, tooltip and config keys are added here as content is implemented.
+#
+# All text colors live here, not in the code. Formatting codes (§ + character):
+#   §0 black      §1 dark blue   §2 dark green  §3 dark aqua   §4 dark red    §5 dark purple
+#   §6 gold       §7 gray        §8 dark gray   §9 blue        §a green       §b aqua
+#   §c red        §d light purple §e yellow     §f white
+#   §l bold  §o italic  §n underline  §m strikethrough  §k obfuscated  §r reset
+# A color code also resets bold/italic, so put the color first: §6§l = bold gold.
+# After a highlighted %s, switch back to the line's own color (e.g. §3%s§6).
 
 # Lanterns are now Block+ItemBlock pairs (placeable) — ItemBlock#getTranslationKey()
 # delegates to the wrapped Block's own key ("tile.<name>"), not "item.<name>".
@@ -9,9 +17,33 @@ tile.lantern_pale.name=Pale Lantern
 tile.lantern_srp.name=Parasite Lantern
 tile.lantern_vapula.name=Vapula Lantern
 
+# The header is always shown; the "- " lines only while Ctrl is held.
+tooltip.wardlights.lantern.hold_ctrl=§8<Hold Ctrl>
+tooltip.wardlights.lantern.header.either=§6When Underground or in Darkness:
+tooltip.wardlights.lantern.header.darkness=§6When in Darkness:
+tooltip.wardlights.lantern.header.underground=§6When Underground:
+tooltip.wardlights.lantern.header.both=§6When Underground and in Darkness:
+tooltip.wardlights.lantern.header.always=§6At all times:
+tooltip.wardlights.lantern.at_bay=§e- Keeps the darkness and some gruesome monsters at bay!
+tooltip.wardlights.lantern.pixie.steal=§e- Pixies wouldn't dare messing with you holding this, even above ground in broad daylight!
+tooltip.wardlights.lantern.pixie.mimic=§e- Mimic spawns increased by %s%% under y%s
+tooltip.wardlights.lantern.pixie.luck=§e- Grants luck on your mining adventures or when its dark!
+tooltip.wardlights.lantern.vapula.mining=§e- Increases mining speed and the chance to spawn a vapula or geonach!
+tooltip.wardlights.lantern.vapula.allies=§e- Spawned Vapula's and Geonachs will mistake you for one of their own and fight by your side!
+tooltip.wardlights.lantern.vapula.fortune=§e- Grants you with fortune on your mining trips!
+tooltip.wardlights.lantern.pale.ignore=§e- Makes pale entities ignore you, unless you attack them of course!
+# Pale Lung chances (%s%% = the chance); placed: second %s = the lantern radius
+tooltip.wardlights.lantern.pale.pale_lung.hitting=§e- Hostiles you hit have a %s%% chance to catch Pale Lung!
+tooltip.wardlights.lantern.pale.pale_lung.hit_by=§e- Hostiles that hit you have a %s%% chance to catch Pale Lung!
+tooltip.wardlights.lantern.pale.pale_lung.placed=§e- When placed, hostiles coming within a radius of %2$s have a %1$s%% chance to catch Pale Lung!
+tooltip.wardlights.lantern.srp.ignore=§e- %s%% chance for SRParasites to ignore you!
+tooltip.wardlights.lantern.srp.coth=§e- Removes the COTH effect from nearby entities in a radius of %s
+tooltip.wardlights.lantern.srp.fear=§e- Immunity versus SRP Fear
+
 item.bulwark_of_valor.name=Bulwark of Valor
 item.aegis_of_sacrifice.name=Aegis of Sacrifice
 
+# Name of all five WardLight effects (one per lantern type, told apart by their icons)
 effect.wardlights.wardlight=WardLight
 
 # SOH crafting ingredients
@@ -20,21 +52,21 @@ item.plutonium_blood_alloy.name=Plutonium Blood Alloy
 item.corrupted_heart.name=Corrupted Heart
 item.corrupted_fabric.name=Corrupted Fabric
 item.blood_essence.name=Blood Essence
-tooltip.wardlights.blood_essence=Dropped by Waking Bloods during the Waking Bloodmoon
+tooltip.wardlights.blood_essence=§7§oDropped by Waking Bloods during the Waking Bloodmoon
 item.blight_essence.name=Blight Essence
-tooltip.wardlights.blight_essence=Dropped by Waking Blights during the Waking Blight
+tooltip.wardlights.blight_essence=§7§oDropped by Waking Blights during the Waking Blight
 item.tainted_flesh.name=Tainted Flesh
-tooltip.wardlights.tainted_flesh=Dropped rarely by weakened overworld parasites in their native habitats.
+tooltip.wardlights.tainted_flesh=§7§oDropped rarely by weakened overworld parasites in their native habitats.
 item.dormant_badge.name=Dormant Badge
 item.badge_of_bravery.name=Badge of Bravery
-tooltip.wardlights.badge_of_bravery=Traded by Brutal Merchants for a Dormant Badge and Ancient Coins
+tooltip.wardlights.badge_of_bravery=§7§oTraded by Brutal Merchants for a Dormant Badge and Ancient Coins
 
 # Chest baubles (Bulwark of Valor / Aegis of Sacrifice)
-tooltip.wardlights.chest_bauble.resistance=Grants %s while equipped
-tooltip.wardlights.chest_bauble.explosion=%s Explosion damage resistance
-tooltip.wardlights.chest_bauble.ignore_hit=Every %s hits ignore the next attack
-tooltip.wardlights.chest_bauble.hold_ctrl=<Hold Ctrl>
-tooltip.wardlights.chest_bauble.headshot=%s Chance to ignore headshot (First Aid)
-tooltip.wardlights.chest_bauble.explosion_blur=Disables explosion blur (Enhanced Visuals)
-message.wardlights.chest_bauble.ignored_hit=Your ward holds!
-message.wardlights.chest_bauble.headshot_saved=A fatal blow, turned aside!
+tooltip.wardlights.chest_bauble.resistance=§6Grants %s while equipped
+tooltip.wardlights.chest_bauble.explosion=§3%s§6 Explosion damage resistance
+tooltip.wardlights.chest_bauble.ignore_hit=§6Every §3%s§6 hits ignore the next attack
+tooltip.wardlights.chest_bauble.hold_ctrl=§8<Hold Ctrl>
+tooltip.wardlights.chest_bauble.headshot=§3%s§6 Chance to ignore headshot (First Aid)
+tooltip.wardlights.chest_bauble.explosion_blur=§7Disables explosion blur (Enhanced Visuals)
+message.wardlights.chest_bauble.ignored_hit=§6§lYour ward holds!
+message.wardlights.chest_bauble.headshot_saved=§6§lA fatal blow, turned aside!

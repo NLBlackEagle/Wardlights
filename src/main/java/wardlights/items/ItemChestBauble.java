@@ -18,7 +18,6 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -123,19 +122,19 @@ public abstract class ItemChestBauble extends Item implements IBauble, IRenderBa
             tooltip.add(line("resistance", I18n.format(MobEffects.RESISTANCE.getName())));
         }
         if (config.explosionResistance) {
-            tooltip.add(line("explosion", number(percent(1 - config.explosionDamageMultiplier))));
+            tooltip.add(line("explosion", percent(1 - config.explosionDamageMultiplier)));
         }
         if (config.ignoreDamage) {
-            tooltip.add(line("ignore_hit", number(String.valueOf(config.requiredHits))));
+            tooltip.add(line("ignore_hit", config.requiredHits));
         }
 
         // Bonuses that only exist alongside another mod, tucked behind Ctrl.
         List<String> compat = new ArrayList<>();
         if (config.headshotSave && Loader.isModLoaded(FirstAidCompat.MODID)) {
-            compat.add(line("headshot", number(percent(1.0 / config.headshotSaveChance))));
+            compat.add(line("headshot", percent(1.0 / config.headshotSaveChance)));
         }
         if (config.disableExplosionBlur && Loader.isModLoaded(EnhancedVisualsCompat.MODID)) {
-            compat.add(TextFormatting.GRAY + I18n.format(TOOLTIP_PREFIX + "explosion_blur"));
+            compat.add(line("explosion_blur"));
         }
         if (compat.isEmpty()) {
             return;
@@ -143,19 +142,14 @@ public abstract class ItemChestBauble extends Item implements IBauble, IRenderBa
         if (GuiScreen.isCtrlKeyDown()) {
             tooltip.addAll(compat);
         } else {
-            tooltip.add(TextFormatting.DARK_GRAY + I18n.format(TOOLTIP_PREFIX + "hold_ctrl"));
+            tooltip.add(line("hold_ctrl"));
         }
     }
 
-    /** A gold tooltip line; {@code args} are pre-colored with {@link #number}. */
+    /** A tooltip line; its colors come from the lang file. */
     @SideOnly(Side.CLIENT)
     private static String line(String key, Object... args) {
-        return TextFormatting.GOLD + I18n.format(TOOLTIP_PREFIX + key, args);
-    }
-
-    /** A highlighted value inside a gold line, switching back to gold after it. */
-    private static String number(String value) {
-        return TextFormatting.DARK_AQUA + value + TextFormatting.GOLD;
+        return I18n.format(TOOLTIP_PREFIX + key, args);
     }
 
     /** 0.75 -> "75.0%". */

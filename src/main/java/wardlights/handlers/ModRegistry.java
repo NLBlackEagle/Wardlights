@@ -1,7 +1,9 @@
 package wardlights.handlers;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -27,6 +29,7 @@ import wardlights.items.ItemLanternPixie;
 import wardlights.items.ItemLanternSrp;
 import wardlights.items.ItemLanternVapula;
 import wardlights.items.ItemMaterial;
+import wardlights.lantern.LanternType;
 import wardlights.potion.PotionWardLight;
 import wardlights.tileentity.TileEntityLanternPale;
 import wardlights.tileentity.TileEntityLanternPixie;
@@ -37,8 +40,8 @@ import wardlights.tileentity.TileEntityLanternVapula;
 @Mod.EventBusSubscriber(modid = Wardlights.MODID)
 public class ModRegistry {
 
-    /** Shown while a lantern is working. */
-    public static Potion WARDLIGHT;
+    /** One WardLight effect per lantern type, shown while that type's ward works for the player. */
+    public static final Map<LanternType, Potion> WARDLIGHTS = new EnumMap<>(LanternType.class);
 
     public static Item LANTERN_REGULAR;
     public static Item LANTERN_PIXIE;
@@ -74,10 +77,12 @@ public class ModRegistry {
     /** Provides the pack's Blood Tear (contenttweaker:blood_tear). */
     public static final String CONTENTTWEAKER_MODID = "contenttweaker";
     public static final String SRPARASITES_MODID = "srparasites";
+    public static final String PALEBLOOM_MODID = "palebloom";
     /** Fish's Undead Rising. */
     public static final String FISH_UNDEAD_RISING_MODID = "mod_lavacow";
     public static final String BLOODMOON_MODID = "bloodmoon";
     public static final String LYCANITESMOBS_MODID = "lycanitesmobs";
+    public static final String ICEANDFIRE_MODID = "iceandfire";
 
     /**
      * Every crafting ingredient that actually got registered, so the client can
@@ -138,8 +143,18 @@ public class ModRegistry {
 
     @SubscribeEvent
     public static void registerPotions(RegistryEvent.Register<Potion> event) {
-        WARDLIGHT = new PotionWardLight();
-        event.getRegistry().register(WARDLIGHT);
+        // Liquid colors match each lantern's light (the effects hide their particles, but some UIs show the color).
+        registerWardLight(event, LanternType.REGULAR, 0xFFE8A0);
+        registerWardLight(event, LanternType.PIXIE, 0xD9A0FF);
+        registerWardLight(event, LanternType.VAPULA, 0xA0D8FF);
+        registerWardLight(event, LanternType.PALE, 0xECECE4);
+        registerWardLight(event, LanternType.PARASITE, 0xC03030);
+    }
+
+    private static void registerWardLight(RegistryEvent.Register<Potion> event, LanternType type, int color) {
+        Potion potion = new PotionWardLight(type, color);
+        WARDLIGHTS.put(type, potion);
+        event.getRegistry().register(potion);
     }
 
     @SubscribeEvent

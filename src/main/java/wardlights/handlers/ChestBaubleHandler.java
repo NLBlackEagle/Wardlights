@@ -13,7 +13,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
@@ -96,9 +95,7 @@ public final class ChestBaubleHandler {
     /** Action bar message + shield-block sound when a bauble stops a hit. */
     public static void showFeedback(EntityLivingBase wearer, String messageKey) {
         if (wearer instanceof EntityPlayer) {
-            TextComponentTranslation message = new TextComponentTranslation(messageKey);
-            message.getStyle().setColor(TextFormatting.GOLD).setBold(true);
-            ((EntityPlayer) wearer).sendStatusMessage(message, true);
+            ((EntityPlayer) wearer).sendStatusMessage(new TextComponentTranslation(messageKey), true);
         }
         wearer.world.playSound(null, wearer.posX, wearer.posY, wearer.posZ, SoundEvents.ITEM_SHIELD_BLOCK,
                 SoundCategory.PLAYERS, 0.8F, 1.0F);

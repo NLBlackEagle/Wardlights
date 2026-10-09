@@ -9,25 +9,35 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import wardlights.Wardlights;
+import wardlights.lantern.LanternType;
 
 /**
- * Shown while the player's lantern is working (see WardLightHandler). It does
- * nothing by itself; it only tells the player the ward is up.
+ * Shown while a lantern's ward works for the player (see WardLightHandler), one
+ * per lantern type, so the player sees which wards are up: their carried
+ * lantern's, plus those of working placed lanterns nearby. It does nothing by itself.
+ *
+ * <p>Registry name and icon: {@code wardlight} for the Regular Lantern (the
+ * original name, so existing saves keep it), {@code wardlight_<type>} for the
+ * others. The icon is {@code textures/gui/potion/<registry name>.png}; they all
+ * share the name "WardLight".
  *
  * <p>Vanilla effect icons come from one shared sheet, so this draws its own
  * 18x18 icon at the same spots vanilla would.
  */
 public class PotionWardLight extends Potion {
 
-    private static final ResourceLocation ICON = new ResourceLocation(Wardlights.MODID,
-            "textures/gui/potion/wardlight.png");
     private static final int ICON_SIZE = 18;
 
-    public PotionWardLight() {
-        super(false, 0xFFE8A0);
-        setRegistryName(Wardlights.MODID, "wardlight");
+    private final ResourceLocation icon;
+
+    public PotionWardLight(LanternType type, int color) {
+        super(false, color);
+        String name = type == LanternType.REGULAR ? "wardlight" : "wardlight_" + type.name().toLowerCase();
+        setRegistryName(Wardlights.MODID, name);
+        // Same name for every type; the icon tells them apart.
         setPotionName("effect.wardlights.wardlight");
         setBeneficial();
+        icon = new ResourceLocation(Wardlights.MODID, "textures/gui/potion/" + name + ".png");
     }
 
     /**
@@ -51,7 +61,7 @@ public class PotionWardLight extends Potion {
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("deprecation")
     public void renderInventoryEffect(int x, int y, PotionEffect effect, Minecraft mc) {
-        drawIcon(x + 6, y + 7, 1.0F);
+        drawIcon(icon, x + 6, y + 7, 1.0F);
     }
 
     /** Top-right HUD: vanilla puts the icon 3 in from the frame's corner. */
@@ -59,12 +69,12 @@ public class PotionWardLight extends Potion {
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("deprecation")
     public void renderHUDEffect(int x, int y, PotionEffect effect, Minecraft mc, float alpha) {
-        drawIcon(x + 3, y + 3, alpha);
+        drawIcon(icon, x + 3, y + 3, alpha);
     }
 
     @SideOnly(Side.CLIENT)
-    private static void drawIcon(int x, int y, float alpha) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(ICON);
+    private static void drawIcon(ResourceLocation icon, int x, int y, float alpha) {
+        Minecraft.getMinecraft().getTextureManager().bindTexture(icon);
         GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
         Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE);
     }

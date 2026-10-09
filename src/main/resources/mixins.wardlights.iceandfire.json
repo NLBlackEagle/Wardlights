@@ -1,0 +1,15 @@
+{
+  "required": false,
+  "package": "wardlights.mixins",
+  "refmap": "mixins.wardlights.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "IceAndFirePixieStealMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1,
+    "maxShiftBy": 10
+  }
+}

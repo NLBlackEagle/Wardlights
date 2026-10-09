@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
+import wardlights.compat.ArtifactsCompat;
 import wardlights.compat.FirstAidCompat;
 import wardlights.compat.NuclearCraftCompat;
 import wardlights.handlers.ModRegistry;
@@ -37,6 +38,9 @@ public class Wardlights {
         if (Loader.isModLoaded(FirstAidCompat.MODID)) {
             MinecraftForge.EVENT_BUS.register(new FirstAidCompat());
         }
+        if (Loader.isModLoaded(ArtifactsCompat.MODID)) {
+            MinecraftForge.EVENT_BUS.register(new ArtifactsCompat());
+        }
     }
 
     @Mod.EventHandler
@@ -60,10 +64,10 @@ todo: [Lanterns]
   when it is active.
 - Lantern types:
   Lantern 1; Regular Lantern - Creates a light source preventing darkness mobs using you as a excuse to materialize! (only underground & darkness)
-  Lantern 2; Pixie Infused - (prevents pixie stealing, even during light) add effects such as luck, & adds 5% chance below y25 for a mimic to spawn. (only underground & darkness)
+  Lantern 2; Pixie Infused - prevents ice and fire pixie stealing, during both night and day and adds 5% chance below y25 for a mimic to spawn + gives luck I underground & in darkness.
   Lantern 3; Vapula Infused - Increase mining speed make vapula and geoachs mined into your ally temporary & increase their spawns (only underground & darkness)
   Lantern 4; Pale Infused - Have a entity list that will cancel their targeting if conditions met & make a whitelist of entities which will get pale bloom effect when they are nearby
-  Lantern 5; Parasite Infused - make SRP targeting ignore you (also during light) <config.perc.times>
+  Lantern 5; Parasite Infused - make SRP targeting ignore you (also during light) <config.perc.times> Also clears entities of COTH within the "Lantern Radius" config
 - Lantern Looks:
   Lantern 1; (Default) simple cast iron lantern with a candle burning.
   Lantern 2; Lavender like glow and little fire-fly pink/purple/white like particles floating about

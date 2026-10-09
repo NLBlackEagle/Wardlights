@@ -10,7 +10,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -73,7 +72,7 @@ public class ItemMaterial extends Item {
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
         String key = "tooltip.wardlights." + getRegistryName().getPath();
         if (I18n.hasKey(key)) {
-            tooltip.add(TextFormatting.GRAY + "" + TextFormatting.ITALIC + I18n.format(key));
+            tooltip.add(I18n.format(key));
         }
     }
 }

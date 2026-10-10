@@ -223,20 +223,21 @@ public class ForgeConfigHandler {
 			@Config.RangeInt(min = 1, max = 32)
 			public int lanternRadius = 8;
 
-			@Config.Comment("Pixie Lantern: chance that an unlooted chest its carrier opens or breaks at or below \"Pixie Lantern "
-					+ "Mimic Max Y\" is an Artifacts mimic. Rolled before, and on top of, Artifacts' own unlooted chest "
+			@Config.Comment("Pixie Lantern: chance that an unlooted chest its carrier opens or breaks while deep in a cave "
+					+ "(see \"Pixie Lantern Mimic Max Y\") is an Artifacts mimic. Rolled before, and on top of, Artifacts' own unlooted chest "
 					+ "mimic chance, in Artifacts' unlooted chest mimic dimensions. 0 disables it.")
 			@Config.Name("Pixie Lantern Mimic Chance")
 			@Config.RangeDouble(min = 0, max = 1)
 			public double pixieMimicChance = 0.05;
 
-			@Config.Comment("The Pixie Lantern's extra mimic chance only applies to chests at or below this Y level.")
+			@Config.Comment("The Pixie Lantern's extra mimic chance only applies while its carrier is below this Y level "
+					+ "and in a cave: no sky light at all where they stand.")
 			@Config.Name("Pixie Lantern Mimic Max Y")
 			@Config.RangeInt(min = 0, max = 256)
 			public int pixieMimicMaxY = 25;
 
 			@Config.Comment("Parasite Lantern: chance that a parasite (any SRParasites mob) ignores its carrier, or a player "
-					+ "within the \"Lantern Radius\" of a placed one, day and night. Each parasite rolls for each such player "
+					+ "within the \"Lantern Radius\" of a working placed one, while the ward is active. Each parasite rolls for each such player "
 					+ "and rolls again every \"Parasite Lantern Re-roll Seconds\", so it notices them sooner or later. Once "
 					+ "a parasite has noticed a player, or that player has hit it, it stays aware of them. 0 disables it.")
 			@Config.Name("Parasite Lantern Ignore Chance")
@@ -282,6 +283,12 @@ public class ForgeConfigHandler {
 			@Config.Name("Vapula Lantern Fortune Bonus")
 			@Config.RangeInt(min = 0, max = 5)
 			public int vapulaFortuneBonus = 1;
+
+			@Config.Comment("Parasite Lantern: SRParasites' Fear lasts this many times as long on a player while their "
+					+ "Parasite Lantern ward is active (0.5 = half as long). 1 disables it.")
+			@Config.Name("Parasite Lantern Fear Duration")
+			@Config.RangeDouble(min = 0, max = 1)
+			public double parasiteFearDuration = 0.5;
 
 			@Config.Comment("Pale Lantern: mobs (entity ids) that ignore a player while a Pale Lantern's ward is active for "
 					+ "them (carried, or a working one placed nearby). One that's hit by that player fights back, and stays "

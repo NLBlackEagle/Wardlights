@@ -123,7 +123,9 @@ public abstract class ItemLanternBase extends ItemBlock implements IAnimatable, 
                         tooltip.add(line("srp.ignore", Math.round(config.parasiteIgnoreChance * 100)));
                     }
                     tooltip.add(line("srp.coth", config.lanternRadius));
-                    tooltip.add(line("srp.fear"));
+                    if (config.parasiteFearDuration < 1) {
+                        tooltip.add(line("srp.fear", Math.round((1 - config.parasiteFearDuration) * 100)));
+                    }
                 }
                 break;
             default:

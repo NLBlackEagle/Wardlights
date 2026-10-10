@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -22,8 +23,9 @@ import wardlights.lantern.LanternType;
 import wardlights.util.LanternUtil;
 
 /**
- * Pixie Lantern: deep underground, an unlooted chest its carrier opens or
- * breaks gets an extra roll to be an Artifacts mimic.
+ * Pixie Lantern: while its carrier is deep in a cave (below "Pixie Lantern
+ * Mimic Max Y", with no sky light where they stand), an unlooted chest they open
+ * or break gets an extra roll to be an Artifacts mimic.
  *
  * <p>Works like Artifacts' own unlooted-chest mimic and uses its dimension
  * list. Artifacts handles these events at LOW priority, so this extra roll
@@ -57,11 +59,17 @@ public class ArtifactsCompat {
         }
     }
 
+    /** Below maxY with no sky light at all where the player stands: no opening to the sky, not even a ravine's. */
+    private static boolean isDeepInCave(EntityPlayer player, int maxY) {
+        BlockPos pos = new BlockPos(player);
+        return pos.getY() < maxY && player.world.getLightFor(EnumSkyBlock.SKY, pos) == 0;
+    }
+
     /** Rolls the Pixie Lantern's mimic chance on this chest; true when it became a mimic. */
     private static boolean tryMimic(World world, BlockPos pos, EntityPlayer player) {
         LanternConfig config = ForgeConfigHandler.server.lanterns;
         if (player == null || player.isSpectator() || config.pixieMimicChance <= 0
-                || pos.getY() > config.pixieMimicMaxY
+                || !isDeepInCave(player, config.pixieMimicMaxY)
                 || !LanternUtil.hasLantern(player, LanternType.PIXIE)
                 || !Arrays.asList(ModConfig.general.unlootedChestDimensions).contains(world.provider.getDimension())) {
             return false;

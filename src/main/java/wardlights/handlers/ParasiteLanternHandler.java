@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -28,9 +29,10 @@ import wardlights.util.LanternUtil;
 import wardlights.util.TargetMemory;
 
 /**
- * Parasite Lantern: SRParasites mobs tend to ignore its carrier, Call of the
- * Hive (COTH) is cleared from everything around it, and its carrier (or a player
- * near a placed one) is immune to SRParasites' Fear. All work day and night.
+ * Parasite Lantern: SRParasites mobs tend to ignore its carrier while the ward
+ * is active (darkness / underground), when SRParasites' Fear lasts shorter on
+ * them too; and day and night Call of the Hive (COTH) is cleared from everything
+ * around it.
  *
  * <p>Parasites are recognized by their registry namespace, so nothing here
  * touches an SRParasites class and it's harmless without the mod.
@@ -80,7 +82,7 @@ public class ParasiteLanternHandler {
         return config.parasiteIgnoreChance > 0
                 && parasite.getRevengeTarget() != player
                 && !TargetMemory.hasNoticed(parasite, player)
-                && LanternUtil.hasLantern(player, LanternType.PARASITE)
+                && LanternUtil.hasWardedLantern(player, LanternType.PARASITE)
                 && roll(parasite, player, config.parasiteRerollSeconds * 20L) < config.parasiteIgnoreChance;
     }
 
@@ -112,17 +114,38 @@ public class ParasiteLanternHandler {
         return z ^ (z >>> 31);
     }
 
+    /** True while this handler is adding the shortened Fear itself, so that one isn't shortened again. */
+    private static boolean addingShortenedFear;
+
     /**
-     * Fear immunity: every way SRParasites gives Fear goes through addPotionEffect,
-     * which asks this event first, so denying it here means Fear never lands.
+     * Weaker Fear while the ward is active: every way SRParasites gives Fear goes
+     * through addPotionEffect, which asks this event first. The event can only
+     * allow or deny, not change the duration, so the original is denied and a
+     * shortened copy added instead. Server only: the client receives the result.
      */
     @SubscribeEvent
     public static void onPotionApplicable(PotionEvent.PotionApplicableEvent event) {
         Potion potion = getFear();
-        if (potion != null && event.getPotionEffect().getPotion() == potion
-                && event.getEntityLiving() instanceof EntityPlayer
-                && LanternUtil.hasLantern((EntityPlayer) event.getEntityLiving(), LanternType.PARASITE)) {
-            event.setResult(Event.Result.DENY);
+        PotionEffect effect = event.getPotionEffect();
+        double multiplier = ForgeConfigHandler.server.lanterns.parasiteFearDuration;
+        if (addingShortenedFear || potion == null || effect.getPotion() != potion || multiplier >= 1
+                || !(event.getEntityLiving() instanceof EntityPlayer) || event.getEntityLiving().world.isRemote) {
+            return;
+        }
+        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+        if (!LanternUtil.hasWardedLantern(player, LanternType.PARASITE)) {
+            return;
+        }
+        event.setResult(Event.Result.DENY);
+        int duration = (int) Math.round(effect.getDuration() * multiplier);
+        if (duration > 0) {
+            addingShortenedFear = true;
+            try {
+                player.addPotionEffect(new PotionEffect(potion, duration, effect.getAmplifier(), effect.getIsAmbient(),
+                        effect.doesShowParticles()));
+            } finally {
+                addingShortenedFear = false;
+            }
         }
     }
 
@@ -136,11 +159,6 @@ public class ParasiteLanternHandler {
         if (LanternUtil.hasLantern(player, LanternType.PARASITE)
                 && LanternUtil.getActiveLanternType(player) == LanternType.PARASITE) {
             clearCoth(player.world, new BlockPos(player));
-        }
-        // Fear they already had before the lantern started covering them.
-        Potion potion = getFear();
-        if (potion != null && player.isPotionActive(potion) && LanternUtil.hasLantern(player, LanternType.PARASITE)) {
-            player.removePotionEffect(potion);
         }
     }
 

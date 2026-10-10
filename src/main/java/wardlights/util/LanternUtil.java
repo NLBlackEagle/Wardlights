@@ -135,53 +135,47 @@ public final class LanternUtil {
     }
 
     /**
-     * Keeps the current lantern while it still reaches the player and works;
-     * otherwise picks the next one. Candidates are the carried lantern first,
-     * then placed ones in range, nearest first; the first working one wins.
-     * A current lantern that reaches but doesn't work only gives way to a
-     * working one, so with none working it stays. Reach itself ignores the
+     * Picks the player's current lantern. A carried lantern always wins: your own
+     * lantern always counts. Without one, placed lanterns in range decide: the
+     * current one stays while it still reaches the player and works; otherwise
+     * the first working one in line takes over (see {@link #findPlacedLanterns}
+     * for the order). A current one that reaches but doesn't work only gives way
+     * to a working one, so with none working it stays. Reach itself ignores the
      * activation condition, so a working ward never flips as the light changes.
+     * Lanterns with daylight traits (Pixie, Parasite) always count as working.
      */
     @Nullable
     public static LanternType updateCurrentLantern(EntityPlayer player) {
-        World world = player.world;
-        BlockPos pos = new BlockPos(player);
         LanternType current = getCurrentLantern(player);
-        LanternType carried = getActiveLanternType(player);
-        boolean carriedWorks = carried != null && meetsActivationCondition(world, pos);
-        List<PlacedLantern> placed = findPlacedLanterns(world, pos);
-
-        boolean currentReaches = current != null
-                && (current == carried || placed.stream().anyMatch(lantern -> lantern.type == current));
-        boolean currentWorks = current != null
-                && ((current == carried && carriedWorks)
-                        || placed.stream().anyMatch(lantern -> lantern.type == current && lantern.works));
-        if (currentReaches && currentWorks) {
-            return current;
-        }
-
-        LanternType next = null;
-        if (carriedWorks) {
-            next = carried;
-        } else {
-            for (PlacedLantern lantern : placed) {
-                if (lantern.works) {
-                    next = lantern.type;
-                    break;
-                }
+        LanternType next = getActiveLanternType(player);
+        if (next == null) {
+            List<PlacedLantern> placed = findPlacedLanterns(player.world, new BlockPos(player));
+            boolean currentReaches = current != null && placed.stream().anyMatch(lantern -> lantern.type == current);
+            boolean currentWorks = currentReaches
+                    && placed.stream().anyMatch(lantern -> lantern.type == current && lantern.works);
+            if (currentWorks) {
+                next = current;
+            } else {
+                // The first working one in line; with none working, keep the current one if it still reaches.
+                LanternType fallback = currentReaches ? current : placed.isEmpty() ? null : placed.get(0).type;
+                next = placed.stream().filter(lantern -> lantern.works).map(lantern -> lantern.type)
+                        .findFirst().orElse(fallback);
             }
         }
-        if (next == null) {
-            // Nothing in reach works: keep the current one if it still reaches, else take the first in line.
-            next = currentReaches ? current : carried != null ? carried : placed.isEmpty() ? null : placed.get(0).type;
-        }
 
-        if (next != null) {
-            player.getEntityData().setString(CURRENT_LANTERN_TAG, next.name());
-        } else {
-            player.getEntityData().removeTag(CURRENT_LANTERN_TAG);
+        if (next != current) {
+            if (next != null) {
+                player.getEntityData().setString(CURRENT_LANTERN_TAG, next.name());
+            } else {
+                player.getEntityData().removeTag(CURRENT_LANTERN_TAG);
+            }
         }
         return next;
+    }
+
+    /** Whether a lantern of this type at pos counts as working when picking a player's current lantern. */
+    private static boolean worksAt(LanternType type, World world, BlockPos pos) {
+        return type.hasDaylightTraits() || meetsActivationCondition(world, pos);
     }
 
     /** A placed lantern within reach of a player: its type, how far away, and whether it works. */
@@ -197,18 +191,22 @@ public final class LanternUtil {
         }
     }
 
-    /** The placed lanterns within the lantern radius of pos, nearest first. */
+    /**
+     * The placed lanterns within the lantern radius of pos, in the order they'd
+     * become a player's ward: by type priority ({@link LanternType#getPlacedPriority},
+     * Parasite, then Pixie, then the rest), then nearest first.
+     */
     private static List<PlacedLantern> findPlacedLanterns(World world, BlockPos pos) {
         List<PlacedLantern> found = new ArrayList<>();
         forEachPlacedLantern(world, pos, ForgeConfigHandler.server.lanterns.lanternRadius,
                 (lanternPos, state, type) -> {
                     if (isWithinLanternRadius(lanternPos, pos)) {
-                        found.add(new PlacedLantern(type, getSteps(lanternPos, pos),
-                                meetsActivationCondition(world, lanternPos)));
+                        found.add(new PlacedLantern(type, getSteps(lanternPos, pos), worksAt(type, world, lanternPos)));
                     }
                     return false;
                 });
-        found.sort(Comparator.comparingInt(lantern -> lantern.steps));
+        found.sort(Comparator.<PlacedLantern>comparingInt(lantern -> lantern.type.getPlacedPriority())
+                .thenComparingInt(lantern -> lantern.steps));
         return found;
     }
 

@@ -29,6 +29,7 @@ import wardlights.items.ItemLanternPixie;
 import wardlights.items.ItemLanternSrp;
 import wardlights.items.ItemLanternVapula;
 import wardlights.items.ItemMaterial;
+import wardlights.items.ItemViralRing;
 import wardlights.lantern.LanternType;
 import wardlights.potion.PotionWardLight;
 import wardlights.tileentity.TileEntityLanternPale;
@@ -51,6 +52,8 @@ public class ModRegistry {
     /** Only registered when {@link #hasChestBaubles()}; null otherwise. */
     public static Item BULWARK_OF_VALOR;
     public static Item AEGIS_OF_SACRIFICE;
+    /** Only registered when SRParasites is installed; null otherwise. */
+    public static Item VIRAL_RING;
 
     /** Crafting ingredients; each is null when a mod it's made from isn't installed. */
     public static Item PLUTONIUM_ALLOY;
@@ -183,6 +186,10 @@ public class ModRegistry {
             BULWARK_OF_VALOR = new ItemBulwarkOfValor("bulwark_of_valor");
             AEGIS_OF_SACRIFICE = new ItemAegisOfSacrifice("aegis_of_sacrifice");
             event.getRegistry().registerAll(BULWARK_OF_VALOR, AEGIS_OF_SACRIFICE);
+        }
+        if (Loader.isModLoaded(SRPARASITES_MODID)) {
+            VIRAL_RING = new ItemViralRing("viral_ring");
+            event.getRegistry().register(VIRAL_RING);
         }
 
         PLUTONIUM_ALLOY = registerMaterial(event.getRegistry(), "plutonium_alloy", NUCLEARCRAFT_MODID);

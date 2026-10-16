@@ -75,6 +75,10 @@ public class ClientModRegistry {
             ModelLoader.setCustomModelResourceLocation(ModRegistry.AEGIS_OF_SACRIFICE, 0,
                     new ModelResourceLocation(ModRegistry.AEGIS_OF_SACRIFICE.getRegistryName(), "inventory"));
         }
+        if (ModRegistry.VIRAL_RING != null) {
+            ModelLoader.setCustomModelResourceLocation(ModRegistry.VIRAL_RING, 0,
+                    new ModelResourceLocation(ModRegistry.VIRAL_RING.getRegistryName(), "inventory"));
+        }
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLanternRegular.class, new LanternRegularBlockRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLanternPixie.class, new LanternPixieBlockRenderer());

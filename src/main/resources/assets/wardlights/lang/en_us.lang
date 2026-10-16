@@ -70,3 +70,7 @@ tooltip.wardlights.chest_bauble.headshot=§3%s§6 Chance to ignore headshot (Fir
 tooltip.wardlights.chest_bauble.explosion_blur=§7Disables explosion blur (Enhanced Visuals)
 message.wardlights.chest_bauble.ignored_hit=§6§lYour ward holds!
 message.wardlights.chest_bauble.headshot_saved=§6§lA fatal blow, turned aside!
+
+# Viral Ring (%s = the max Viral level as a roman numeral)
+item.viral_ring.name=Viral Ring
+tooltip.wardlights.viral_ring.limit=§6Limits Viral to a max of §3%s

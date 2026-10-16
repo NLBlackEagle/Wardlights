@@ -390,6 +390,19 @@ public class ForgeConfigHandler {
 			@Config.Name("Enhanced Visuals Disable Explosion Blur")
 			public boolean disableExplosionBlur = true;
 		}
+
+		@Config.Comment("Settings for the Wardlights baubles that aren't chest baubles.")
+		@Config.Name("Bauble Settings")
+		public BaubleConfig baubles = new BaubleConfig();
+
+		public static class BaubleConfig {
+
+			@Config.Comment("Viral Ring: the highest level SRParasites' Viral can stack to while it's worn (2 = Viral II). "
+					+ "Only exists when SRParasites is installed.")
+			@Config.Name("Viral Ring Max Viral Level")
+			@Config.RangeInt(min = 1, max = 10)
+			public int viralRingMaxLevel = 2;
+		}
 	}
 
 	public static class ClientConfig {

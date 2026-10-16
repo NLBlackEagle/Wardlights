@@ -159,6 +159,7 @@ todo: [Baubles] (after the lanterns, need models)
 - Charm of Guarding (Teddy Bear + Blood Gem): counters fear, corrosion and needler (necklace slot)
 - Viral Ring: limits viral to max 2 (ring slot)
 - Sentient Crown: gives SRP rage effect and adaptation of max 5% (head slot)
+15 seconds of rage I below 85% and 15 seconds of rage II below 35% (just something that happens and might save you in a pickle?)
 - Cyclops Eye: gives strength 1 and looting 1, same as the dragon eye
 - Siren Scale: Swimming Speed 1 (universal slot)
 - Pendant of Plutonium Warding: an irradiated aura weakening parasites in a radius around the player (necklace slot)

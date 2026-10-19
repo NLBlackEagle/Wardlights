@@ -35,7 +35,7 @@ tooltip.wardlights.lantern.pale.ignore=§e- Makes pale entities ignore you, unle
 # Pale Lung chances (%s%% = the chance); placed: second %s = the lantern radius
 tooltip.wardlights.lantern.pale.pale_lung.hitting=§e- Hostiles you hit have a %s%% chance to catch Pale Lung!
 tooltip.wardlights.lantern.pale.pale_lung.hit_by=§e- Hostiles that hit you have a %s%% chance to catch Pale Lung!
-tooltip.wardlights.lantern.pale.pale_lung.placed=§e- When placed, hostiles coming within a radius of %2$s have a %1$s%% chance to catch Pale Lung!
+tooltip.wardlights.lantern.pale.pale_lung.placed=§e- When placed, hostiles within a radius of %2$s have a %1$s%% chance to catch Pale Lung!
 tooltip.wardlights.lantern.srp.ignore=§e- %s%% chance for SRParasites to ignore you!
 tooltip.wardlights.lantern.srp.coth=§e- Removes the COTH effect from nearby entities in a radius of %s regardless of darkness
 tooltip.wardlights.lantern.srp.fear=§e- Limits the fear effect parasites have over you by %s%% of its duration

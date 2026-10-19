@@ -56,41 +56,17 @@ public class Wardlights {
 }
 
 /*
-todo: [Lanterns]
+done: [Lanterns] (all recipes and tuning live in the config, see ForgeConfigHandler)
 
-- Lanterns Main Concept: bauble, right-hand and toolbelt equipable: Pale Lantern = keeps darkness entities at bay
-  (cancels targeting) and make it a belt-equippable too - max 1 lantern active. (make each lantern have its own white and blacklist potion effects)
-  only activates in darkness and/or underground (below y64), otherwise does not work. And add a effect called WardLight so people know
-  when it is active.
-- Lantern types:
-  Lantern 1; Regular Lantern - Creates a light source preventing darkness mobs using you as a excuse to materialize! (only underground & darkness)
-  Lantern 2; Pixie Infused - prevents ice and fire pixie stealing, during both night and day and adds 5% chance below y25 for a mimic to spawn + gives luck I underground & in darkness.
-  Lantern 3; Vapula Infused - Increase mining speed make vapula and geoachs mined into your ally temporary & increase their spawns (only underground & darkness)
-  Lantern 4; Pale Infused - Have a entity list that will cancel their targeting if conditions met & make a whitelist of entities which will get pale bloom effect when they are nearby
-  Lantern 5; Parasite Infused - make SRP targeting ignore you (also during light) <config.perc.times> Also clears entities of COTH within the "Lantern Radius" config
-- Lantern Looks:
-  Lantern 1; (Default) simple cast iron lantern with a candle burning.
-  Lantern 2; Lavender like glow and little fire-fly pink/purple/white like particles floating about
-  Lantern 3; Crystal floating in the center emitting blue-white light
-  Lantern 4; Overgrown lantern, pale leaves, white light and white particles floating about.
-  Lantern 5; Tendrils poking out making a twitching animation with red light emitted from within. SRP overgrowth
-- Crafting:
-  Lantern 1; 4x iron ingot 4x framed glass pane 1x glowing powder (Or 10 gold coins at the blacksmith)
-  Lantern 2; 1x lantern + 4x pixie dust + 4x silver
-  Lantern 3; 1x lantern + 4x vapulacrystal/geonach spear + 4x heart dust
-  Lantern 4; 1x lantern + 4x weird root + 4x amber valve
-  Lantern 5; 1x lantern + 4x essential segment + 4x quench
-
-- Make the lantern baubles reforgeable! (give them a bauble quality!)
-
-- Next steps:
-  1. Foundation: LanternType enum (Regular, Pixie, Vapula, Pale, Parasite), lanterns become a real bauble (IBauble),
-     LanternUtil also checks the Baubles slots, not just the hands. Everything below depends on this.
-  2. Effects per lantern (see Lantern types above). Regular's spawn blocking already works, but only for vanilla mobs
-     and for every lantern alike.
-  3. Recipes: need the exact item ids for pixie dust, silver, vapula crystal / geonach spear, heart dust, weird root,
-     amber valve, essential segment, quench, framed glass pane and glowing powder.
-  4. Fill in the empty Lycanites / Pale Bloom / SRParasites mixin stubs, and check the game starts with those mods.
+- 5 lanterns, each a bauble (belt), hand-held, Tool Belt or placed block; one ward per player at a time,
+  shown by its own WardLight effect. Works only in darkness / underground, except the daylight traits noted below.
+  Lantern 1; Regular - blocks darkness spawns (vanilla + Lycanites) around you.
+  Lantern 2; Pixie - Ice and Fire pixies can't steal (day and night), 5% mimic chance deep in caves, Luck I.
+  Lantern 3; Vapula - faster mining + Fortune, more Vapula / Geonach mining spawns, which become temporary allies.
+  Lantern 4; Pale - Pale Bloom mobs ignore you, chance to give hostile mobs Pale Lung.
+  Lantern 5; Parasite - SRP mobs may ignore you, clears COTH in the Lantern Radius and shortens Fear (day and night).
+- Reforgeable through Quality Tools; placing and breaking a lantern keeps its quality.
+- Dropped: per-lantern potion white/blacklists and per-lantern particles.
 
 
 done: [SOH 1 & 2 + ingredients] (all recipes live in the config, see ForgeConfigHandler)
@@ -99,7 +75,6 @@ done: [SOH 1 & 2 + ingredients] (all recipes live in the config, see ForgeConfig
 - Ingredients, each registered only when its source mods are loaded, with a "where it comes from" tooltip:
   Plutonium Alloy, Plutonium Blood Alloy (NuclearCraft Alloy Furnace), Corrupted Heart, Corrupted Fabric,
   Blood / Blight Essence, Tainted Flesh (dropped via EagleMixins' parasite replacement drop)
-- todo: Blight Essence green glint (like Blood Essence's red one, same strength, e.g. 008000), once its texture is final
 - Badge of Bravery chain:
   steel, blood essence, steel / silver, tainted flesh, silver / steel, blight essence, steel -> Dormant Badge
   Dormant Badge + Ancient Coins -> Badge of Bravery (Brutal Merchant trade in DregoraRL; fallback recipe in config)
@@ -153,15 +128,14 @@ later: [Waking Night] (separate mod, kept here for reference)
   Waking Nightmare is a potion effect (levels I-III) so it shows in the HUD
 
 
-todo: [Baubles] (after the lanterns, need models)
+todo: [Baubles] (need models)
+
+- done: Viral Ring (Ancient Ring + Beckon Pearl), Dispatcher Crown (Ancient Crown + Dispatcher Bloom; Rage bursts + 5%
+  adaptation, not yet tested in-game), Cyclops Eye (head, 5% from I&F Cyclopes; Strength I + Looting I), Siren Scale
+  (amulet, 5% from I&F Sirens; +50% swim speed). Eye and Scale still have placeholder textures.
 
 - Ring of Cleansing (LC): applies immalleable and removes link (ring slot)
 - Charm of Guarding (Teddy Bear + Blood Gem): counters fear, corrosion and needler (necklace slot)
-- Viral Ring: limits viral to max 2 (ring slot)
-- Sentient Crown: gives SRP rage effect and adaptation of max 5% (head slot)
-15 seconds of rage I below 85% and 15 seconds of rage II below 35% (just something that happens and might save you in a pickle?)
-- Cyclops Eye: gives strength 1 and looting 1, same as the dragon eye
-- Siren Scale: Swimming Speed 1 (universal slot)
 - Pendant of Plutonium Warding: an irradiated aura weakening parasites in a radius around the player (necklace slot)
 
  */

@@ -62,6 +62,14 @@ public class RecipeRegistry {
             register(event, buildShapelessRecipe("badge_of_bravery", "Badge of Bravery",
                     ForgeConfigHandler.server.badgeOfBraveryRecipe, ModRegistry.BADGE_OF_BRAVERY));
         }
+        if (ModRegistry.VIRAL_RING != null) {
+            register(event, buildShapelessRecipe("viral_ring", "Viral Ring", config.viralRingRecipe,
+                    ModRegistry.VIRAL_RING));
+        }
+        if (ModRegistry.DISPATCHER_CROWN != null) {
+            register(event, buildShapelessRecipe("dispatcher_crown", "Dispatcher Crown", config.dispatcherCrownRecipe,
+                    ModRegistry.DISPATCHER_CROWN));
+        }
     }
 
     private static void register(RegistryEvent.Register<IRecipe> event, IRecipe recipe) {

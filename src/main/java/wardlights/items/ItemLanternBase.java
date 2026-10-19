@@ -105,11 +105,18 @@ public abstract class ItemLanternBase extends ItemBlock implements IAnimatable, 
                     tooltip.add(line("pale.ignore"));
                 }
                 if (PaleLanternHandler.getPaleLung() != null) {
-                    if (config.paleLungHittingChance > 0) {
-                        tooltip.add(line("pale.pale_lung.hitting", Math.round(config.paleLungHittingChance * 100)));
-                    }
-                    if (config.paleLungHitByChance > 0) {
-                        tooltip.add(line("pale.pale_lung.hit_by", Math.round(config.paleLungHitByChance * 100)));
+                    long hitting = Math.round(config.paleLungHittingChance * 100);
+                    long hitBy = Math.round(config.paleLungHitByChance * 100);
+                    // One line when both chances are the same, which they are by default.
+                    if (hitting > 0 && hitting == hitBy) {
+                        tooltip.add(line("pale.pale_lung.hitting_or_hit_by", hitting));
+                    } else {
+                        if (hitting > 0) {
+                            tooltip.add(line("pale.pale_lung.hitting", hitting));
+                        }
+                        if (hitBy > 0) {
+                            tooltip.add(line("pale.pale_lung.hit_by", hitBy));
+                        }
                     }
                     if (config.paleLungPlacedChance > 0) {
                         tooltip.add(line("pale.pale_lung.placed", Math.round(config.paleLungPlacedChance * 100),

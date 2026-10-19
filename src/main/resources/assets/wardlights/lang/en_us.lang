@@ -74,3 +74,23 @@ message.wardlights.chest_bauble.headshot_saved=§6§lA fatal blow, turned aside!
 # Viral Ring (%s = the max Viral level as a roman numeral)
 item.viral_ring.name=Viral Ring
 tooltip.wardlights.viral_ring.limit=§6Limits Viral to a max of §3%s
+item.ancient_ring.name=Ancient Ring
+tooltip.wardlights.ancient_ring=§7§oFound rarely among the ancient belongings of Dregora's past civilisation deep under the earth in a domain named the Underneath.
+item.ancient_crown.name=Ancient Crown
+tooltip.wardlights.ancient_crown=§7§oFound rarely among the ancient belongings of Dregora's past civilisation deep under the earth in a domain named the Underneath.
+item.beckon_pearl.name=Beckon Pearl
+tooltip.wardlights.beckon_pearl=§7§oLooted from the corpse of a beckon past its juvenile stage and guaranteed when fully grown.
+item.dispatcher_bloom.name=Dispatcher Bloom
+tooltip.wardlights.dispatcher_bloom=§7§oLooted from the corpse of a dispatcher past its juvenile stage and guaranteed when fully grown.
+
+# Dispatcher Crown (rage: %1$s = health %, %2$s = Rage level, %3$s = seconds; adaptation: %s = max %)
+item.dispatcher_crown.name=Dispatcher Crown
+tooltip.wardlights.dispatcher_crown.rage=§6Below §3%1$s§6 health: Rage %2$s for §3%3$s§6 seconds
+tooltip.wardlights.dispatcher_crown.adaptation=§6Adapts to what hurts you, up to §3%s§6 less damage from each
+
+# Cyclops Eye (looting: %s = bonus Looting level as a roman numeral) / Siren Scale (%s = how much faster, e.g. 50%)
+item.cyclops_eye.name=Cyclops Eye
+tooltip.wardlights.cyclops_eye.strength=§6Grants Strength §3I
+tooltip.wardlights.cyclops_eye.looting=§6Grants Looting §3%s
+item.siren_scale.name=Siren Scale
+tooltip.wardlights.siren_scale.swim_speed=§6Swim §3%s§6 faster

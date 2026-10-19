@@ -120,6 +120,18 @@ public class ForgeConfigHandler {
 		@Config.RequiresMcRestart
 		public String badgeOfBraveryRecipe = "{wardlights:dormant_badge, variedcommodities:coin_gold}";
 
+		@Config.Comment("Viral Ring shapeless crafting recipe, same format as the Badge of Bravery recipe. Only used when "
+				+ "SRParasites is installed.")
+		@Config.Name("Viral Ring Recipe")
+		@Config.RequiresMcRestart
+		public String viralRingRecipe = "{wardlights:ancient_ring, wardlights:beckon_pearl}";
+
+		@Config.Comment("Dispatcher Crown shapeless crafting recipe, same format as the Badge of Bravery recipe. Only "
+				+ "used when SRParasites is installed.")
+		@Config.Name("Dispatcher Crown Recipe")
+		@Config.RequiresMcRestart
+		public String dispatcherCrownRecipe = "{wardlights:ancient_crown, wardlights:dispatcher_bloom}";
+
 		@Config.Comment("Plutonium Alloy recipe in NuclearCraft's Alloy Furnace. Only used when NuclearCraft is installed.")
 		@Config.Name("Plutonium Alloy (Alloy Furnace)")
 		public AlloyFurnaceRecipeConfig plutoniumAlloy = new AlloyFurnaceRecipeConfig(
@@ -402,6 +414,67 @@ public class ForgeConfigHandler {
 			@Config.Name("Viral Ring Max Viral Level")
 			@Config.RangeInt(min = 1, max = 10)
 			public int viralRingMaxLevel = 2;
+
+			@Config.Comment("Dispatcher Crown: Rage bursts, one healthFraction;rageLevel;seconds per line. When the "
+					+ "wearer's health drops below healthFraction (0.85 = 85%) they get SRParasites' Rage at that level "
+					+ "for that long; it can trigger again once health is back above it.")
+			@Config.Name("Dispatcher Crown Rage")
+			public String[] dispatcherCrownRage = {
+					"0.85;1;15",
+					"0.35;2;15"
+			};
+
+			@Config.Comment("Dispatcher Crown: the most damage the wearer can adapt away from any one attacker type or "
+					+ "damage type (0.05 = 5% less damage). 0 disables adaptation.")
+			@Config.Name("Dispatcher Crown Max Adaptation")
+			@Config.RangeDouble(min = 0, max = 1)
+			public double dispatcherCrownMaxAdaptation = 0.05;
+
+			@Config.Comment("Dispatcher Crown: how much adaptation each hit adds (0.005 = 0.5%, so 10 hits from the same "
+					+ "thing reach the default 5% max). Taking the crown off resets it.")
+			@Config.Name("Dispatcher Crown Adaptation Per Hit")
+			@Config.RangeDouble(min = 0, max = 1)
+			public double dispatcherCrownAdaptationStep = 0.005;
+
+			@Config.Comment("Cyclops Eye: Looting levels added while it's worn, on top of the weapon's own. It also always "
+					+ "gives Strength I. Only exists when Ice and Fire is installed.")
+			@Config.Name("Cyclops Eye Looting")
+			@Config.RangeInt(min = 0, max = 10)
+			public int cyclopsEyeLooting = 1;
+
+			@Config.Comment("Siren Scale: how much faster the wearer swims (0.5 = 50% faster). Only exists when Ice and "
+					+ "Fire is installed.")
+			@Config.Name("Siren Scale Swim Speed")
+			@Config.RangeDouble(min = 0, max = 5)
+			public double sirenScaleSwimSpeed = 0.5;
+
+			@Config.Comment("Items mobs can drop and the chance they do (0.25 = 25%), one itemId;mobId;chance per line. "
+					+ "Defaults: Beckon Pearls from Stage II-IV Beckons, Dispatcher Blooms from Stage II-IV Dispatchers, "
+					+ "Cyclops Eyes from Cyclopes, Siren Scales from Sirens. "
+					+ "Lines naming an item that doesn't exist are skipped.")
+			@Config.Name("Mob Drops")
+			public String[] mobDrops = {
+					"wardlights:beckon_pearl;srparasites:beckon_sii;0.10",
+					"wardlights:beckon_pearl;srparasites:beckon_siii;0.25",
+					"wardlights:beckon_pearl;srparasites:beckon_siv;1.0",
+					"wardlights:dispatcher_bloom;srparasites:dispatcher_sii;0.10",
+					"wardlights:dispatcher_bloom;srparasites:dispatcher_siii;0.20",
+					"wardlights:dispatcher_bloom;srparasites:dispatcher_siv;1.0",
+					"wardlights:cyclops_eye;iceandfire:cyclops;0.05",
+					"wardlights:siren_scale;iceandfire:siren;0.05"
+			};
+
+			@Config.Comment("Items added to loot tables, one per line, in either form: "
+					+ "itemId;lootTableId;chance - an extra pool holding only that item, rolled on top of the usual "
+					+ "loot (0.05 = 5%), or "
+					+ "itemId;lootTableId;poolName;weight - one more entry in that existing pool, weighed against its "
+					+ "other entries. Lines naming an item that doesn't exist are skipped.")
+			@Config.Name("Loot Table Additions")
+			@Config.RequiresWorldRestart
+			public String[] lootTableAdditions = {
+					"wardlights:ancient_ring;underneath:underneath/fish_undead;fish_undead;70",
+					"wardlights:ancient_crown;underneath:underneath/fish_undead;fish_undead;60"
+			};
 		}
 	}
 

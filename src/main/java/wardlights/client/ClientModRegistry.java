@@ -79,6 +79,16 @@ public class ClientModRegistry {
             ModelLoader.setCustomModelResourceLocation(ModRegistry.VIRAL_RING, 0,
                     new ModelResourceLocation(ModRegistry.VIRAL_RING.getRegistryName(), "inventory"));
         }
+        if (ModRegistry.DISPATCHER_CROWN != null) {
+            ModelLoader.setCustomModelResourceLocation(ModRegistry.DISPATCHER_CROWN, 0,
+                    new ModelResourceLocation(ModRegistry.DISPATCHER_CROWN.getRegistryName(), "inventory"));
+        }
+        if (ModRegistry.CYCLOPS_EYE != null) {
+            ModelLoader.setCustomModelResourceLocation(ModRegistry.CYCLOPS_EYE, 0,
+                    new ModelResourceLocation(ModRegistry.CYCLOPS_EYE.getRegistryName(), "inventory"));
+            ModelLoader.setCustomModelResourceLocation(ModRegistry.SIREN_SCALE, 0,
+                    new ModelResourceLocation(ModRegistry.SIREN_SCALE.getRegistryName(), "inventory"));
+        }
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLanternRegular.class, new LanternRegularBlockRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLanternPixie.class, new LanternPixieBlockRenderer());

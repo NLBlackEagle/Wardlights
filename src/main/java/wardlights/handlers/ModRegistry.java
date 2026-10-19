@@ -23,12 +23,15 @@ import wardlights.blocks.BlockLanternSrp;
 import wardlights.blocks.BlockLanternVapula;
 import wardlights.items.ItemAegisOfSacrifice;
 import wardlights.items.ItemBulwarkOfValor;
+import wardlights.items.ItemCyclopsEye;
+import wardlights.items.ItemDispatcherCrown;
 import wardlights.items.ItemLantern;
 import wardlights.items.ItemLanternPale;
 import wardlights.items.ItemLanternPixie;
 import wardlights.items.ItemLanternSrp;
 import wardlights.items.ItemLanternVapula;
 import wardlights.items.ItemMaterial;
+import wardlights.items.ItemSirenScale;
 import wardlights.items.ItemViralRing;
 import wardlights.lantern.LanternType;
 import wardlights.potion.PotionWardLight;
@@ -54,6 +57,10 @@ public class ModRegistry {
     public static Item AEGIS_OF_SACRIFICE;
     /** Only registered when SRParasites is installed; null otherwise. */
     public static Item VIRAL_RING;
+    public static Item DISPATCHER_CROWN;
+    /** Only registered when Ice and Fire is installed (dropped by its Cyclops / Sirens); null otherwise. */
+    public static Item CYCLOPS_EYE;
+    public static Item SIREN_SCALE;
 
     /** Crafting ingredients; each is null when a mod it's made from isn't installed. */
     public static Item PLUTONIUM_ALLOY;
@@ -68,6 +75,14 @@ public class ModRegistry {
     public static Item DORMANT_BADGE;
     /** Always registered: it has no source mod, only a recipe and a villager trade set up by the pack. */
     public static Item BADGE_OF_BRAVERY;
+    /** Viral Ring ingredient; always registered, added to chest loot by {@link MaterialDropHandler}. */
+    public static Item ANCIENT_RING;
+    /** Dispatcher Crown ingredient; always registered, added to chest loot like the Ancient Ring. */
+    public static Item ANCIENT_CROWN;
+    /** Viral Ring ingredient; dropped by Beckons ({@link MaterialDropHandler}). */
+    public static Item BECKON_PEARL;
+    /** Dispatcher Crown ingredient; dropped by Dispatchers ({@link MaterialDropHandler}). */
+    public static Item DISPATCHER_BLOOM;
 
     public static Block LANTERN_REGULAR_BLOCK;
     public static Block LANTERN_PIXIE_BLOCK;
@@ -189,7 +204,13 @@ public class ModRegistry {
         }
         if (Loader.isModLoaded(SRPARASITES_MODID)) {
             VIRAL_RING = new ItemViralRing("viral_ring");
-            event.getRegistry().register(VIRAL_RING);
+            DISPATCHER_CROWN = new ItemDispatcherCrown("dispatcher_crown");
+            event.getRegistry().registerAll(VIRAL_RING, DISPATCHER_CROWN);
+        }
+        if (Loader.isModLoaded(ICEANDFIRE_MODID)) {
+            CYCLOPS_EYE = new ItemCyclopsEye("cyclops_eye");
+            SIREN_SCALE = new ItemSirenScale("siren_scale");
+            event.getRegistry().registerAll(CYCLOPS_EYE, SIREN_SCALE);
         }
 
         PLUTONIUM_ALLOY = registerMaterial(event.getRegistry(), "plutonium_alloy", NUCLEARCRAFT_MODID);
@@ -212,5 +233,9 @@ public class ModRegistry {
         if (BADGE_OF_BRAVERY != null) {
             ((ItemMaterial) BADGE_OF_BRAVERY).setGlintColor(ForgeConfigHandler.client::getBadgeOfBraveryGlintColor);
         }
+        ANCIENT_RING = registerMaterial(event.getRegistry(), "ancient_ring");
+        ANCIENT_CROWN = registerMaterial(event.getRegistry(), "ancient_crown");
+        BECKON_PEARL = registerMaterial(event.getRegistry(), "beckon_pearl", SRPARASITES_MODID);
+        DISPATCHER_BLOOM = registerMaterial(event.getRegistry(), "dispatcher_bloom", SRPARASITES_MODID);
     }
 }

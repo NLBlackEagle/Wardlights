@@ -1,61 +1,69 @@
 package wardlights.handlers;
 
-import java.util.UUID;
+import java.util.ArrayList;
+
+import javax.annotation.Nullable;
 
 import baubles.api.BaublesApi;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.living.LootingLevelEvent;
+import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import wardlights.Wardlights;
 
 /**
  * The Ice and Fire drop baubles: the Cyclops Eye (Strength I + Looting) and the
- * Siren Scale (swim speed).
+ * Siren Scale (Lycanites' Swiftswimming I).
  *
- * <p>Strength and swim speed are attribute modifiers, added by the items'
- * onEquipped and removed by onUnequipped (server side; both attributes are
- * read or synced from there). Strength I is exactly what the vanilla potion
- * does, +3 attack damage, without a duration to keep topping up.
- *
- * <p>The modifiers aren't saved with the player, so they're added again on
- * login and respawn: a respawn (keep-inventory, leaving the End) makes a new
- * player entity with fresh attributes, and Baubles copies the worn items over
- * without calling onEquipped. Re-adding them on login also picks up config changes.
+ * <p>The effects are endless potion effects that milk can't cure, added by the
+ * items' onEquipped and removed by onUnequipped. They're added again:
+ * <ul>
+ * <li>on login and respawn: a respawn (keep-inventory, leaving the End) makes a
+ * new player entity without effects, and Baubles copies the worn items over
+ * without calling onEquipped;</li>
+ * <li>when the effect runs out or is removed while the item is still worn, e.g.
+ * a Strength II potion replaced ours and has now ended. That's done a tick
+ * later, because the effect list is still being looped over when the event fires.</li>
+ * </ul>
  */
 @Mod.EventBusSubscriber(modid = Wardlights.MODID)
 public class IceAndFireBaubleHandler {
 
-    /** Fixed ids, so the modifiers can be found again to remove them. */
-    private static final UUID STRENGTH_ID = UUID.fromString("9a4d2c61-3e7f-4b85-a0d2-6f1c8e5b7a42");
-    private static final UUID SWIM_SPEED_ID = UUID.fromString("5c3e8f0a-7d1b-4e2a-9c6f-2b8d4a1e7f30");
+    /** Effectively endless; the HUD shows it as **:**. */
+    private static final int DURATION = Integer.MAX_VALUE;
 
-    /** Vanilla Strength I: +3 attack damage. */
-    private static final double STRENGTH_AMOUNT = 3;
+    /** Anything longer than this is ours; no potion or beacon lasts anywhere near it. */
+    private static final int OURS_ABOVE = 20 * 60 * 60 * 24;
+
+    private static final ResourceLocation SWIFTSWIMMING_ID = new ResourceLocation(ModRegistry.LYCANITESMOBS_MODID,
+            "swiftswimming");
+
+    @Nullable
+    private static Potion swiftswimming;
 
     public static void onCyclopsEyeEquipped(EntityLivingBase wearer) {
-        setModifier(wearer, SharedMonsterAttributes.ATTACK_DAMAGE, STRENGTH_ID, "Cyclops Eye", STRENGTH_AMOUNT, 0);
+        addEffect(wearer, MobEffects.STRENGTH);
     }
 
     public static void onCyclopsEyeUnequipped(EntityLivingBase wearer) {
-        setModifier(wearer, SharedMonsterAttributes.ATTACK_DAMAGE, STRENGTH_ID, "Cyclops Eye", 0, 0);
+        removeEffect(wearer, MobEffects.STRENGTH);
     }
 
     public static void onSirenScaleEquipped(EntityLivingBase wearer) {
-        // Operation 1: adds bonus x base speed, so 0.5 = 50% faster.
-        setModifier(wearer, EntityLivingBase.SWIM_SPEED, SWIM_SPEED_ID, "Siren Scale",
-                ForgeConfigHandler.server.baubles.sirenScaleSwimSpeed, 1);
+        addEffect(wearer, getSwiftswimming());
     }
 
     public static void onSirenScaleUnequipped(EntityLivingBase wearer) {
-        setModifier(wearer, EntityLivingBase.SWIM_SPEED, SWIM_SPEED_ID, "Siren Scale", 0, 1);
+        removeEffect(wearer, getSwiftswimming());
     }
 
     @SubscribeEvent
@@ -69,6 +77,16 @@ public class IceAndFireBaubleHandler {
     }
 
     @SubscribeEvent
+    public static void onPotionExpiry(PotionEvent.PotionExpiryEvent event) {
+        reapplyLater(event.getEntityLiving(), event.getPotionEffect().getPotion());
+    }
+
+    @SubscribeEvent
+    public static void onPotionRemove(PotionEvent.PotionRemoveEvent event) {
+        reapplyLater(event.getEntityLiving(), event.getPotion());
+    }
+
+    @SubscribeEvent
     public static void onLootingLevel(LootingLevelEvent event) {
         if (event.getDamageSource() == null || !(event.getDamageSource().getTrueSource() instanceof EntityPlayer)) {
             return;
@@ -77,6 +95,17 @@ public class IceAndFireBaubleHandler {
         if (isWearing(player, ModRegistry.CYCLOPS_EYE)) {
             event.setLootingLevel(event.getLootingLevel() + ForgeConfigHandler.server.baubles.cyclopsEyeLooting);
         }
+    }
+
+    /** Only for our two effects; the wearing check runs when the task does, so taking the item off wins. */
+    private static void reapplyLater(EntityLivingBase entity, @Nullable Potion potion) {
+        if (!(entity instanceof EntityPlayer) || entity.world.isRemote || potion == null
+                || (potion != MobEffects.STRENGTH || ModRegistry.CYCLOPS_EYE == null)
+                && (potion != getSwiftswimming() || ModRegistry.SIREN_SCALE == null)) {
+            return;
+        }
+        EntityPlayer player = (EntityPlayer) entity;
+        player.getServer().addScheduledTask(() -> reapply(player));
     }
 
     private static void reapply(EntityPlayer player) {
@@ -88,21 +117,46 @@ public class IceAndFireBaubleHandler {
         }
     }
 
-    /** Replaces the modifier with this amount; 0 just removes it. Server only. */
-    private static void setModifier(EntityLivingBase wearer, IAttribute attribute, UUID id, String name,
-            double amount, int operation) {
-        IAttributeInstance instance = wearer.getEntityAttribute(attribute);
-        if (wearer.world.isRemote || instance == null) {
+    /** Level I, no particles, not curable by milk. Server only. */
+    private static void addEffect(EntityLivingBase wearer, @Nullable Potion potion) {
+        if (wearer.world.isRemote || potion == null) {
             return;
         }
-        // Modifiers can't be changed in place, and adding one whose id is already there throws.
-        instance.removeModifier(id);
-        if (amount > 0) {
-            instance.applyModifier(new AttributeModifier(id, name, amount, operation).setSaved(false));
+        PotionEffect current = wearer.getActivePotionEffect(potion);
+        if (current != null && (current.getAmplifier() > 0 || current.getDuration() > OURS_ABOVE)) {
+            // Already ours, or a stronger one from somewhere else (ours comes back when that ends).
+            return;
+        }
+        if (current != null) {
+            // A level I from a potion: merging would keep its milk cure, so replace it outright.
+            wearer.removePotionEffect(potion);
+        }
+        PotionEffect effect = new PotionEffect(potion, DURATION, 0, false, false);
+        effect.setCurativeItems(new ArrayList<>());
+        wearer.addPotionEffect(effect);
+    }
+
+    /** Only removes our own endless level I, never one from a potion or beacon. Server only. */
+    private static void removeEffect(EntityLivingBase wearer, @Nullable Potion potion) {
+        if (wearer.world.isRemote || potion == null) {
+            return;
+        }
+        PotionEffect current = wearer.getActivePotionEffect(potion);
+        if (current != null && current.getAmplifier() == 0 && current.getDuration() > OURS_ABOVE) {
+            wearer.removePotionEffect(potion);
         }
     }
 
-    private static boolean isWearing(EntityPlayer player, Item bauble) {
+    private static boolean isWearing(EntityPlayer player, @Nullable Item bauble) {
         return bauble != null && BaublesApi.isBaubleEquipped(player, bauble) >= 0;
+    }
+
+    /** Lycanites Mobs' Swiftswimming, or null when it isn't installed. */
+    @Nullable
+    private static Potion getSwiftswimming() {
+        if (swiftswimming == null) {
+            swiftswimming = ForgeRegistries.POTIONS.getValue(SWIFTSWIMMING_ID);
+        }
+        return swiftswimming;
     }
 }

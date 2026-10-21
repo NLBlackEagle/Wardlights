@@ -20,7 +20,7 @@ import wardlights.handlers.IceAndFireBaubleHandler;
 
 /**
  * Worn in the Baubles HEAD slot, dropped by Ice and Fire's Cyclops. Gives
- * Strength I (as its +3 attack damage) and extra Looting while worn, like
+ * Strength I and extra Looting while worn, like
  * Trinkets and Baubles' Dragon's Eye. Both are handled in {@link IceAndFireBaubleHandler}.
  */
 public class ItemCyclopsEye extends Item implements IBauble {

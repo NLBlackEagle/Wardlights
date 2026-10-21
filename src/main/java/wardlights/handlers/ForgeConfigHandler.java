@@ -415,17 +415,20 @@ public class ForgeConfigHandler {
 			@Config.RangeInt(min = 1, max = 10)
 			public int viralRingMaxLevel = 2;
 
-			@Config.Comment("Dispatcher Crown: Rage bursts, one healthFraction;rageLevel;seconds per line. When the "
-					+ "wearer's health drops below healthFraction (0.85 = 85%) they get SRParasites' Rage at that level "
-					+ "for that long; it can trigger again once health is back above it.")
-			@Config.Name("Dispatcher Crown Rage")
-			public String[] dispatcherCrownRage = {
-					"0.85;1;15",
-					"0.35;2;15"
-			};
+			@Config.Comment("Dispatcher Crown: while the wearer's health is below this percentage of their max health, "
+					+ "they have SRParasites' Rage I. 0 disables it.")
+			@Config.Name("Dispatcher Crown Rage I Health")
+			@Config.RangeInt(min = 0, max = 100)
+			public int dispatcherCrownRageIHealth = 85;
 
-			@Config.Comment("Dispatcher Crown: the most damage the wearer can adapt away from any one attacker type or "
-					+ "damage type (0.05 = 5% less damage). 0 disables adaptation.")
+			@Config.Comment("Dispatcher Crown: the same for Rage II.")
+			@Config.Name("Dispatcher Crown Rage II Health")
+			@Config.RangeInt(min = 0, max = 100)
+			public int dispatcherCrownRageIIHealth = 35;
+
+			@Config.Comment("Dispatcher Crown: the most damage the wearer can adapt away from any one thing, the same way "
+					+ "SRParasites' adapting mobs do: per weapon for players, per mob type, or per damage type without an "
+					+ "attacker (0.05 = 5% less damage). 0 disables adaptation.")
 			@Config.Name("Dispatcher Crown Max Adaptation")
 			@Config.RangeDouble(min = 0, max = 1)
 			public double dispatcherCrownMaxAdaptation = 0.05;
@@ -442,12 +445,6 @@ public class ForgeConfigHandler {
 			@Config.RangeInt(min = 0, max = 10)
 			public int cyclopsEyeLooting = 1;
 
-			@Config.Comment("Siren Scale: how much faster the wearer swims (0.5 = 50% faster). Only exists when Ice and "
-					+ "Fire is installed.")
-			@Config.Name("Siren Scale Swim Speed")
-			@Config.RangeDouble(min = 0, max = 5)
-			public double sirenScaleSwimSpeed = 0.5;
-
 			@Config.Comment("Items mobs can drop and the chance they do (0.25 = 25%), one itemId;mobId;chance per line. "
 					+ "Defaults: Beckon Pearls from Stage II-IV Beckons, Dispatcher Blooms from Stage II-IV Dispatchers, "
 					+ "Cyclops Eyes from Cyclopes, Siren Scales from Sirens. "
@@ -457,8 +454,8 @@ public class ForgeConfigHandler {
 					"wardlights:beckon_pearl;srparasites:beckon_sii;0.10",
 					"wardlights:beckon_pearl;srparasites:beckon_siii;0.25",
 					"wardlights:beckon_pearl;srparasites:beckon_siv;1.0",
-					"wardlights:dispatcher_bloom;srparasites:dispatcher_sii;0.10",
-					"wardlights:dispatcher_bloom;srparasites:dispatcher_siii;0.20",
+					"wardlights:dispatcher_bloom;srparasites:dispatcher_sii;0.25",
+					"wardlights:dispatcher_bloom;srparasites:dispatcher_siii;0.50",
 					"wardlights:dispatcher_bloom;srparasites:dispatcher_siv;1.0",
 					"wardlights:cyclops_eye;iceandfire:cyclops;0.05",
 					"wardlights:siren_scale;iceandfire:siren;0.05"

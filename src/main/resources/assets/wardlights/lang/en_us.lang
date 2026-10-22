@@ -90,7 +90,7 @@ tooltip.wardlights.dispatcher_crown.adaptation=§6Adapts to what hurts you, up t
 
 # Cyclops Eye (looting: %s = bonus Looting level as a roman numeral) / Siren Scale
 item.cyclops_eye.name=Cyclops Eye
-tooltip.wardlights.cyclops_eye.strength=§6Grants Strength §3I
+tooltip.wardlights.cyclops_eye.strength=§6Grants §3+1§6 Strength level, stacking with other Strength
 tooltip.wardlights.cyclops_eye.looting=§6Grants Looting §3%s
 item.siren_scale.name=Siren Scale
 tooltip.wardlights.siren_scale.swiftswimming=§6Grants Swiftswimming §3I

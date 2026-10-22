@@ -458,8 +458,8 @@ public class ForgeConfigHandler {
 			@Config.RangeDouble(min = 0, max = 1)
 			public double dispatcherCrownAdaptationStep = 0.005;
 
-			@Config.Comment("Cyclops Eye: Looting levels added while it's worn, on top of the weapon's own. It also always "
-					+ "gives Strength I. Only exists when Ice and Fire is installed.")
+			@Config.Comment("Cyclops Eye: Looting levels added while it's worn, on top of the weapon's own. It also adds "
+					+ "one Strength level on top of any other Strength (Strength I on its own). Only exists when Ice and Fire is installed.")
 			@Config.Name("Cyclops Eye Looting")
 			@Config.RangeInt(min = 0, max = 10)
 			public int cyclopsEyeLooting = 1;

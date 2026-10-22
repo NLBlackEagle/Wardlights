@@ -66,6 +66,10 @@ public class RecipeRegistry {
             register(event, buildShapelessRecipe("viral_ring", "Viral Ring", config.viralRingRecipe,
                     ModRegistry.VIRAL_RING));
         }
+        if (ModRegistry.PIERCING_RING != null) {
+            register(event, buildShapedRecipe("piercing_ring", "Ring of Piercing", config.piercingRingRecipe,
+                    ModRegistry.PIERCING_RING));
+        }
         if (ModRegistry.DISPATCHER_CROWN != null) {
             register(event, buildShapelessRecipe("dispatcher_crown", "Dispatcher Crown", config.dispatcherCrownRecipe,
                     ModRegistry.DISPATCHER_CROWN));

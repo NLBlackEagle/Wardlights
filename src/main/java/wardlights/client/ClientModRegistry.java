@@ -79,6 +79,10 @@ public class ClientModRegistry {
             ModelLoader.setCustomModelResourceLocation(ModRegistry.VIRAL_RING, 0,
                     new ModelResourceLocation(ModRegistry.VIRAL_RING.getRegistryName(), "inventory"));
         }
+        if (ModRegistry.PIERCING_RING != null) {
+            ModelLoader.setCustomModelResourceLocation(ModRegistry.PIERCING_RING, 0,
+                    new ModelResourceLocation(ModRegistry.PIERCING_RING.getRegistryName(), "inventory"));
+        }
         if (ModRegistry.DISPATCHER_CROWN != null) {
             ModelLoader.setCustomModelResourceLocation(ModRegistry.DISPATCHER_CROWN, 0,
                     new ModelResourceLocation(ModRegistry.DISPATCHER_CROWN.getRegistryName(), "inventory"));

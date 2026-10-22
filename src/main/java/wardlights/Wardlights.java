@@ -132,9 +132,9 @@ todo: [Baubles] (need models)
 
 - done: Viral Ring (Ancient Ring + Beckon Pearl), Dispatcher Crown (Ancient Crown + Dispatcher Bloom; Rage bursts + 5%
   adaptation, not yet tested in-game), Cyclops Eye (head, 5% from I&F Cyclopes; Strength I + Looting I), Siren Scale
-  (amulet, 5% from I&F Sirens; Lycanites Swiftswimming I). Eye and Scale still have placeholder textures.
+  (amulet, 5% from I&F Sirens; Lycanites Swiftswimming I), Ring of Piercing (was Ring of Cleansing; hitting a parasite
+  inflicts Immalleable). Eye, Scale and Ring of Piercing still have placeholder textures.
 
-- Ring of Cleansing (LC): applies immalleable and removes link (ring slot)
 - Pendant of Plutonium Warding: an irradiated aura weakening parasites in a radius around the player (necklace slot)
 
  */

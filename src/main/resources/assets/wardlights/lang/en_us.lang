@@ -94,3 +94,7 @@ tooltip.wardlights.cyclops_eye.strength=§6Grants Strength §3I
 tooltip.wardlights.cyclops_eye.looting=§6Grants Looting §3%s
 item.siren_scale.name=Siren Scale
 tooltip.wardlights.siren_scale.swiftswimming=§6Grants Swiftswimming §3I
+
+# Ring of Piercing (%s = seconds of Immalleable)
+item.piercing_ring.name=Ring of Piercing
+tooltip.wardlights.piercing_ring.immalleable=§6Hitting a parasite inflicts §7Immalleable§6 for §3%s§6 seconds

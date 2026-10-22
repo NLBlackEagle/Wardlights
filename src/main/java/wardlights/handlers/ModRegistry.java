@@ -32,6 +32,7 @@ import wardlights.items.ItemLanternSrp;
 import wardlights.items.ItemLanternVapula;
 import wardlights.items.ItemMaterial;
 import wardlights.items.ItemSirenScale;
+import wardlights.items.ItemPiercingRing;
 import wardlights.items.ItemViralRing;
 import wardlights.lantern.LanternType;
 import wardlights.potion.PotionWardLight;
@@ -58,6 +59,7 @@ public class ModRegistry {
     /** Only registered when SRParasites is installed; null otherwise. */
     public static Item VIRAL_RING;
     public static Item DISPATCHER_CROWN;
+    public static Item PIERCING_RING;
     /** Only registered when Ice and Fire is installed (dropped by its Cyclops / Sirens); null otherwise. */
     public static Item CYCLOPS_EYE;
     public static Item SIREN_SCALE;
@@ -205,7 +207,8 @@ public class ModRegistry {
         if (Loader.isModLoaded(SRPARASITES_MODID)) {
             VIRAL_RING = new ItemViralRing("viral_ring");
             DISPATCHER_CROWN = new ItemDispatcherCrown("dispatcher_crown");
-            event.getRegistry().registerAll(VIRAL_RING, DISPATCHER_CROWN);
+            PIERCING_RING = new ItemPiercingRing("piercing_ring");
+            event.getRegistry().registerAll(VIRAL_RING, DISPATCHER_CROWN, PIERCING_RING);
         }
         if (Loader.isModLoaded(ICEANDFIRE_MODID)) {
             CYCLOPS_EYE = new ItemCyclopsEye("cyclops_eye");

@@ -132,6 +132,14 @@ public class ForgeConfigHandler {
 		@Config.RequiresMcRestart
 		public String dispatcherCrownRecipe = "{wardlights:ancient_crown, wardlights:dispatcher_bloom}";
 
+		@Config.Comment("Ring of Piercing crafting recipe, same format as the Bulwark of Valor recipe. Only used when "
+				+ "SRParasites is installed.")
+		@Config.Name("Ring of Piercing Recipe")
+		@Config.RequiresMcRestart
+		public String piercingRingRecipe = "{srparasites:itemthrow, nuclearcraft:ingot:3, srparasites:itemthrow, "
+				+ "nuclearcraft:ingot:3, wardlights:ancient_ring, nuclearcraft:ingot:3, "
+				+ "srparasites:itemthrow, nuclearcraft:ingot:3, srparasites:itemthrow}";
+
 		@Config.Comment("Plutonium Alloy recipe in NuclearCraft's Alloy Furnace. Only used when NuclearCraft is installed.")
 		@Config.Name("Plutonium Alloy (Alloy Furnace)")
 		public AlloyFurnaceRecipeConfig plutoniumAlloy = new AlloyFurnaceRecipeConfig(
@@ -414,6 +422,17 @@ public class ForgeConfigHandler {
 			@Config.Name("Viral Ring Max Viral Level")
 			@Config.RangeInt(min = 1, max = 10)
 			public int viralRingMaxLevel = 2;
+
+			@Config.Comment("Ring of Piercing: seconds of SRParasites' Immalleable inflicted on a parasite each time the "
+					+ "wearer hits it. Only exists when SRParasites is installed.")
+			@Config.Name("Ring of Piercing Immalleable Seconds")
+			@Config.RangeInt(min = 1, max = 600)
+			public int piercingRingDuration = 5;
+
+			@Config.Comment("Ring of Piercing: level of the Immalleable it inflicts (1 = Immalleable I).")
+			@Config.Name("Ring of Piercing Immalleable Level")
+			@Config.RangeInt(min = 1, max = 10)
+			public int piercingRingLevel = 1;
 
 			@Config.Comment("Dispatcher Crown: while the wearer's health is below this percentage of their max health, "
 					+ "they have SRParasites' Rage I. 0 disables it.")

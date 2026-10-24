@@ -1,11 +1,18 @@
 package wardlights.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -136,29 +143,62 @@ public class RecipeRegistry {
         return recipe;
     }
 
-    /** {@code "{a, b, , c}"} (braces optional) to its trimmed comma-separated slots. */
+    /**
+     * {@code "{a, b, , c}"} (braces optional) to its trimmed comma-separated slots.
+     * Commas inside a slot's NBT ({@code {...}}, {@code [...]}, {@code (...)} or
+     * quotes) don't split it.
+     */
     private static String[] splitSlots(String config) {
         String s = config == null ? "" : config.trim();
-        if (s.startsWith("{")) {
-            s = s.substring(1);
+        if (s.startsWith("{") && s.endsWith("}")) {
+            s = s.substring(1, s.length() - 1);
         }
-        if (s.endsWith("}")) {
-            s = s.substring(0, s.length() - 1);
+        List<String> slots = new ArrayList<>();
+        int depth = 0;
+        boolean quoted = false;
+        int start = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '"' && (i == 0 || s.charAt(i - 1) != '\\')) {
+                quoted = !quoted;
+            } else if (!quoted && (c == '{' || c == '[' || c == '(')) {
+                depth++;
+            } else if (!quoted && (c == '}' || c == ']' || c == ')')) {
+                depth--;
+            } else if (!quoted && depth == 0 && c == ',') {
+                slots.add(s.substring(start, i).trim());
+                start = i + 1;
+            }
         }
-        String[] slots = s.split(",", -1);
-        for (int i = 0; i < slots.length; i++) {
-            slots[i] = slots[i].trim();
-        }
-        return slots;
+        slots.add(s.substring(start).trim());
+        return slots.toArray(new String[0]);
     }
 
     /**
      * {@code modid:item}, or {@code modid:item:meta} where meta may be {@code *}
      * for any; CraftTweaker-style {@code <modid:item:meta>} brackets are accepted
-     * too. Blank is an empty cell; null means the item doesn't exist.
+     * too. NBT can follow as {@code .withTag({...})} (CraftTweaker style) or just
+     * {@code {...}}; the item then needs at least those tags, extra ones are fine.
+     * Blank is an empty cell; null means the item doesn't exist.
      */
     private static Ingredient resolveIngredient(String rawSlot, String displayName) {
         String slot = rawSlot;
+        NBTTagCompound tag = null;
+        int nbtStart = slot.indexOf('{');
+        if (nbtStart >= 0) {
+            String nbt = slot.substring(nbtStart);
+            slot = slot.substring(0, nbtStart).trim();
+            if (slot.endsWith(".withTag(") && nbt.endsWith(")")) {
+                slot = slot.substring(0, slot.length() - ".withTag(".length()).trim();
+                nbt = nbt.substring(0, nbt.length() - 1).trim();
+            }
+            try {
+                tag = JsonToNBT.getTagFromJson(nbt);
+            } catch (NBTException e) {
+                Wardlights.LOGGER.warn("{} recipe: bad NBT in '{}': {}", displayName, rawSlot, e.getMessage());
+                return null;
+            }
+        }
         if (slot.startsWith("<") && slot.endsWith(">")) {
             slot = slot.substring(1, slot.length() - 1).trim();
         }
@@ -184,6 +224,37 @@ public class RecipeRegistry {
             Wardlights.LOGGER.warn("{} recipe: unknown item '{}'", displayName, slot);
             return null;
         }
-        return Ingredient.fromStacks(new ItemStack(item, 1, meta));
+        ItemStack stack = new ItemStack(item, 1, meta);
+        if (tag == null) {
+            return Ingredient.fromStacks(stack);
+        }
+        stack.setTagCompound(tag);
+        return new PartialNBTIngredient(stack, tag);
+    }
+
+    /**
+     * Matches the item when it has at least the given tags, like CraftTweaker's
+     * withTag. Forge's IngredientNBT needs an exact match, which would miss e.g.
+     * Potion Rings crafted with an extra Quality tag.
+     */
+    private static class PartialNBTIngredient extends Ingredient {
+
+        private final NBTTagCompound tag;
+
+        PartialNBTIngredient(ItemStack stack, NBTTagCompound tag) {
+            super(stack);
+            this.tag = tag;
+        }
+
+        @Override
+        public boolean apply(ItemStack stack) {
+            return super.apply(stack) && stack.hasTagCompound() && NBTUtil.areNBTEquals(tag, stack.getTagCompound(), true);
+        }
+
+        /** Not simple: simple ingredients are matched by item and meta alone, skipping NBT. */
+        @Override
+        public boolean isSimple() {
+            return false;
+        }
     }
 }

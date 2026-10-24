@@ -28,18 +28,21 @@ public class ForgeConfigHandler {
 		@Config.Comment("Bulwark of Valor crafting recipe: {1, 2, 3, 4, 5, 6, 7, 8, 9}, the 9 grid slots read "
 				+ "left-to-right then top-to-bottom (1 = top-left, 9 = bottom-right). Each slot is an item id "
 				+ "(e.g. minecraft:iron_ingot), optionally with metadata (minecraft:wool:14, or minecraft:log:* for any), "
-				+ "or left blank for an empty cell. CraftTweaker-style <modid:item:meta> also works. If any item "
+				+ "or left blank for an empty cell. CraftTweaker-style <modid:item:meta> also works, and NBT can follow as "
+				+ ".withTag({...}) (the item needs at least those tags; extra ones like a ring's Quality are fine). If any item "
 				+ "doesn't exist (e.g. its mod isn't installed) the recipe is disabled; see the log.")
 		@Config.Name("Bulwark of Valor Recipe")
 		@Config.RequiresMcRestart
-		public String bulwarkOfValorRecipe = "{nuclearcraft:alloy:1, potionfingers:ring:1, nuclearcraft:alloy:1, "
+		public String bulwarkOfValorRecipe = "{nuclearcraft:alloy:1, "
+				+ "<potionfingers:ring:1>.withTag({effect: \"minecraft:regeneration\"}), nuclearcraft:alloy:1, "
 				+ "srparasites:ada_bolster_drop, xat:damage_shield, srparasites:dispatcher_drop, "
 				+ "nuclearcraft:alloy:1, wardlights:badge_of_bravery, nuclearcraft:alloy:1}";
 
 		@Config.Comment("Aegis of Sacrifice crafting recipe, same format as the Bulwark of Valor recipe.")
 		@Config.Name("Aegis of Sacrifice Recipe")
 		@Config.RequiresMcRestart
-		public String aegisOfSacrificeRecipe = "{wardlights:plutonium_blood_alloy, potionfingers:ring:1, "
+		public String aegisOfSacrificeRecipe = "{wardlights:plutonium_blood_alloy, "
+				+ "<potionfingers:ring:1>.withTag({effect: \"minecraft:regeneration\"}), "
 				+ "wardlights:plutonium_blood_alloy, wardlights:corrupted_fabric, wardlights:bulwark_of_valor, "
 				+ "wardlights:corrupted_heart, wardlights:plutonium_blood_alloy, variedcommodities:orb:0, "
 				+ "wardlights:plutonium_blood_alloy}";

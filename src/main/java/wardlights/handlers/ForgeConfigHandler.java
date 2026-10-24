@@ -120,17 +120,21 @@ public class ForgeConfigHandler {
 		@Config.RequiresMcRestart
 		public String badgeOfBraveryRecipe = "{wardlights:dormant_badge, variedcommodities:coin_gold}";
 
-		@Config.Comment("Viral Ring shapeless crafting recipe, same format as the Badge of Bravery recipe. Only used when "
+		@Config.Comment("Viral Ring crafting recipe, same format as the Bulwark of Valor recipe. Only used when "
 				+ "SRParasites is installed.")
 		@Config.Name("Viral Ring Recipe")
 		@Config.RequiresMcRestart
-		public String viralRingRecipe = "{wardlights:ancient_ring, wardlights:beckon_pearl}";
+		public String viralRingRecipe = "{wardlights:tainted_flesh, wardlights:beckon_pearl, wardlights:tainted_flesh, "
+				+ "eaglemixins:tainted_tear, wardlights:ancient_ring, eaglemixins:tainted_tear, "
+				+ "wardlights:tainted_flesh, eaglemixins:tainted_tear, wardlights:tainted_flesh}";
 
-		@Config.Comment("Dispatcher Crown shapeless crafting recipe, same format as the Badge of Bravery recipe. Only "
-				+ "used when SRParasites is installed.")
-		@Config.Name("Dispatcher Crown Recipe")
+		@Config.Comment("Blooming Crown crafting recipe, same format as the Bulwark of Valor recipe. Only used when "
+				+ "SRParasites is installed.")
+		@Config.Name("Blooming Crown Recipe")
 		@Config.RequiresMcRestart
-		public String dispatcherCrownRecipe = "{wardlights:ancient_crown, wardlights:dispatcher_bloom}";
+		public String dispatcherCrownRecipe = "{wardlights:tainted_flesh, wardlights:dispatcher_bloom, "
+				+ "wardlights:tainted_flesh, eaglemixins:tainted_tear, wardlights:ancient_crown, eaglemixins:tainted_tear, "
+				+ "wardlights:tainted_flesh, eaglemixins:tainted_tear, wardlights:tainted_flesh}";
 
 		@Config.Comment("Ring of Piercing crafting recipe, same format as the Bulwark of Valor recipe. Only used when "
 				+ "SRParasites is installed.")
@@ -434,29 +438,48 @@ public class ForgeConfigHandler {
 			@Config.RangeInt(min = 1, max = 10)
 			public int piercingRingLevel = 1;
 
-			@Config.Comment("Dispatcher Crown: while the wearer's health is below this percentage of their max health, "
+			@Config.Comment("Blooming Crown: while the wearer's health is below this percentage of their max health, "
 					+ "they have SRParasites' Rage I. 0 disables it.")
-			@Config.Name("Dispatcher Crown Rage I Health")
+			@Config.Name("Blooming Crown Rage I Health")
 			@Config.RangeInt(min = 0, max = 100)
 			public int dispatcherCrownRageIHealth = 85;
 
-			@Config.Comment("Dispatcher Crown: the same for Rage II.")
-			@Config.Name("Dispatcher Crown Rage II Health")
+			@Config.Comment("Blooming Crown: the same for Rage II.")
+			@Config.Name("Blooming Crown Rage II Health")
 			@Config.RangeInt(min = 0, max = 100)
 			public int dispatcherCrownRageIIHealth = 35;
 
-			@Config.Comment("Dispatcher Crown: the most damage the wearer can adapt away from any one thing, the same way "
-					+ "SRParasites' adapting mobs do: per weapon for players, per mob type, or per damage type without an "
-					+ "attacker (0.05 = 5% less damage). 0 disables adaptation.")
-			@Config.Name("Dispatcher Crown Max Adaptation")
-			@Config.RangeDouble(min = 0, max = 1)
-			public double dispatcherCrownMaxAdaptation = 0.05;
+			@Config.Comment("Blooming Crown: how many different damage sources it can adapt to, like SRParasites' "
+					+ "Sentient Armor Damage Type Cap. Once full, new sources aren't learned until the crown is taken "
+					+ "off (which resets it). 0 disables adaptation.")
+			@Config.Name("Blooming Crown Adaptation Source Cap")
+			@Config.RangeInt(min = 0, max = 1024)
+			public int dispatcherCrownSourceCap = 3;
 
-			@Config.Comment("Dispatcher Crown: how much adaptation each hit adds (0.005 = 0.5%, so 10 hits from the same "
-					+ "thing reach the default 5% max). Taking the crown off resets it.")
-			@Config.Name("Dispatcher Crown Adaptation Per Hit")
+			@Config.Comment("Blooming Crown: the most adaptation points one source can build up, like SRParasites' "
+					+ "Sentient Armor Point Cap.")
+			@Config.Name("Blooming Crown Adaptation Point Cap")
+			@Config.RangeInt(min = 0, max = 1024)
+			public int dispatcherCrownPointCap = 10;
+
+			@Config.Comment("Blooming Crown: damage reduction per point, like SRParasites' Sentient Armor Point Reduction "
+					+ "Value (0.005 = 0.5%, so the default 10 points cap out at 5% less damage from that source).")
+			@Config.Name("Blooming Crown Adaptation Point Reduction")
 			@Config.RangeDouble(min = 0, max = 1)
-			public double dispatcherCrownAdaptationStep = 0.005;
+			public double dispatcherCrownPointReduction = 0.005;
+
+			@Config.Comment("Blooming Crown: chance for each hit to add a point (1 = always), like SRParasites' "
+					+ "Sentient Armor Point Chance to Learn.")
+			@Config.Name("Blooming Crown Adaptation Chance to Learn")
+			@Config.RangeDouble(min = 0, max = 1)
+			public double dispatcherCrownLearnChance = 0.2;
+
+			@Config.Comment("Blooming Crown: damage sources it never adapts to, like SRParasites' Armor Damage Types "
+					+ "BlackList. A source is skipped when its name contains any entry (mob ids like "
+					+ "minecraft:zombie, or damage types like fall).")
+			@Config.Name("Blooming Crown Adaptation Blacklist")
+			public String[] dispatcherCrownBlacklist = {"dehydration", "hypothermia", "hyperthermia", "starve", "drown",
+					"outOfWorld", "fallingBlock", "inWall", "cramming", "lightningBolt"};
 
 			@Config.Comment("Cyclops Eye: Looting levels added while it's worn, on top of the weapon's own. It also adds "
 					+ "one Strength level on top of any other Strength (Strength I on its own). Only exists when Ice and Fire is installed.")

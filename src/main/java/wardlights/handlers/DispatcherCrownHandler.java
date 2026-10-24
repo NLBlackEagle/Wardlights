@@ -9,10 +9,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,15 +27,18 @@ import wardlights.handlers.ForgeConfigHandler.ServerConfig.BaubleConfig;
 import wardlights.items.ItemDispatcherCrown;
 
 /**
- * The Dispatcher Crown's two traits.
+ * The Blooming Crown's two traits (registered as dispatcher_crown).
  *
- * <p>Adaptation, done the way SRParasites' adapting mobs do it
- * (EntityPMalleable#attackEntityFrom): every hit teaches the wearer a little
- * about "the thing" that hit them, and the next hits from it are cut by what
- * they've learned, as a share of the incoming damage before anything else
- * (armor, other mods) touches it. "The thing" is picked like SRP does: the
- * weapon in a player's main hand, the attacking mob's type (the shooter for
- * arrows and such), or the damage type when there's no attacker (fall, fire...).
+ * <p>Adaptation, done the way SRParasites' Sentient Armor does it
+ * (SRPEventHandlerBus#entityHurt): each hit has a chance to add a point for
+ * "the thing" that hit, and that thing's hits are then cut by points x the
+ * per-point reduction, as a share of the incoming damage before anything else
+ * (armor, other mods) touches it. Only a few things can be learned (the source
+ * cap), and each one's points are capped. "The thing" is picked like SRP does:
+ * the player's name, the hitting mob's type, or the damage type when the hit
+ * came from something else (an arrow, a fireball...). Unlike SRP, hits with no
+ * entity at all (fall, fire...) are learned by damage type too rather than
+ * sharing one nameless entry.
  *
  * <p>Rage: always active while health is below a line (Rage I below 85%, Rage II
  * below 35% by default), topped up but never extended; Rage from anywhere else
@@ -59,20 +64,50 @@ public class DispatcherCrownHandler {
         ItemStack crown = getWornCrown(event.getEntityLiving());
         BaubleConfig config = ForgeConfigHandler.server.baubles;
         // canHarmInCreative is only true for the void and /kill, which shouldn't be adapted to.
-        if (crown == null || config.dispatcherCrownMaxAdaptation <= 0 || event.getSource().canHarmInCreative()) {
+        if (crown == null || config.dispatcherCrownSourceCap <= 0 || event.getSource().canHarmInCreative()) {
+            return;
+        }
+        String source = adaptationSource(event.getSource());
+        if (isBlacklisted(source, config.dispatcherCrownBlacklist)) {
             return;
         }
         NBTTagCompound tag = ItemDispatcherCrown.getOrCreateTag(crown);
-        NBTTagCompound adaptation = tag.getCompoundTag(ItemDispatcherCrown.ADAPTATION_TAG);
+        NBTTagList adaptation = tag.getTagList(ItemDispatcherCrown.ADAPTATION_TAG, Constants.NBT.TAG_COMPOUND);
 
-        // Hurt first with what's been learned so far, then learn from this hit.
-        String key = adaptationKey(event.getSource());
-        float reduction = adaptation.getFloat(key);
+        // Like SRP, learn first, so a point gained on this hit already counts against it.
+        if (event.getEntityLiving().getRNG().nextDouble() < config.dispatcherCrownLearnChance) {
+            learn(adaptation, source, config.dispatcherCrownSourceCap);
+            tag.setTag(ItemDispatcherCrown.ADAPTATION_TAG, adaptation);
+        }
+        float reduction = ItemDispatcherCrown.getReduction(ItemDispatcherCrown.getPoints(adaptation, source));
         event.setAmount(Math.max(0, event.getAmount() - event.getAmount() * reduction));
+    }
 
-        float max = (float) config.dispatcherCrownMaxAdaptation;
-        adaptation.setFloat(key, Math.min(max, reduction + (float) config.dispatcherCrownAdaptationStep));
-        tag.setTag(ItemDispatcherCrown.ADAPTATION_TAG, adaptation);
+    /** Adds a point to this source, or a new entry for it while there's room for one. */
+    private static void learn(NBTTagList adaptation, String source, int sourceCap) {
+        for (int i = 0; i < adaptation.tagCount(); i++) {
+            NBTTagCompound entry = adaptation.getCompoundTagAt(i);
+            if (entry.getString(ItemDispatcherCrown.SOURCE_TAG).equals(source)) {
+                entry.setInteger(ItemDispatcherCrown.POINTS_TAG, entry.getInteger(ItemDispatcherCrown.POINTS_TAG) + 1);
+                return;
+            }
+        }
+        if (adaptation.tagCount() < sourceCap) {
+            NBTTagCompound entry = new NBTTagCompound();
+            entry.setString(ItemDispatcherCrown.SOURCE_TAG, source);
+            entry.setInteger(ItemDispatcherCrown.POINTS_TAG, 1);
+            adaptation.appendTag(entry);
+        }
+    }
+
+    /** Same matching as SRP's blacklists: any entry contained in the source's name. */
+    private static boolean isBlacklisted(String source, String[] blacklist) {
+        for (String entry : blacklist) {
+            if (!entry.isEmpty() && source.contains(entry)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -139,12 +174,11 @@ public class DispatcherCrownHandler {
         return slot < 0 ? null : BaublesApi.getBaublesHandler(player).getStackInSlot(slot);
     }
 
-    /** Same order SRP uses: the hitting mob itself, else whoever fired it, else the damage type. */
-    private static String adaptationKey(DamageSource source) {
-        Entity attacker = source.getImmediateSource() instanceof EntityLivingBase
-                ? source.getImmediateSource() : source.getTrueSource();
+    /** Same order SRP uses: a player's name, the hitting mob's type, else the damage type. */
+    private static String adaptationSource(DamageSource source) {
+        Entity attacker = source.getImmediateSource();
         if (attacker instanceof EntityPlayer) {
-            return ((EntityPlayer) attacker).getHeldItemMainhand().getItem().getRegistryName().toString();
+            return attacker.getName();
         }
         if (attacker instanceof EntityLivingBase) {
             ResourceLocation id = EntityList.getKey(attacker);

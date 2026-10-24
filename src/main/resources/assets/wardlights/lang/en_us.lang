@@ -83,10 +83,14 @@ tooltip.wardlights.beckon_pearl=§7§oLooted from the corpse of a beckon past it
 item.dispatcher_bloom.name=Dispatcher Bloom
 tooltip.wardlights.dispatcher_bloom=§7§oLooted from the corpse of a dispatcher past its juvenile stage and guaranteed when fully grown.
 
-# Dispatcher Crown (rage: %1$s = health %, %2$s = Rage level; adaptation: %s = max %)
-item.dispatcher_crown.name=Dispatcher Crown
+# Blooming Crown (rage: %1$s = health %, %2$s = Rage level; adaptation: %1$s = source cap, %2$s = max %;
+# current/source/reduction mirror SRParasites' Sentient Armor tooltip: %s = source name / reduction %)
+item.dispatcher_crown.name=Blooming Crown
 tooltip.wardlights.dispatcher_crown.rage=§6Below §3%1$s§6 health: Rage §3%2$s
-tooltip.wardlights.dispatcher_crown.adaptation=§6Adapts to what hurts you, up to §3%s§6 less damage from each
+tooltip.wardlights.dispatcher_crown.adaptation=§6Adapts to up to §3%1$s§6 sources of damage, up to §3%2$s§6 less from each
+tooltip.wardlights.dispatcher_crown.current=§5Current Adaptation:
+tooltip.wardlights.dispatcher_crown.source=§e->%s
+tooltip.wardlights.dispatcher_crown.reduction=§e reduction: %s
 
 # Cyclops Eye (looting: %s = bonus Looting level as a roman numeral) / Siren Scale
 item.cyclops_eye.name=Cyclops Eye

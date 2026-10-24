@@ -63,7 +63,7 @@ public class RecipeRegistry {
                     ForgeConfigHandler.server.badgeOfBraveryRecipe, ModRegistry.BADGE_OF_BRAVERY));
         }
         if (ModRegistry.VIRAL_RING != null) {
-            register(event, buildShapelessRecipe("viral_ring", "Viral Ring", config.viralRingRecipe,
+            register(event, buildShapedRecipe("viral_ring", "Viral Ring", config.viralRingRecipe,
                     ModRegistry.VIRAL_RING));
         }
         if (ModRegistry.PIERCING_RING != null) {
@@ -71,7 +71,7 @@ public class RecipeRegistry {
                     ModRegistry.PIERCING_RING));
         }
         if (ModRegistry.DISPATCHER_CROWN != null) {
-            register(event, buildShapelessRecipe("dispatcher_crown", "Dispatcher Crown", config.dispatcherCrownRecipe,
+            register(event, buildShapedRecipe("dispatcher_crown", "Blooming Crown", config.dispatcherCrownRecipe,
                     ModRegistry.DISPATCHER_CROWN));
         }
     }

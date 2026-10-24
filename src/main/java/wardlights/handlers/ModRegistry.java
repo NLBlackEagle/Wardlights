@@ -79,11 +79,11 @@ public class ModRegistry {
     public static Item BADGE_OF_BRAVERY;
     /** Viral Ring ingredient; always registered, added to chest loot by {@link MaterialDropHandler}. */
     public static Item ANCIENT_RING;
-    /** Dispatcher Crown ingredient; always registered, added to chest loot like the Ancient Ring. */
+    /** Blooming Crown ingredient; always registered, added to chest loot like the Ancient Ring. */
     public static Item ANCIENT_CROWN;
     /** Viral Ring ingredient; dropped by Beckons ({@link MaterialDropHandler}). */
     public static Item BECKON_PEARL;
-    /** Dispatcher Crown ingredient; dropped by Dispatchers ({@link MaterialDropHandler}). */
+    /** Blooming Crown ingredient; dropped by Dispatchers ({@link MaterialDropHandler}). */
     public static Item DISPATCHER_BLOOM;
 
     public static Block LANTERN_REGULAR_BLOCK;

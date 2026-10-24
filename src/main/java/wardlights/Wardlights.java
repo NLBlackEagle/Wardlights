@@ -130,8 +130,9 @@ later: [Waking Night] (separate mod, kept here for reference)
 
 todo: [Baubles] (need models)
 
-- done: Viral Ring (Ancient Ring + Beckon Pearl), Dispatcher Crown (Ancient Crown + Dispatcher Bloom; Rage bursts + 5%
-  adaptation, not yet tested in-game), Cyclops Eye (head, 5% from I&F Cyclopes; +1 Strength level, stacking + Looting I), Siren Scale
+- done: Viral Ring (Ancient Ring + Beckon Pearl + Tainted Flesh/Tears), Blooming Crown, id dispatcher_crown (Ancient
+  Crown + Dispatcher Bloom + Tainted Flesh/Tears; Rage bursts + SRP Sentient Armor-style adaptation, max 5% per source,
+  not yet tested in-game), Cyclops Eye (head, 5% from I&F Cyclopes; +1 Strength level, stacking + Looting I), Siren Scale
   (amulet, 5% from I&F Sirens; Lycanites Swiftswimming I), Ring of Piercing (was Ring of Cleansing; hitting a parasite
   inflicts Immalleable). Eye, Scale and Ring of Piercing still have placeholder textures.
 

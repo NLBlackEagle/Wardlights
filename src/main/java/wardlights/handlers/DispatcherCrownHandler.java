@@ -35,8 +35,9 @@ import wardlights.items.ItemDispatcherCrown;
  * per-point reduction, as a share of the incoming damage before anything else
  * (armor, other mods) touches it. Only a few things can be learned (the source
  * cap), and each one's points are capped. "The thing" is picked like SRP does:
- * the player's name, the hitting mob's type, or the damage type when the hit
- * came from something else (an arrow, a fireball...). Unlike SRP, hits with no
+ * the player's name, the hitting mob's type, or the damage type. Unlike SRP, a
+ * projectile (an arrow, spit, a fireball...) counts as whoever fired it rather
+ * than its damage type ("thrown", "arrow"). Also unlike SRP, hits with no
  * entity at all (fall, fire...) are learned by damage type too rather than
  * sharing one nameless entry.
  *
@@ -174,9 +175,16 @@ public class DispatcherCrownHandler {
         return slot < 0 ? null : BaublesApi.getBaublesHandler(player).getStackInSlot(slot);
     }
 
-    /** Same order SRP uses: a player's name, the hitting mob's type, else the damage type. */
+    /**
+     * Same order SRP uses: a player's name, the hitting mob's type, else the
+     * damage type. Unlike SRP, a projectile counts as the mob or player that
+     * fired it, so its hits share an entry with that mob's melee hits.
+     */
     private static String adaptationSource(DamageSource source) {
         Entity attacker = source.getImmediateSource();
+        if (!(attacker instanceof EntityLivingBase)) {
+            attacker = source.getTrueSource();
+        }
         if (attacker instanceof EntityPlayer) {
             return attacker.getName();
         }

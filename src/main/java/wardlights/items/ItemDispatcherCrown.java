@@ -32,7 +32,9 @@ import wardlights.handlers.ForgeConfigHandler.ServerConfig.BaubleConfig;
  * Sentient Armor. Both happen in {@link DispatcherCrownHandler}.
  *
  * <p>The adaptation lives in the crown's NBT as a list of source/points entries,
- * shown in the tooltip like SRP's armor, and is cleared when it's taken off.
+ * shown in the tooltip like SRP's armor. Like the armor it's never forgotten, not
+ * even when the crown is taken off, and the crown's other NBT (reforges from
+ * other mods) is left alone.
  */
 public class ItemDispatcherCrown extends Item implements IBauble {
 
@@ -70,8 +72,6 @@ public class ItemDispatcherCrown extends Item implements IBauble {
 
     @Override
     public void onUnequipped(ItemStack itemStack, EntityLivingBase wearer) {
-        // Taking the crown off forgets everything; putting it back on starts fresh.
-        itemStack.setTagCompound(null);
         DispatcherCrownHandler.removeRage(wearer);
     }
 

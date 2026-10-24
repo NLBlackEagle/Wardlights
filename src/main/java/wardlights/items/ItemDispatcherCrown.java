@@ -50,6 +50,17 @@ public class ItemDispatcherCrown extends Item implements IBauble {
         setCreativeTab(CreativeTabs.COMBAT);
     }
 
+    public void resetAdaptions(ItemStack itemStack) {
+        if(itemStack.hasTagCompound()) {
+            // Set with empty values and keep structure
+            NBTTagCompound nbt = itemStack.getTagCompound();
+            nbt.setTag(ADAPTATION_TAG, new NBTTagList());
+            nbt.setString(SOURCE_TAG, "");
+            nbt.setInteger(POINTS_TAG, 0);
+            itemStack.setTagCompound(nbt);
+        }
+    }
+
     @Override
     public BaubleType getBaubleType(ItemStack itemStack) {
         return BaubleType.HEAD;
@@ -71,7 +82,7 @@ public class ItemDispatcherCrown extends Item implements IBauble {
     @Override
     public void onUnequipped(ItemStack itemStack, EntityLivingBase wearer) {
         // Taking the crown off forgets everything; putting it back on starts fresh.
-        itemStack.setTagCompound(null);
+        this.resetAdaptions(itemStack);
         DispatcherCrownHandler.removeRage(wearer);
     }
 

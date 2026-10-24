@@ -430,6 +430,13 @@ public class ForgeConfigHandler {
 			@Config.RangeInt(min = 1, max = 10)
 			public int viralRingMaxLevel = 2;
 
+			@Config.Comment("Trinkets and Baubles' Poison Stone: the highest level SRParasites' Viral can stack to while "
+					+ "it's worn (4 = Viral IV). When worn with the Viral Ring the lower limit wins. Only applies when "
+					+ "SRParasites and Trinkets and Baubles are installed.")
+			@Config.Name("Poison Stone Max Viral Level")
+			@Config.RangeInt(min = 1, max = 10)
+			public int poisonStoneMaxViralLevel = 4;
+
 			@Config.Comment("Ring of Piercing: seconds of SRParasites' Immalleable inflicted on a parasite each time the "
 					+ "wearer hits it. Only exists when SRParasites is installed.")
 			@Config.Name("Ring of Piercing Immalleable Seconds")
@@ -453,8 +460,8 @@ public class ForgeConfigHandler {
 			public int dispatcherCrownRageIIHealth = 35;
 
 			@Config.Comment("Blooming Crown: how many different damage sources it can adapt to, like SRParasites' "
-					+ "Sentient Armor Damage Type Cap. Once full, new sources aren't learned until the crown is taken "
-					+ "off (which resets it). 0 disables adaptation.")
+					+ "Sentient Armor Damage Type Cap. Once full, new sources aren't learned. Like the armor, the crown "
+					+ "never forgets, not even when taken off. 0 disables adaptation.")
 			@Config.Name("Blooming Crown Adaptation Source Cap")
 			@Config.RangeInt(min = 0, max = 1024)
 			public int dispatcherCrownSourceCap = 3;

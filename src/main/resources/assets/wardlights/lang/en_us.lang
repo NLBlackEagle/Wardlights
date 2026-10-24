@@ -74,6 +74,7 @@ message.wardlights.chest_bauble.headshot_saved=§6§lA fatal blow, turned aside!
 # Viral Ring (%s = the max Viral level as a roman numeral)
 item.viral_ring.name=Viral Ring
 tooltip.wardlights.viral_ring.limit=§6Limits Viral to a max of §3%s
+tooltip.wardlights.poison_stone.limit=§6Limits Viral to a max of §3%s
 item.ancient_ring.name=Ancient Ring
 tooltip.wardlights.ancient_ring=§7§oFound rarely among the ancient belongings of Dregora's past civilisation deep under the earth in a domain named the Underneath.
 item.ancient_crown.name=Ancient Crown

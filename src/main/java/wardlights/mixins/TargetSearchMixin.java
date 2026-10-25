@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import wardlights.handlers.PaleLanternHandler;
+import wardlights.lantern.handler.PaleLanternHandler;
 
 /**
  * Pale Lantern: a mob's usual "find the nearest target" search skips players it's

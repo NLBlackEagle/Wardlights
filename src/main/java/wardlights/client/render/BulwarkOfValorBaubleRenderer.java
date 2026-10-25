@@ -5,11 +5,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 import wardlights.animation.BulwarkBadgePart;
 import wardlights.client.model.BulwarkBadgeModel;
-import wardlights.handlers.ForgeConfigHandler;
+import wardlights.config.WardlightsConfig;
 
 /**
  * Draws the Bulwark of Valor GeckoLib badge on the wearer when worn in
- * the Baubles body slot. Called from {@link wardlights.items.ItemBulwarkOfValor}
+ * the Baubles body slot. Called from {@link wardlights.bauble.chest.ItemBulwarkOfValor}
  * for {@link IRenderBauble.RenderType#BODY} only. The transform chain itself
  * lives in {@link BaubleRenderHelper}.
  */
@@ -34,8 +34,8 @@ public final class BulwarkOfValorBaubleRenderer {
 
     private static final BaublePlacement BADGE_PLACEMENT = new BaublePlacement(
             "Bulwark of Valor Badge Placement",
-            () -> ForgeConfigHandler.client.bulwarkBadgePlacement,
-            () -> ForgeConfigHandler.client.bulwarkBadgeArmorPlacement);
+            () -> WardlightsConfig.client.bulwarkBadgePlacement,
+            () -> WardlightsConfig.client.bulwarkBadgeArmorPlacement);
 
     public static void render(EntityPlayer player, float partialTicks) {
         BaubleRenderHelper.renderBadge(BADGE_MODEL, BADGE_RENDERER, BulwarkBadgePart.INSTANCE, player, partialTicks,

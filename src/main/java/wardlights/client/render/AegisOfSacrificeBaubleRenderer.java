@@ -7,11 +7,11 @@ import wardlights.animation.AegisBadgePart;
 import wardlights.animation.AegisShoulderPart;
 import wardlights.client.model.AegisBadgeModel;
 import wardlights.client.model.AegisShoulderModel;
-import wardlights.handlers.ForgeConfigHandler;
+import wardlights.config.WardlightsConfig;
 
 /**
  * Draws the two Aegis of Sacrifice GeckoLib parts on the wearer when worn in
- * the Baubles body slot. Called from {@link wardlights.items.ItemAegisOfSacrifice}
+ * the Baubles body slot. Called from {@link wardlights.bauble.chest.ItemAegisOfSacrifice}
  * for {@link IRenderBauble.RenderType#BODY} only. The transform chain itself
  * lives in {@link BaubleRenderHelper}.
  */
@@ -44,12 +44,12 @@ public final class AegisOfSacrificeBaubleRenderer {
 
     private static final BaublePlacement BADGE_PLACEMENT = new BaublePlacement(
             "Aegis of Sacrifice Badge Placement",
-            () -> ForgeConfigHandler.client.aegisBadgePlacement,
-            () -> ForgeConfigHandler.client.aegisBadgeArmorPlacement);
+            () -> WardlightsConfig.client.aegisBadgePlacement,
+            () -> WardlightsConfig.client.aegisBadgeArmorPlacement);
     private static final BaublePlacement SHOULDER_PLACEMENT = new BaublePlacement(
             "Aegis of Sacrifice Shoulder Placement",
-            () -> ForgeConfigHandler.client.aegisShoulderPlacement,
-            () -> ForgeConfigHandler.client.aegisShoulderArmorPlacement);
+            () -> WardlightsConfig.client.aegisShoulderPlacement,
+            () -> WardlightsConfig.client.aegisShoulderArmorPlacement);
 
     public static void render(EntityPlayer player, float partialTicks) {
         BaubleRenderHelper.renderBadge(BADGE_MODEL, BADGE_RENDERER, AegisBadgePart.INSTANCE, player, partialTicks,

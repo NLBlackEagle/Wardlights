@@ -20,13 +20,13 @@ import wardlights.client.render.LanternSrpBlockRenderer;
 import wardlights.client.render.LanternSrpRenderer;
 import wardlights.client.render.LanternVapulaBlockRenderer;
 import wardlights.client.render.LanternVapulaRenderer;
-import wardlights.handlers.ModRegistry;
-import wardlights.items.ItemMaterial;
-import wardlights.tileentity.TileEntityLanternPale;
-import wardlights.tileentity.TileEntityLanternPixie;
-import wardlights.tileentity.TileEntityLanternRegular;
-import wardlights.tileentity.TileEntityLanternSrp;
-import wardlights.tileentity.TileEntityLanternVapula;
+import wardlights.init.ModRegistry;
+import wardlights.lantern.tileentity.TileEntityLanternPale;
+import wardlights.lantern.tileentity.TileEntityLanternPixie;
+import wardlights.lantern.tileentity.TileEntityLanternRegular;
+import wardlights.lantern.tileentity.TileEntityLanternSrp;
+import wardlights.lantern.tileentity.TileEntityLanternVapula;
+import wardlights.material.ItemMaterial;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = Wardlights.MODID)
 public class ClientModRegistry {

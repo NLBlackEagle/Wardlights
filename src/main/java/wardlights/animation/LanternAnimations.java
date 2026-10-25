@@ -12,7 +12,7 @@ import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
-import wardlights.handlers.ForgeConfigHandler;
+import wardlights.config.WardlightsConfig;
 
 /**
  * Shared GeckoLib controller-registration logic for the 5 lanterns, used by
@@ -31,7 +31,7 @@ public final class LanternAnimations {
         if (!(animatable instanceof TileEntity)) {
             return false;
         }
-        int cutoff = ForgeConfigHandler.client.lanternAnimationDistance;
+        int cutoff = WardlightsConfig.client.lanternAnimationDistance;
         if (cutoff <= 0) {
             return false;
         }

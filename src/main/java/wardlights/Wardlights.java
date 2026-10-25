@@ -14,7 +14,7 @@ import software.bernie.geckolib3.GeckoLib;
 import wardlights.compat.ArtifactsCompat;
 import wardlights.compat.FirstAidCompat;
 import wardlights.compat.NuclearCraftCompat;
-import wardlights.handlers.ModRegistry;
+import wardlights.init.ModRegistry;
 import wardlights.proxy.CommonProxy;
 
 @Mod(modid = Wardlights.MODID, version = Wardlights.VERSION, name = Wardlights.NAME, dependencies = "required-after:fermiumbooter;required-after:geckolib3;required-after:baubles")
@@ -56,7 +56,7 @@ public class Wardlights {
 }
 
 /*
-done: [Lanterns] (all recipes and tuning live in the config, see ForgeConfigHandler)
+done: [Lanterns] (all recipes and tuning live in the config, see WardlightsConfig)
 
 - 5 lanterns, each a bauble (belt), hand-held, Tool Belt or placed block; one ward per player at a time,
   shown by its own WardLight effect. Works only in darkness / underground, except the daylight traits noted below.
@@ -69,7 +69,7 @@ done: [Lanterns] (all recipes and tuning live in the config, see ForgeConfigHand
 - Dropped: per-lantern potion white/blacklists and per-lantern particles.
 
 
-done: [SOH 1 & 2 + ingredients] (all recipes live in the config, see ForgeConfigHandler)
+done: [SOH 1 & 2 + ingredients] (all recipes live in the config, see WardlightsConfig)
 
 - SOH 1 = Bulwark of Valor, SOH 2 = Aegis of Sacrifice (Trinkets and Baubles' Shield of Honor upgrades)
 - Ingredients, each registered only when its source mods are loaded, with a "where it comes from" tooltip:

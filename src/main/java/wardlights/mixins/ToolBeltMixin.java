@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import wardlights.items.ItemLanternBase;
+import wardlights.lantern.item.ItemLanternBase;
 
 /**
  * Makes lanterns on Tool Belt's belt hang straight down from the hip.

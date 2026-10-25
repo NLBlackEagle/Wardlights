@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import wardlights.lantern.LanternType;
-import wardlights.util.LanternUtil;
+import wardlights.lantern.LanternUtil;
 
 /**
  * Regular Lantern: its light counts for Lycanites' player spawn conditions.

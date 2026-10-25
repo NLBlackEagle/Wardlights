@@ -1,8 +1,9 @@
 package wardlights;
 
 import java.util.Map;
-import org.spongepowered.asm.launch.MixinBootstrap;
+
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import org.spongepowered.asm.launch.MixinBootstrap;
 
 @IFMLLoadingPlugin.MCVersion("1.12.2")
 public class WardlightsPlugin implements IFMLLoadingPlugin {
@@ -11,7 +12,7 @@ public class WardlightsPlugin implements IFMLLoadingPlugin {
 		MixinBootstrap.init();
 
 		// The mixin configs (mixins.wardlights.*.json) are enqueued for us by FermiumBooter,
-		// driven by the @MixinConfig.MixinToggle fields in ForgeConfigHandler.MixinToggleConfig
+		// driven by the @MixinConfig.MixinToggle fields in WardlightsConfig.MixinToggleConfig
 		// and their @MixinConfig.CompatHandling mod-presence checks.
 		//
 		// Only add explicit calls here for conditions the annotations can't express, e.g.:

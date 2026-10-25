@@ -4,9 +4,9 @@ import ichttt.mods.firstaid.api.damagesystem.AbstractPlayerDamageModel;
 import ichttt.mods.firstaid.api.event.FirstAidLivingDamageEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import wardlights.handlers.ChestBaubleHandler;
-import wardlights.handlers.ForgeConfigHandler;
-import wardlights.handlers.ForgeConfigHandler.ServerConfig.ChestBaubleConfig;
+import wardlights.bauble.chest.ChestBaubleHandler;
+import wardlights.config.WardlightsConfig;
+import wardlights.config.WardlightsConfig.ServerConfig.ChestBaubleConfig;
 
 /**
  * Chest bauble headshot save: when a hit would take the head to 0 (which
@@ -24,7 +24,7 @@ public class FirstAidCompat {
     @SubscribeEvent
     public void onFirstAidDamage(FirstAidLivingDamageEvent event) {
         EntityPlayer player = event.getEntityPlayer();
-        ChestBaubleConfig config = ForgeConfigHandler.server.chestBaubles;
+        ChestBaubleConfig config = WardlightsConfig.server.chestBaubles;
         if (player.world.isRemote || !config.headshotSave || ChestBaubleHandler.getWornChestBauble(player).isEmpty()) {
             return;
         }

@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import wardlights.lantern.LanternType;
-import wardlights.util.LanternUtil;
+import wardlights.lantern.LanternUtil;
 
 /**
  * Pixie Lantern: Ice and Fire pixies won't steal from its carrier, day or night.

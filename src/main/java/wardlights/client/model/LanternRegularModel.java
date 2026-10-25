@@ -3,7 +3,7 @@ package wardlights.client.model;
 import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import wardlights.Wardlights;
-import wardlights.items.ItemLantern;
+import wardlights.lantern.item.ItemLantern;
 
 public class LanternRegularModel extends AnimatedGeoModel<ItemLantern> {
 

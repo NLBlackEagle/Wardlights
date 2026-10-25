@@ -17,7 +17,7 @@ import wardlights.Wardlights;
 
 /**
  * One bauble part's live-tunable placement, parsed from its config strings
- * (see the placement entries in {@code ForgeConfigHandler.ClientConfig}):
+ * (see the placement entries in {@code WardlightsConfig.ClientConfig}):
  * <ul>
  * <li>base: {@code {offsetX, offsetY, offsetZ, rotationX, rotationY, rotationZ, scale}}</li>
  * <li>armor list, one entry per line: {@code {type, offsetX, offsetY, offsetZ, scale}}, where

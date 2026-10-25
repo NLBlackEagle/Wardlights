@@ -7,9 +7,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import wardlights.Wardlights;
-import wardlights.handlers.ForgeConfigHandler;
-import wardlights.handlers.ForgeConfigHandler.ServerConfig.AlloyFurnaceRecipeConfig;
-import wardlights.handlers.ModRegistry;
+import wardlights.config.WardlightsConfig;
+import wardlights.config.WardlightsConfig.ServerConfig.AlloyFurnaceRecipeConfig;
+import wardlights.init.ModRegistry;
 
 /**
  * Adds Wardlights recipes to NuclearCraft's machines.
@@ -25,8 +25,8 @@ public class NuclearCraftCompat {
      * caches them when a world loads, so recipes added during init are picked up.
      */
     public static void addRecipes() {
-        addAlloyFurnaceRecipe("Plutonium Alloy", ForgeConfigHandler.server.plutoniumAlloy, ModRegistry.PLUTONIUM_ALLOY);
-        addAlloyFurnaceRecipe("Plutonium Blood Alloy", ForgeConfigHandler.server.plutoniumBloodAlloy,
+        addAlloyFurnaceRecipe("Plutonium Alloy", WardlightsConfig.server.plutoniumAlloy, ModRegistry.PLUTONIUM_ALLOY);
+        addAlloyFurnaceRecipe("Plutonium Blood Alloy", WardlightsConfig.server.plutoniumBloodAlloy,
                 ModRegistry.PLUTONIUM_BLOOD_ALLOY);
     }
 

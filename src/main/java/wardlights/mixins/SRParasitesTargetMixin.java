@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import wardlights.handlers.ParasiteLanternHandler;
+import wardlights.lantern.handler.ParasiteLanternHandler;
 
 /**
  * Parasite Lantern: a parasite's target search skips players it's ignoring, so it

@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import wardlights.compat.LycanitesCompat;
-import wardlights.handlers.VapulaLanternHandler;
+import wardlights.lantern.handler.VapulaLanternHandler;
 
 /**
  * Vapula Lantern: mobs a mining spawner spawns for a player whose Vapula ward is

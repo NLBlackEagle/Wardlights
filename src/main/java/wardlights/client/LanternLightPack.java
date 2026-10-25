@@ -16,8 +16,8 @@ import net.minecraft.client.resources.data.MetadataSerializer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import wardlights.Wardlights;
-import wardlights.items.ItemLanternBase;
-import wardlights.util.LanternUtil;
+import wardlights.lantern.LanternUtil;
+import wardlights.lantern.item.ItemLanternBase;
 
 /**
  * A built-in resource pack holding one generated file: OptiFine's

@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import wardlights.items.ItemLanternBase;
+import wardlights.lantern.item.ItemLanternBase;
 
 /**
  * Lets a lantern stored in gigaherz's Tool Belt count as carried.

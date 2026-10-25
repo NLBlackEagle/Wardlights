@@ -17,10 +17,10 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import wardlights.handlers.ForgeConfigHandler;
-import wardlights.handlers.ForgeConfigHandler.ServerConfig.LanternConfig;
+import wardlights.config.WardlightsConfig;
+import wardlights.config.WardlightsConfig.ServerConfig.LanternConfig;
 import wardlights.lantern.LanternType;
-import wardlights.util.LanternUtil;
+import wardlights.lantern.LanternUtil;
 
 /**
  * Pixie Lantern: while its carrier is deep in a cave (below "Pixie Lantern
@@ -67,7 +67,7 @@ public class ArtifactsCompat {
 
     /** Rolls the Pixie Lantern's mimic chance on this chest; true when it became a mimic. */
     private static boolean tryMimic(World world, BlockPos pos, EntityPlayer player) {
-        LanternConfig config = ForgeConfigHandler.server.lanterns;
+        LanternConfig config = WardlightsConfig.server.lanterns;
         if (player == null || player.isSpectator() || config.pixieMimicChance <= 0
                 || !isDeepInCave(player, config.pixieMimicMaxY)
                 || !LanternUtil.hasLantern(player, LanternType.PIXIE)

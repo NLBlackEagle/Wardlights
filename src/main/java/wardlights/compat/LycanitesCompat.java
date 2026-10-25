@@ -6,11 +6,11 @@ import com.lycanitesmobs.core.spawner.trigger.OreBlockSpawnTrigger;
 import com.lycanitesmobs.core.spawner.trigger.SpawnTrigger;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import wardlights.handlers.ForgeConfigHandler;
-import wardlights.handlers.ForgeConfigHandler.ServerConfig.LanternConfig;
-import wardlights.handlers.VapulaLanternHandler;
+import wardlights.config.WardlightsConfig;
+import wardlights.config.WardlightsConfig.ServerConfig.LanternConfig;
 import wardlights.lantern.LanternType;
-import wardlights.util.LanternUtil;
+import wardlights.lantern.LanternUtil;
+import wardlights.lantern.handler.VapulaLanternHandler;
 
 /**
  * Lycanites Mobs side of the Vapula Lantern. Only called from the Lycanites mixins,
@@ -32,7 +32,7 @@ public final class LycanitesCompat {
         if (!isVapulaMiningSpawn(trigger, player)) {
             return chance;
         }
-        LanternConfig config = ForgeConfigHandler.server.lanterns;
+        LanternConfig config = WardlightsConfig.server.lanterns;
         double lanternChance = Math.max(trigger.gems ? config.vapulaGemSpawnChance : 0,
                 trigger.ores ? config.vapulaOreSpawnChance : 0);
         return Math.max(chance, lanternChance);
@@ -49,7 +49,7 @@ public final class LycanitesCompat {
         }
         BaseCreatureEntity creature = (BaseCreatureEntity) mob;
         creature.setMinion(true);
-        creature.setTemporary(ForgeConfigHandler.server.lanterns.vapulaAllySeconds * 20);
+        creature.setTemporary(WardlightsConfig.server.lanterns.vapulaAllySeconds * 20);
         if (creature instanceof TameableCreatureEntity) {
             ((TameableCreatureEntity) creature).setPlayerOwner(owner);
         }

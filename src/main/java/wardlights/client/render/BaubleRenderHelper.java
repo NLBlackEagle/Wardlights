@@ -27,7 +27,7 @@ import software.bernie.geckolib3.geo.render.built.GeoModel;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.GeoModelProvider;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
-import wardlights.handlers.ForgeConfigHandler;
+import wardlights.config.WardlightsConfig;
 
 /**
  * Shared draw logic for the GeckoLib body baubles —
@@ -168,7 +168,7 @@ public final class BaubleRenderHelper {
             return false;
         }
         String name = id.toString();
-        for (String entry : ForgeConfigHandler.client.shoulderHidingArmor) {
+        for (String entry : WardlightsConfig.client.shoulderHidingArmor) {
             if (BaublePlacement.matchesId(entry, name)) {
                 return true;
             }

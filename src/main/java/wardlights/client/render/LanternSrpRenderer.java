@@ -2,7 +2,7 @@ package wardlights.client.render;
 
 import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
 import wardlights.client.model.LanternSrpModel;
-import wardlights.items.ItemLanternSrp;
+import wardlights.lantern.item.ItemLanternSrp;
 
 public class LanternSrpRenderer extends GeoItemRenderer<ItemLanternSrp> {
 

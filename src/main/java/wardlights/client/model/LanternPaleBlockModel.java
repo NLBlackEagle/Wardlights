@@ -3,7 +3,7 @@ package wardlights.client.model;
 import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import wardlights.Wardlights;
-import wardlights.tileentity.TileEntityLanternPale;
+import wardlights.lantern.tileentity.TileEntityLanternPale;
 
 public class LanternPaleBlockModel extends AnimatedGeoModel<TileEntityLanternPale> {
 

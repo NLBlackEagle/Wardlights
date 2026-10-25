@@ -4,8 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import team.creative.enhancedvisuals.api.event.VisualExplosionEvent;
-import wardlights.handlers.ChestBaubleHandler;
-import wardlights.handlers.ForgeConfigHandler;
+import wardlights.bauble.chest.ChestBaubleHandler;
+import wardlights.config.WardlightsConfig;
 
 /**
  * Removes Enhanced Visuals' explosion screen blur while a chest bauble is worn.
@@ -23,7 +23,7 @@ public class EnhancedVisualsCompat {
     @SubscribeEvent
     public void onVisualExplosion(VisualExplosionEvent event) {
         EntityPlayer player = Minecraft.getMinecraft().player;
-        if (player != null && ForgeConfigHandler.server.chestBaubles.disableExplosionBlur
+        if (player != null && WardlightsConfig.server.chestBaubles.disableExplosionBlur
                 && !ChestBaubleHandler.getWornChestBauble(player).isEmpty()) {
             event.setDisableBlur(true);
         }

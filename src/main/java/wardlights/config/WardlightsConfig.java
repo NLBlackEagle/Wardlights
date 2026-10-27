@@ -34,7 +34,7 @@ public class WardlightsConfig {
 		@Config.Name("Bulwark of Valor Recipe")
 		@Config.RequiresMcRestart
 		public String bulwarkOfValorRecipe = "{nuclearcraft:alloy:1, "
-				+ "<potionfingers:ring:1>.withTag({effect: \"minecraft:regeneration\"}), nuclearcraft:alloy:1, "
+				+ "<potionfingers:ring:1>.withTag({effect: \"minecraft:resistance\"}), nuclearcraft:alloy:1, "
 				+ "srparasites:ada_bolster_drop, xat:damage_shield, srparasites:dispatcher_drop, "
 				+ "nuclearcraft:alloy:1, wardlights:badge_of_bravery, nuclearcraft:alloy:1}";
 
@@ -42,7 +42,7 @@ public class WardlightsConfig {
 		@Config.Name("Aegis of Sacrifice Recipe")
 		@Config.RequiresMcRestart
 		public String aegisOfSacrificeRecipe = "{wardlights:plutonium_blood_alloy, "
-				+ "<potionfingers:ring:1>.withTag({effect: \"minecraft:regeneration\"}), "
+				+ "<potionfingers:ring:1>.withTag({effect: \"minecraft:resistance\"}), "
 				+ "wardlights:plutonium_blood_alloy, wardlights:corrupted_fabric, wardlights:bulwark_of_valor, "
 				+ "wardlights:corrupted_heart, wardlights:plutonium_blood_alloy, variedcommodities:orb:0, "
 				+ "wardlights:plutonium_blood_alloy}";

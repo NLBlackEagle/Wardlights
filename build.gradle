@@ -69,10 +69,8 @@ dependencies {
     compileOnly fg.deobf("curse.maven:enhancedvisuals-${enhancedvisuals_version}")
     compileOnly fg.deobf("curse.maven:icenfire-${icenfire_version}")
     compileOnly fg.deobf("curse.maven:rlartifacts-${rlartifacts_version}")
-    // Local jar in libs/ (flatDir): nuclearcraft-1.12.2-2.19a.jar
-    compileOnly fg.deobf("local:nuclearcraft-1.12.2:2.19a")
-    // Local jar in libs/ (flatDir): toolbelt-1.12.2-1.9.14.jar
-    compileOnly fg.deobf("local:toolbelt-1.12.2:1.9.14")
+    compileOnly fg.deobf("curse.maven:nuclearcraft-${nuclearcraft_version}")
+    compileOnly fg.deobf("curse.maven:toolbelt-${toolbelt_version}")
 }
 
 mixin {

@@ -1,6 +1,9 @@
 package wardlights.bauble.iceandfire;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -18,6 +21,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import wardlights.Wardlights;
 import wardlights.config.WardlightsConfig;
@@ -64,6 +68,9 @@ public class IceAndFireBaubleHandler {
 
     /** True while we add Strength ourselves, so onPotionApplicable doesn't raise it a second time. */
     private static boolean addingStrength;
+
+    /** Players to reapply to at the end of this server tick; see {@link #reapplyLater}. */
+    private static final Set<EntityPlayer> pendingReapply = new LinkedHashSet<>();
 
     /** Raises the wearer's Strength a level, or gives Strength I when there's none. Safe to call again. */
     public static void onCyclopsEyeEquipped(EntityLivingBase wearer) {
@@ -165,8 +172,26 @@ public class IceAndFireBaubleHandler {
                 && (potion != getSwiftswimming() || ModRegistry.SIREN_SCALE == null)) {
             return;
         }
-        EntityPlayer player = (EntityPlayer) entity;
-        player.getServer().addScheduledTask(() -> reapply(player));
+        // Not addScheduledTask: on the server thread that runs right away, and since
+        // PotionRemoveEvent fires before the effect is gone, reapply would remove it
+        // again and recurse until the stack overflows.
+        pendingReapply.add((EntityPlayer) entity);
+    }
+
+    @SubscribeEvent
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END || pendingReapply.isEmpty()) {
+            return;
+        }
+        // Copied first: reapply changes effects, which queues the player again for next tick.
+        List<EntityPlayer> players = new ArrayList<>(pendingReapply);
+        pendingReapply.clear();
+        for (EntityPlayer player : players) {
+            // A dead or logged-out player gets reapplied on respawn or login instead.
+            if (!player.isDead) {
+                reapply(player);
+            }
+        }
     }
 
     private static void reapply(EntityPlayer player) {

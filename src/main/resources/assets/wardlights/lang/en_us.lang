@@ -32,6 +32,7 @@ tooltip.wardlights.lantern.vapula.mining=§e- Increases mining speed and the cha
 tooltip.wardlights.lantern.vapula.allies=§e- Spawned Vapula's and Geonachs will mistake you for one of their own and fight by your side!
 tooltip.wardlights.lantern.vapula.fortune=§e- Grants you with fortune on your mining trips!
 tooltip.wardlights.lantern.pale.ignore=§e- Makes pale entities ignore you, unless you attack them of course!
+tooltip.wardlights.lantern.pale.pale_lung.immunity=§e- Grants immunity versus pale lung, even above ground in broad daylight!
 # Pale Lung chances (%s%% = the chance); placed: second %s = the lantern radius
 tooltip.wardlights.lantern.pale.pale_lung.hitting=§e- Hostiles you hit have a %s%% chance to catch Pale Lung!
 tooltip.wardlights.lantern.pale.pale_lung.hit_by=§e- Hostiles that hit you have a %s%% chance to catch Pale Lung!

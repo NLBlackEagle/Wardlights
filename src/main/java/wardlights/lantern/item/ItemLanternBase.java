@@ -105,6 +105,7 @@ public abstract class ItemLanternBase extends ItemBlock implements IAnimatable, 
                     tooltip.add(line("pale.ignore"));
                 }
                 if (PaleLanternHandler.getPaleLung() != null) {
+                    tooltip.add(line("pale.pale_lung.immunity"));
                     long hitting = Math.round(config.paleLungHittingChance * 100);
                     long hitBy = Math.round(config.paleLungHitByChance * 100);
                     // One line when both chances are the same, which they are by default.

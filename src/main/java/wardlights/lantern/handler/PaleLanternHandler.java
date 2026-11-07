@@ -19,8 +19,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import wardlights.Wardlights;
 import wardlights.config.WardlightsConfig;
@@ -32,7 +35,8 @@ import wardlights.util.TargetMemory;
 /**
  * Pale Lantern: the configured pale mobs ignore its carrier while the ward is
  * active, unless they've been hit by them, and hostile mobs may catch Pale Lung
- * from it: coming near a placed one, or fighting its carrier.
+ * from it: coming near a placed one, or fighting its carrier. The carrier
+ * themselves is immune to Pale Lung at all times, and picking it up cures it.
  *
  * <p>Mobs and Pale Lung are looked up by id, so nothing here touches a Pale Bloom
  * class and it's harmless without those mods.
@@ -115,6 +119,39 @@ public class PaleLanternHandler {
         if (attacker instanceof EntityPlayer && hasCarriedPaleWard((EntityPlayer) attacker)) {
             tryPaleLung(hurt, config.paleLungHittingChance);
         }
+    }
+
+    /**
+     * A Pale Lantern's carrier can't contract Pale Lung, day and night. Every way
+     * of getting it (Pale Bloom's sources, a wither converted by a seed bomb, our
+     * own lantern) goes through addPotionEffect, which asks this event first.
+     */
+    @SubscribeEvent
+    public static void onPotionApplicable(PotionEvent.PotionApplicableEvent event) {
+        EntityLivingBase entity = event.getEntityLiving();
+        Potion potion = getPaleLung();
+        if (potion != null && !entity.world.isRemote && entity instanceof EntityPlayer
+                && event.getPotionEffect().getPotion() == potion
+                && isImmune((EntityPlayer) entity)) {
+            event.setResult(Event.Result.DENY);
+        }
+    }
+
+    /** Pale Lung a carrier already had goes away as soon as they pick up the lantern. */
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        EntityPlayer player = event.player;
+        Potion potion = getPaleLung();
+        if (event.phase == TickEvent.Phase.END && !player.world.isRemote && potion != null
+                && player.isPotionActive(potion) && isImmune(player)) {
+            player.removePotionEffect(potion);
+        }
+    }
+
+    /** Carried only, and day and night, so no ward check. */
+    private static boolean isImmune(EntityPlayer player) {
+        return LanternUtil.hasLantern(player, LanternType.PALE)
+                && LanternUtil.getActiveLanternType(player) == LanternType.PALE;
     }
 
     private static boolean hasCarriedPaleWard(EntityPlayer player) {

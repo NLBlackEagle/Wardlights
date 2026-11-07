@@ -11,7 +11,7 @@ public enum LanternType {
     PIXIE(true, 2),
     /** Lantern 3: mining speed, Vapula / Geonach allies. */
     VAPULA(false, 3),
-    /** Lantern 4: cancels targeting for listed mobs, Pale Lung. */
+    /** Lantern 4: cancels targeting for listed mobs, Pale Lung; carrier's Pale Lung immunity (day and night). */
     PALE(false, 3),
     /** Lantern 5: SRParasites ignore you, shorter Fear; COTH clearing (day and night). */
     PARASITE(true, 1);

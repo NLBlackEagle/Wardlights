@@ -100,7 +100,7 @@ public abstract class ItemChestBauble extends Item implements IBauble, IRenderBa
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
         ChestBaubleConfig config = WardlightsConfig.server.chestBaubles;
         if (getResistanceLevel() > 0) {
-            tooltip.add(line("resistance", I18n.format(MobEffects.RESISTANCE.getName())));
+            tooltip.add(line("resistance", I18n.format(MobEffects.RESISTANCE.getName()) + " " + levelNumeral(getResistanceLevel())));
         }
         if (config.explosionResistance) {
             tooltip.add(line("explosion", percent(1 - config.explosionDamageMultiplier)));
@@ -131,6 +131,16 @@ public abstract class ItemChestBauble extends Item implements IBauble, IRenderBa
     @SideOnly(Side.CLIENT)
     private static String line(String key, Object... args) {
         return I18n.format(TOOLTIP_PREFIX + key, args);
+    }
+
+    /**
+     * 3 -> "III", using vanilla's enchantment.level.N keys (defined for 1-10);
+     * past that it falls back to the plain number.
+     */
+    @SideOnly(Side.CLIENT)
+    private static String levelNumeral(int level) {
+        String key = "enchantment.level." + level;
+        return I18n.hasKey(key) ? I18n.format(key) : String.valueOf(level);
     }
 
     /** 0.75 -> "75.0%". */

@@ -60,7 +60,8 @@ item.tainted_flesh.name=Tainted Flesh
 tooltip.wardlights.tainted_flesh=§7§oDropped rarely by weakened overworld parasites in their native habitats.
 item.dormant_badge.name=Dormant Badge
 item.badge_of_bravery.name=Badge of Bravery
-tooltip.wardlights.badge_of_bravery=§7§oTraded by Brutal Merchants for a Dormant Badge and Ancient Coins
+tooltip.wardlights.dormant_badge=§6§oPerhaps a Brutal Merchant would be willing to take a look at this?
+tooltip.wardlights.badge_of_bravery=§6§oA tribute to your bravery, refined by Brutal Merchants and brimming with exotic powers.
 
 # Chest baubles (Bulwark of Valor / Aegis of Sacrifice)
 tooltip.wardlights.chest_bauble.resistance=§6Grants %s while equipped

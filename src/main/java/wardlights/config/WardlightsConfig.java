@@ -480,18 +480,51 @@ public class WardlightsConfig {
 			@Config.RangeDouble(min = 0, max = 1)
 			public double dispatcherCrownPointReduction = 0.005;
 
-			@Config.Comment("Blooming Crown: chance for each hit to add a point (1 = always), like SRParasites' "
-					+ "Sentient Armor Point Chance to Learn.")
+			@Config.Comment("Blooming Crown: chance (1 = always) for each hit to start learning a new source, and "
+					+ "again to add a point to it, like SRParasites' Sentient Armor Point Chance to Learn. As with "
+					+ "SRPMixins' adaptation overhaul, a new source starts at 0 points, so its first point takes two "
+					+ "lucky rolls.")
 			@Config.Name("Blooming Crown Adaptation Chance to Learn")
 			@Config.RangeDouble(min = 0, max = 1)
 			public double dispatcherCrownLearnChance = 0.2;
 
-			@Config.Comment("Blooming Crown: damage sources it never adapts to, like SRParasites' Armor Damage Types "
-					+ "BlackList. A source is skipped when its name contains any entry (mob ids like "
-					+ "minecraft:zombie, or damage types like fall).")
+			@Config.Comment("Blooming Crown: damage types it never adapts to (fall, arrow, ...), like SRParasites' "
+					+ "Armor Damage Types BlackList Else. A type is skipped when its name contains any entry. "
+					+ "Only used without SRParasites; with it, SRParasites' own list is used.")
 			@Config.Name("Blooming Crown Adaptation Blacklist")
 			public String[] dispatcherCrownBlacklist = {"dehydration", "hypothermia", "hyperthermia", "starve", "drown",
 					"outOfWorld", "fallingBlock", "inWall", "cramming", "lightningBolt"};
+
+			@Config.Comment("Blooming Crown: players and mobs it never adapts to (player names, mob ids like "
+					+ "minecraft:zombie), like SRParasites' Armor Damage Types BlackList Mobs. "
+					+ "Only used without SRParasites; with it, SRParasites' own list is used.")
+			@Config.Name("Blooming Crown Adaptation Blacklist Mobs")
+			public String[] dispatcherCrownBlacklistMobs = {};
+
+			@Config.Comment("Blooming Crown: use both blacklists as whitelists instead, like SRParasites' Armor Damage "
+					+ "Types BlackList Inverted. Only used without SRParasites; with it, SRParasites' own setting is used.")
+			@Config.Name("Blooming Crown Adaptation Blacklist Inverted")
+			public boolean dispatcherCrownBlacklistInverted = false;
+
+			@Config.Comment("Blooming Crown: sources counted as another one, \"from, to\" per line, like SRPMixins' "
+					+ "Adaptation Type Overrides. Use NONE as the second to never adapt to it. "
+					+ "Only used without SRPMixins; with it, SRPMixins' own list is used.")
+			@Config.Name("Blooming Crown Adaptation Type Overrides")
+			public String[] dispatcherCrownTypeOverrides = {"srparasites:homming, thrown"};
+
+			@Config.Comment("Blooming Crown: damage types counted as fire, like SRPMixins' Fire Multiplier Dmg Types. "
+					+ "isBurning means any hit while the wearer is on fire. Fire hits teach the crown nothing and are "
+					+ "reduced less (see Burning Effectiveness); unlike Sentient Armor, they don't deal extra damage. "
+					+ "Only used without SRPMixins; with it, SRPMixins' own list is used.")
+			@Config.Name("Blooming Crown Adaptation Fire Types")
+			public String[] dispatcherCrownFireTypes = {"isBurning"};
+
+			@Config.Comment("Blooming Crown: how well adaptation works against fire hits (0.5 = half as well), like "
+					+ "SRPMixins' Burning Adaptation Effectiveness. Only used without SRPMixins; with it, SRPMixins' "
+					+ "own setting is used.")
+			@Config.Name("Blooming Crown Adaptation Burning Effectiveness")
+			@Config.RangeDouble(min = 0, max = 1)
+			public double dispatcherCrownBurningEffectiveness = 0.5;
 
 			@Config.Comment("Cyclops Eye: Looting levels added while it's worn, on top of the weapon's own. "
 					+ "Only exists when Ice and Fire is installed.")

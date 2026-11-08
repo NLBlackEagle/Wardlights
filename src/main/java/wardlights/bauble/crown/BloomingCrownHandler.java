@@ -1,5 +1,8 @@
 package wardlights.bauble.crown;
 
+import java.util.Random;
+import java.util.Set;
+
 import javax.annotation.Nullable;
 
 import baubles.api.BaublesApi;
@@ -19,7 +22,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import wardlights.Wardlights;
@@ -30,17 +32,17 @@ import wardlights.init.ModRegistry;
 /**
  * The Blooming Crown's two traits (registered as dispatcher_crown).
  *
- * <p>Adaptation, done the way SRParasites' Sentient Armor does it
- * (SRPEventHandlerBus#entityHurt): each hit has a chance to add a point for
- * "the thing" that hit, and that thing's hits are then cut by points x the
- * per-point reduction, as a share of the incoming damage before anything else
- * (armor, other mods) touches it. Only a few things can be learned (the source
- * cap), and each one's points are capped. "The thing" is picked like SRP does:
- * the player's name, the hitting mob's type, or the damage type. Unlike SRP, a
- * projectile (an arrow, spit, a fireball...) counts as whoever fired it rather
- * than its damage type ("thrown", "arrow"). Also unlike SRP, hits with no
- * entity at all (fall, fire...) are learned by damage type too rather than
- * sharing one nameless entry.
+ * <p>Adaptation works like Sentient Armor does in the pack, where SRPMixins'
+ * adaptation overhaul replaces SRParasites' own. Each hit is named after what
+ * directly hit (a player's name, a mob's id, else the damage type, so arrows are
+ * "arrow"), then put through the type overrides. An unknown source has a chance
+ * to be learned at 0 points while there's room (the source cap) and it isn't
+ * blacklisted; a known one, including one learned this hit, has the same chance
+ * to gain a point. Its hits are then cut by points x the per-point reduction,
+ * points capped. Fire hits (see {@link AdaptationRules#fireTypes}) teach nothing
+ * and are cut less. Unlike Sentient Armor, fire doesn't hurt the wearer more.
+ * The rules come from SRParasites' and SRPMixins' configs when they're
+ * installed ({@link AdaptationRules}); the numbers are the crown's own.
  *
  * <p>Rage: always active while health is below a line (Rage I below 85%, Rage II
  * below 35% by default), topped up but never extended; Rage from anywhere else
@@ -64,55 +66,105 @@ public class BloomingCrownHandler {
     /** Set while the crown adds Rage itself, so {@link #onPotionApplicable} lets it through. Server thread only. */
     private static boolean addingOwnRage;
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
-        ItemStack crown = getWornCrown(event.getEntityLiving());
+        EntityLivingBase wearer = event.getEntityLiving();
+        ItemStack crown = getWornCrown(wearer);
         BaubleConfig config = WardlightsConfig.server.baubles;
-        // canHarmInCreative is only true for the void and /kill, which shouldn't be adapted to.
-        if (crown == null || config.dispatcherCrownSourceCap <= 0 || event.getSource().canHarmInCreative()) {
+        if (crown == null || config.dispatcherCrownSourceCap <= 0) {
             return;
         }
-        String source = adaptationSource(event.getSource());
-        if (isBlacklisted(source, config.dispatcherCrownBlacklist)) {
+        DamageSource damage = event.getSource();
+        Entity attacker = damage.getImmediateSource();
+        boolean fromLiving = attacker instanceof EntityLivingBase;
+        String source = adaptationSource(damage, attacker);
+        if (source == null) {
             return;
         }
+        source = AdaptationRules.override(source);
+        if (source.equals(AdaptationRules.NEVER)) {
+            return;
+        }
+        boolean fire = isFire(damage, wearer);
+
         NBTTagCompound tag = ItemBloomingCrown.getOrCreateTag(crown);
         NBTTagList adaptation = tag.getTagList(ItemBloomingCrown.ADAPTATION_TAG, Constants.NBT.TAG_COMPOUND);
-
-        // Like SRP, learn first, so a point gained on this hit already counts against it.
-        if (event.getEntityLiving().getRNG().nextDouble() < config.dispatcherCrownLearnChance) {
-            learn(adaptation, source, config.dispatcherCrownSourceCap);
-            tag.setTag(ItemBloomingCrown.ADAPTATION_TAG, adaptation);
+        NBTTagCompound entry = findEntry(adaptation, source);
+        // Fire hits teach nothing; they only get the (weakened) reduction below.
+        if (!fire) {
+            Random rng = wearer.getRNG();
+            if (entry == null && adaptation.tagCount() < config.dispatcherCrownSourceCap
+                    && rng.nextDouble() < config.dispatcherCrownLearnChance && !isBlacklisted(source, fromLiving)) {
+                entry = new NBTTagCompound();
+                entry.setString(ItemBloomingCrown.SOURCE_TAG, source);
+                entry.setInteger(ItemBloomingCrown.POINTS_TAG, 0);
+                adaptation.appendTag(entry);
+                tag.setTag(ItemBloomingCrown.ADAPTATION_TAG, adaptation);
+            }
+            // A second roll, also on the hit that just added the source, so its first point takes two.
+            if (entry != null && rng.nextDouble() < config.dispatcherCrownLearnChance) {
+                entry.setInteger(ItemBloomingCrown.POINTS_TAG, entry.getInteger(ItemBloomingCrown.POINTS_TAG) + 1);
+            }
         }
-        float reduction = ItemBloomingCrown.getReduction(ItemBloomingCrown.getPoints(adaptation, source));
-        event.setAmount(Math.max(0, event.getAmount() - event.getAmount() * reduction));
+        if (entry == null) {
+            return;
+        }
+        float reduction = ItemBloomingCrown.getReduction(entry.getInteger(ItemBloomingCrown.POINTS_TAG));
+        if (fire) {
+            reduction *= (float) AdaptationRules.burningEffectiveness();
+        }
+        event.setAmount(Math.max(0, event.getAmount() * (1 - reduction)));
     }
 
-    /** Adds a point to this source, or a new entry for it while there's room for one. */
-    private static void learn(NBTTagList adaptation, String source, int sourceCap) {
+    @Nullable
+    private static NBTTagCompound findEntry(NBTTagList adaptation, String source) {
         for (int i = 0; i < adaptation.tagCount(); i++) {
             NBTTagCompound entry = adaptation.getCompoundTagAt(i);
             if (entry.getString(ItemBloomingCrown.SOURCE_TAG).equals(source)) {
-                entry.setInteger(ItemBloomingCrown.POINTS_TAG, entry.getInteger(ItemBloomingCrown.POINTS_TAG) + 1);
-                return;
+                return entry;
             }
         }
-        if (adaptation.tagCount() < sourceCap) {
-            NBTTagCompound entry = new NBTTagCompound();
-            entry.setString(ItemBloomingCrown.SOURCE_TAG, source);
-            entry.setInteger(ItemBloomingCrown.POINTS_TAG, 1);
-            adaptation.appendTag(entry);
-        }
+        return null;
     }
 
-    /** Same matching as SRP's blacklists: any entry contained in the source's name. */
-    private static boolean isBlacklisted(String source, String[] blacklist) {
-        for (String entry : blacklist) {
-            if (!entry.isEmpty() && source.contains(entry)) {
+    /** A fire damage type, or "isBurning" in the list and the wearer is on fire. */
+    private static boolean isFire(DamageSource damage, EntityLivingBase wearer) {
+        Set<String> fireTypes = AdaptationRules.fireTypes();
+        return fireTypes.contains(damage.getDamageType()) || fireTypes.contains("isBurning") && wearer.isBurning();
+    }
+
+    /**
+     * Player and mob names are checked against the Mobs list, damage types
+     * against the damage type list. Without SRPMixins' blacklist fix, names that
+     * pass the Mobs list are checked against the damage type list too, like base SRP.
+     */
+    private static boolean isBlacklisted(String source, boolean fromLiving) {
+        boolean inverted = AdaptationRules.blacklistInverted();
+        if (fromLiving) {
+            if (matches(source, AdaptationRules.blacklistMobs(), inverted)) {
                 return true;
             }
+            if (AdaptationRules.blacklistCheckFixed()) {
+                return false;
+            }
         }
-        return false;
+        return matches(source, AdaptationRules.blacklistDamageTypes(), inverted);
+    }
+
+    /**
+     * SRP's list matching: listed when the name contains any entry. Inverted, it's
+     * listed when it contains none. An empty list never lists anything.
+     */
+    private static boolean matches(String source, String[] list, boolean inverted) {
+        if (list.length == 0) {
+            return false;
+        }
+        for (String entry : list) {
+            if (source.contains(entry)) {
+                return !inverted;
+            }
+        }
+        return inverted;
     }
 
     /** From the crown's onWornTick. */
@@ -187,25 +239,21 @@ public class BloomingCrownHandler {
     }
 
     /**
-     * Same order SRP uses: a player's name, the hitting mob's type, else the
-     * damage type. Unlike SRP, a projectile counts as the mob or player that
-     * fired it, so its hits share an entry with that mob's melee hits.
+     * What the hit counts as, picked from the entity that directly hit: a
+     * player's name, a mob's id, or else (a projectile, or nothing at all) the
+     * damage type, so an arrow counts as "arrow" whoever shot it. Null for a mob
+     * without an id, which SRPMixins skips entirely.
      */
-    private static String adaptationSource(DamageSource source) {
-        Entity attacker = source.getImmediateSource();
-        if (!(attacker instanceof EntityLivingBase)) {
-            attacker = source.getTrueSource();
-        }
+    @Nullable
+    private static String adaptationSource(DamageSource damage, @Nullable Entity attacker) {
         if (attacker instanceof EntityPlayer) {
             return attacker.getName();
         }
         if (attacker instanceof EntityLivingBase) {
             ResourceLocation id = EntityList.getKey(attacker);
-            if (id != null) {
-                return id.toString();
-            }
+            return id == null ? null : id.toString();
         }
-        return source.getDamageType();
+        return damage.getDamageType();
     }
 
     /** SRParasites' Rage potion, or null when it isn't installed. */

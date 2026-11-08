@@ -99,6 +99,7 @@ public class ModRegistry {
     /** Provides the pack's Blood Tear (contenttweaker:blood_tear). */
     public static final String CONTENTTWEAKER_MODID = "contenttweaker";
     public static final String SRPARASITES_MODID = "srparasites";
+    public static final String SRPMIXINS_MODID = "srpmixins";
     public static final String PALEBLOOM_MODID = "palebloom";
     /** Fish's Undead Rising. */
     public static final String FISH_UNDEAD_RISING_MODID = "mod_lavacow";

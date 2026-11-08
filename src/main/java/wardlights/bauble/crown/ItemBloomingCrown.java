@@ -102,11 +102,11 @@ public class ItemBloomingCrown extends Item implements IBauble {
         }
     }
 
-    /** Two decimals at most, rounded down, the way SRP shows it. */
+    /** Two decimals at most, rounded half up, the way SRPMixins shows Sentient Armor's. */
     @SideOnly(Side.CLIENT)
     private static String formatPercent(float reduction) {
         DecimalFormat format = new DecimalFormat("##.##");
-        format.setRoundingMode(RoundingMode.DOWN);
+        format.setRoundingMode(RoundingMode.HALF_UP);
         return format.format(reduction * 100.0) + "%";
     }
 
@@ -116,17 +116,6 @@ public class ItemBloomingCrown extends Item implements IBauble {
             tooltip.add(I18n.format("tooltip.wardlights.dispatcher_crown.rage", healthPercent + "%",
                     I18n.format("enchantment.level." + level)));
         }
-    }
-
-    /** The points learned for this source, or 0. */
-    public static int getPoints(NBTTagList adaptation, String source) {
-        for (int i = 0; i < adaptation.tagCount(); i++) {
-            NBTTagCompound entry = adaptation.getCompoundTagAt(i);
-            if (entry.getString(SOURCE_TAG).equals(source)) {
-                return entry.getInteger(POINTS_TAG);
-            }
-        }
-        return 0;
     }
 
     /** Share of damage taken off for this many points, capped like SRP's Sentient Armor Point Cap. */

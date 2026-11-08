@@ -18,9 +18,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import wardlights.config.WardlightsConfig;
 
 /**
- * Worn in the Baubles HEAD slot, dropped by Ice and Fire's Cyclops. Gives
- * one extra Strength level (Strength I on its own) and extra Looting while worn, like
- * Trinkets and Baubles' Dragon's Eye. Both are handled in {@link IceAndFireBaubleHandler}.
+ * Worn in the Baubles HEAD slot, dropped by Ice and Fire's Cyclops. Gives extra
+ * attack damage (+3 by default, one Strength level, stacking with Strength) and
+ * extra Looting while worn, like Trinkets and Baubles' Dragon's Eye. Both are
+ * handled in {@link IceAndFireBaubleHandler}.
  */
 public class ItemCyclopsEye extends Item implements IBauble {
 
@@ -37,19 +38,23 @@ public class ItemCyclopsEye extends Item implements IBauble {
     }
 
     @Override
-    public void onEquipped(ItemStack itemStack, EntityLivingBase wearer) {
-        IceAndFireBaubleHandler.onCyclopsEyeEquipped(wearer);
+    public void onWornTick(ItemStack itemStack, EntityLivingBase wearer) {
+        IceAndFireBaubleHandler.CYCLOPS_EYE_DAMAGE.apply(wearer);
     }
 
     @Override
     public void onUnequipped(ItemStack itemStack, EntityLivingBase wearer) {
-        IceAndFireBaubleHandler.onCyclopsEyeUnequipped(wearer);
+        IceAndFireBaubleHandler.CYCLOPS_EYE_DAMAGE.remove(wearer);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
-        tooltip.add(I18n.format("tooltip.wardlights.cyclops_eye.strength"));
+        double damage = WardlightsConfig.server.baubles.cyclopsEyeAttackDamage;
+        if (damage > 0) {
+            tooltip.add(I18n.format("tooltip.wardlights.cyclops_eye.attack_damage",
+                    ItemStack.DECIMALFORMAT.format(damage)));
+        }
         int looting = WardlightsConfig.server.baubles.cyclopsEyeLooting;
         if (looting > 0) {
             tooltip.add(I18n.format("tooltip.wardlights.cyclops_eye.looting", I18n.format("enchantment.level." + looting)));

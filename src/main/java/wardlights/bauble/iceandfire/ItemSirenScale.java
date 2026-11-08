@@ -13,14 +13,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import wardlights.init.ModRegistry;
+import wardlights.config.WardlightsConfig;
 
 /**
- * Worn in the Baubles AMULET slot, dropped by Ice and Fire's Sirens. Gives
- * Lycanites Mobs' Swiftswimming I while worn ({@link IceAndFireBaubleHandler}).
+ * Worn in the Baubles AMULET slot, dropped by Ice and Fire's Sirens. Raises swim
+ * speed while worn, stacking with Lycanites' Swiftswimming
+ * ({@link IceAndFireBaubleHandler#SIREN_SCALE_SWIM_SPEED}).
  */
 public class ItemSirenScale extends Item implements IBauble {
 
@@ -37,20 +37,22 @@ public class ItemSirenScale extends Item implements IBauble {
     }
 
     @Override
-    public void onEquipped(ItemStack itemStack, EntityLivingBase wearer) {
-        IceAndFireBaubleHandler.onSirenScaleEquipped(wearer);
+    public void onWornTick(ItemStack itemStack, EntityLivingBase wearer) {
+        IceAndFireBaubleHandler.SIREN_SCALE_SWIM_SPEED.apply(wearer);
     }
 
     @Override
     public void onUnequipped(ItemStack itemStack, EntityLivingBase wearer) {
-        IceAndFireBaubleHandler.onSirenScaleUnequipped(wearer);
+        IceAndFireBaubleHandler.SIREN_SCALE_SWIM_SPEED.remove(wearer);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
-        if (Loader.isModLoaded(ModRegistry.LYCANITESMOBS_MODID)) {
-            tooltip.add(I18n.format("tooltip.wardlights.siren_scale.swiftswimming"));
+        double swimSpeed = WardlightsConfig.server.baubles.sirenScaleSwimSpeed;
+        if (swimSpeed > 0) {
+            tooltip.add(I18n.format("tooltip.wardlights.siren_scale.swim_speed",
+                    ItemStack.DECIMALFORMAT.format(swimSpeed * 100)));
         }
     }
 }

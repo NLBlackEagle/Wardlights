@@ -95,12 +95,12 @@ tooltip.wardlights.dispatcher_crown.current=§5Current Adaptation:
 tooltip.wardlights.dispatcher_crown.source=§e->%s
 tooltip.wardlights.dispatcher_crown.reduction=§e reduction: %s
 
-# Cyclops Eye (looting: %s = bonus Looting level as a roman numeral) / Siren Scale
+# Cyclops Eye (attack_damage: %s = bonus damage; looting: %s = bonus Looting level as a roman numeral) / Siren Scale (swim_speed: %s = bonus percent)
 item.cyclops_eye.name=Cyclops Eye
-tooltip.wardlights.cyclops_eye.strength=§6Grants §3+1§6 Strength level, stacking with other Strength
+tooltip.wardlights.cyclops_eye.attack_damage=§6Grants §3+%s§6 Attack Damage, stacking with Strength
 tooltip.wardlights.cyclops_eye.looting=§6Grants Looting §3%s
 item.siren_scale.name=Siren Scale
-tooltip.wardlights.siren_scale.swiftswimming=§6Grants Swiftswimming §3I
+tooltip.wardlights.siren_scale.swim_speed=§6Grants §3+%s%%§6 Swim Speed, stacking with Swiftswimming
 
 # Ring of Piercing (%s = seconds of Immalleable)
 item.piercing_ring.name=Ring of Piercing

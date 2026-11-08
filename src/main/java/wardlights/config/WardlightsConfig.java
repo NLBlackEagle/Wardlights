@@ -493,11 +493,24 @@ public class WardlightsConfig {
 			public String[] dispatcherCrownBlacklist = {"dehydration", "hypothermia", "hyperthermia", "starve", "drown",
 					"outOfWorld", "fallingBlock", "inWall", "cramming", "lightningBolt"};
 
-			@Config.Comment("Cyclops Eye: Looting levels added while it's worn, on top of the weapon's own. It also adds "
-					+ "one Strength level on top of any other Strength (Strength I on its own). Only exists when Ice and Fire is installed.")
+			@Config.Comment("Cyclops Eye: Looting levels added while it's worn, on top of the weapon's own. "
+					+ "Only exists when Ice and Fire is installed.")
 			@Config.Name("Cyclops Eye Looting")
 			@Config.RangeInt(min = 0, max = 10)
 			public int cyclopsEyeLooting = 1;
+
+			@Config.Comment("Cyclops Eye: attack damage added while it's worn, stacking with Strength and everything else. "
+					+ "Each Strength level is +3, so the default is worth one extra Strength level.")
+			@Config.Name("Cyclops Eye Attack Damage")
+			@Config.RangeDouble(min = 0, max = 100)
+			public double cyclopsEyeAttackDamage = 3.0;
+
+			@Config.Comment("Siren Scale: swim speed bonus while it's worn, as a multiplier (1.0 = +100%, double speed, "
+					+ "like Lycanites' Swiftswimming I). It multiplies with Swiftswimming, so the scale plus "
+					+ "Swiftswimming II (x3) gives x6. Only exists when Ice and Fire is installed.")
+			@Config.Name("Siren Scale Swim Speed")
+			@Config.RangeDouble(min = 0, max = 10)
+			public double sirenScaleSwimSpeed = 1.0;
 
 			@Config.Comment("Items mobs can drop and the chance they do (0.25 = 25%), one itemId;mobId;chance per line. "
 					+ "Defaults: Beckon Pearls from Stage II-IV Beckons, Dispatcher Blooms from Stage II-IV Dispatchers, "

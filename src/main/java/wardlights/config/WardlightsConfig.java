@@ -701,6 +701,13 @@ public class WardlightsConfig {
 		@MixinConfig.CompatHandling(modid = "toolbelt", desired = true, warnIngame = false)
 		public boolean toolBeltHangingLanterns = true;
 
+		@Config.Comment("Makes lanterns worn in a Baubles slot or stored in a Tool Belt glow with OptiFine's dynamic "
+				+ "lights, not just held ones. Patches OptiFine; does nothing without it.")
+		@Config.Name("OptiFine Carried Lantern Light")
+		@Config.RequiresMcRestart
+		@MixinConfig.MixinToggle(lateMixin = "mixins.wardlights.optifine.json", defaultValue = true)
+		public boolean optiFineCarriedLanternLight = true;
+
 		@Config.Comment("Lets Wardlights items use their own enchantment glint color (the Badge of Bravery's white and "
 				+ "the Blood Essence's red and the Blight Essence's green glint) instead of vanilla's purple. Patches Minecraft's item renderer.")
 		@Config.Name("Glint Color")

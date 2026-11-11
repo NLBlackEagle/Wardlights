@@ -99,6 +99,9 @@ public final class BaubleRenderHelper {
     // ModelRenderer#postRender's scale argument, as every biped layer passes it.
     private static final float MODEL_SCALE = 0.0625f;
 
+    // ModelBiped#render's translate(0, 0.2F, 0) while the entity is sneaking.
+    private static final float SNEAK_DROP = 0.2f;
+
     // ModelBiped#bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F) (pixels),
     // converted to block units the same way ModelRenderer#postRender does
     // (rotationPoint * 0.0625F). Used relative to the torso for the badge, and
@@ -300,6 +303,14 @@ public final class BaubleRenderHelper {
      * with the arm.
      */
     private static void applyHandAnchor(EntityPlayer player, Anchor anchor) {
+        if (player.isSneaking()) {
+            // ModelBiped#render drops the whole model by this much while
+            // sneaking, but only inside its own push/pop, so layers have to
+            // repeat it (LayerHeldItem and Tool Belt do the same). The body's
+            // forward lean comes from postRender below; without this drop the
+            // parts lean along but float 0.2 blocks above the crouched body.
+            GlStateManager.translate(0f, SNEAK_DROP, 0f);
+        }
         ModelBiped model = getBipedModel(player);
         if (model != null && anchor == Anchor.UPPER_ARM) {
             applyUpperArmTransform(model.bipedLeftArm);

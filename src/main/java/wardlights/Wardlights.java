@@ -133,7 +133,7 @@ todo: [Baubles] (need models)
 - done: Viral Ring (Ancient Ring + Beckon Pearl + Tainted Flesh/Tears), Blooming Crown, id dispatcher_crown (Ancient
   Crown + Dispatcher Bloom + Tainted Flesh/Tears; Rage bursts + SRP Sentient Armor-style adaptation, max 5% per source,
   not yet tested in-game), Cyclops Eye (head, 5% from I&F Cyclopes; +3 attack damage modifier, stacking with Strength + Looting I), Siren Scale
-  (amulet, 5% from I&F Sirens; x2 swim speed modifier, stacking with Swiftswimming), Ring of Piercing (was Ring of Cleansing; hitting a parasite
+  (any slot, 5% from I&F Sirens; x2 swim speed modifier, stacking with Swiftswimming), Ring of Piercing (was Ring of Cleansing; hitting a parasite
   inflicts Immalleable). Eye, Scale and Ring of Piercing still have placeholder textures.
 
 - Pendant of Plutonium Warding: an irradiated aura weakening parasites in a radius around the player (necklace slot)

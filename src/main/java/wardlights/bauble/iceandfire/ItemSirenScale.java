@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import wardlights.config.WardlightsConfig;
 
 /**
- * Worn in the Baubles AMULET slot, dropped by Ice and Fire's Sirens. Raises swim
+ * Worn in any Baubles slot (TRINKET), dropped by Ice and Fire's Sirens. Raises swim
  * speed while worn, stacking with Lycanites' Swiftswimming
  * ({@link IceAndFireBaubleHandler#SIREN_SCALE_SWIM_SPEED}).
  */
@@ -33,7 +33,7 @@ public class ItemSirenScale extends Item implements IBauble {
 
     @Override
     public BaubleType getBaubleType(ItemStack itemStack) {
-        return BaubleType.AMULET;
+        return BaubleType.TRINKET;
     }
 
     @Override

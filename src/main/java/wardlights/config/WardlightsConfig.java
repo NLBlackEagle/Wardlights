@@ -401,9 +401,14 @@ public class WardlightsConfig {
 			@Config.RangeDouble(min = 0, max = 1)
 			public double explosionDamageMultiplier = 0.25;
 
-			@Config.Comment("Whether an ignored hit shows a message above the hotbar and plays a shield-block sound.")
-			@Config.Name("Ignored Hit Feedback")
-			public boolean ignoredHitFeedback = true;
+			@Config.Comment("Whether an ignored hit (or First Aid headshot save) shows a message above the hotbar.")
+			@Config.Name("Ignored Hit Message")
+			public boolean ignoredHitMessage = false;
+
+			@Config.Comment("Volume of the shield-block sound when a hit (or First Aid headshot) is ignored. 0 turns it off.")
+			@Config.Name("Ignored Hit Sound Volume")
+			@Config.RangeDouble(min = 0, max = 1)
+			public double ignoredHitSoundVolume = 0.2;
 
 			@Config.Comment("First Aid only: whether a headshot that would kill the wearer has a chance to be ignored.")
 			@Config.Name("First Aid Headshot Save")

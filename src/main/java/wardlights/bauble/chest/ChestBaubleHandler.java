@@ -113,19 +113,23 @@ public final class ChestBaubleHandler {
             return false;
         }
         setHitCount(bauble, 0);
-        if (config.ignoredHitFeedback) {
-            showFeedback(wearer, "message.wardlights.chest_bauble.ignored_hit");
-        }
+        showFeedback(wearer, "message.wardlights.chest_bauble.ignored_hit");
         return true;
     }
 
-    /** Action bar message + shield-block sound when a bauble stops a hit. */
+    /**
+     * Feedback when a bauble stops a hit: an optional action bar message and a
+     * shield-block sound, each controlled by its own config option.
+     */
     public static void showFeedback(EntityLivingBase wearer, String messageKey) {
-        if (wearer instanceof EntityPlayer) {
+        ChestBaubleConfig config = WardlightsConfig.server.chestBaubles;
+        if (config.ignoredHitMessage && wearer instanceof EntityPlayer) {
             ((EntityPlayer) wearer).sendStatusMessage(new TextComponentTranslation(messageKey), true);
         }
-        wearer.world.playSound(null, wearer.posX, wearer.posY, wearer.posZ, SoundEvents.ITEM_SHIELD_BLOCK,
-                SoundCategory.PLAYERS, 0.8F, 1.0F);
+        if (config.ignoredHitSoundVolume > 0) {
+            wearer.world.playSound(null, wearer.posX, wearer.posY, wearer.posZ, SoundEvents.ITEM_SHIELD_BLOCK,
+                    SoundCategory.PLAYERS, (float) config.ignoredHitSoundVolume, 1.0F);
+        }
     }
 
     @SubscribeEvent
